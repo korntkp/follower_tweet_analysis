@@ -130,7 +130,7 @@ def plot_kde(data_estimate_param, choose_str, topic_name, fold_num):
 
 
 def write_date_date_csv(output_path, list_data, start_unix_time, topic_name):
-    fo = open(output_path, "w")
+
     before_start_time = 0
     one_hour = 3600
 
@@ -140,11 +140,16 @@ def write_date_date_csv(output_path, list_data, start_unix_time, topic_name):
         before_start_time = start_unix_time[1] - one_hour
     unix_time = before_start_time
 
+    fo = open(output_path, "w")
     for line in list_data:
 
         if unix_time != before_start_time:
             date_time_str = datetime.fromtimestamp(unix_time).strftime('%Y-%m-%d %H:%M:%S')
-            result = str(date_time_str) + "," + str(line) + "\n"
+            if line == 0.0:
+                result = str(date_time_str) + ",NA\n"
+            else:
+                result = str(date_time_str) + "," + str(line) + "\n"
+            # print(result)
             fo.write(result)
         unix_time += one_hour
     fo.close()
@@ -155,14 +160,21 @@ def pandas_plot(output_path):
     # file = open(output_path, "r")
     # for line in file:
     #     print(line)
-    result = pd.read_csv(output_path,
+    kde_follower = pd.read_csv(output_path,
                               names=['DateTime', 'DeltaFollower'],
                               index_col=['DateTime'],
                               parse_dates=True)
-    print(result)
-    result.DeltaFollower.plot()
+    print(kde_follower)
+    kde_follower.DeltaFollower.plot()
+
+    decomp_freq = int(24*7)
+    res = sm.tsa.seasonal_decompose(kde_follower.DeltaFollower.interpolate(),
+                                freq="D",
+                                model='additive')
+    res_plot = res.plot()
     plt.show()
     return
+
 
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
