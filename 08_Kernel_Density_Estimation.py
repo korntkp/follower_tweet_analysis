@@ -90,7 +90,7 @@ def estimate(input_param, output, hour):
             # print("Singular Matrix at t: " + str(hour))
             output.append(0.0)
             return
-        xs = linspace(0, max(input_param), num=100)
+        xs = linspace(min(input_param), max(input_param), num=100)
         kde.set_bandwidth(bw_method='silverman')
         kde.set_bandwidth(bw_method=kde.factor / 2)
         y = kde(xs)
@@ -126,25 +126,41 @@ def plot_kde(data_estimate_param, choose_str, topic_name, fold_num):
     plt.show()
 
 
-y_axis_choices = ['retweet', 'follower w/t mc', 'follower w/o mc']
+def write_date_date_csv(output_path, list_data):
+    print(output_path)
+    print(len(list_data))
+    # for line in list_data:
+    #     print(line)
+    return
+
+
+# y_axis_choices = ['retweet', 'follower w/t mc', 'follower w/o mc']
+y_axis_choices = ['follower w/o mc']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 folds = ["1", "2", "3", "4", "5"]
+# folds = ["1", "2"]
 
 for each_choice in y_axis_choices:
     for each_topic in topics:
         for each_fold in folds:
 
+            print(each_topic, each_fold)
             data = []  # Array for collect original data
             data_estimate = []  # Array for collect KDE processed data
 
             source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/" + each_topic + "/fold_" + each_fold + "/all_tweet.csv"
             # source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/aroii/fold_1/t1.csv"
+            output_csv = "E:/tweet_process/result_follower-ret/07_csv_for_find_trend/" + each_topic + "/date_" + each_choice + "_" + each_fold + ".csv"
 
             # Index of time
-            num_index = 1655  # ###### Edit here ######### all_hours = 24 * 7 * 10  # 1680
-
-            for i in range(0, num_index):
-                data.append([])
+            last_hour_app_aroii = 1651
+            last_hour_hor_theface = 1627
+            if each_topic == "apple" or each_topic == "aroii":
+                for i in range(0, last_hour_app_aroii):
+                    data.append([])
+            else:
+                for i in range(0, last_hour_hor_theface):
+                    data.append([])
 
             # Read data from file and collect in array
             process_data(source_path, data, each_choice)
@@ -167,5 +183,7 @@ for each_choice in y_axis_choices:
             # # print(data_estimate[0])
 
             # print("Ploting Graph")
-            plot_kde(data_estimate, each_choice, each_topic, each_fold)
+            # plot_kde(data_estimate, each_choice, each_topic, each_fold)
             # plot_example_wtf()
+
+            write_date_date_csv(output_csv, data_estimate)
