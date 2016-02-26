@@ -8,7 +8,7 @@ import fileinput
 #     data_retweet.append([])
 #     data_follower.append([])
 
-source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/aroii/fold_1/all_tweet.csv"
+source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/thefacethailand/fold_4/all_tweet.csv"
 # source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/aroii/fold_1/t1.csv"
 
 max_retweet = 0.0
@@ -48,13 +48,13 @@ for line in fileinput.input([source_path]):
     """
     Max Follower
     """
+    # if temp_follower >= max_follower:
     if temp_follower >= max_follower:
-    # if temp_follower >= max_follower and temp_hour != 490 and temp_hour != 495 and temp_hour != 111 and temp_hour != 303 and temp_hour != 493:
         max_follower = temp_follower
         max_hour_fol = temp_hour
         max_fol_tweet_id = temp_tweet_id
     # if temp_follower > 60.0:
-    #     print("Hour: " + str(temp_hour) + ", Follower: " + str(temp_follower) + ", ID: " + temp_tweet_id)
+        print("Hour: " + str(temp_hour) + ", Follower: " + str(temp_follower) + ", ID: " + temp_tweet_id)
 
     """
     Min Retweet
