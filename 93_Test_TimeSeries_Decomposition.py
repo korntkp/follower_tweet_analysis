@@ -1,3 +1,7 @@
+"""
+http://www.cbcity.de/timeseries-decomposition-in-python-with-statsmodels-and-pandas
+"""
+
 import pandas as pd
 import statsmodels.api as sm
 import matplotlib.pyplot as plt  # !!!!!
