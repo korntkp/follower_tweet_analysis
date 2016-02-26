@@ -13,6 +13,9 @@ from matplotlib.finance import quotes_historical_yahoo_ochl
 from matplotlib.dates import MonthLocator, WeekdayLocator, DateFormatter
 from matplotlib.backends.backend_pdf import PdfPages
 
+import pandas as pd
+import statsmodels.api as sm
+
 
 def plot_example_wtf():
     # hfmt = dates.DateFormatter('%m/%d %H:%M')
@@ -141,12 +144,25 @@ def write_date_date_csv(output_path, list_data, start_unix_time, topic_name):
 
         if unix_time != before_start_time:
             date_time_str = datetime.fromtimestamp(unix_time).strftime('%Y-%m-%d %H:%M:%S')
-            result = str(date_time_str) + "," + str(line)
+            result = str(date_time_str) + "," + str(line) + "\n"
             fo.write(result)
         unix_time += one_hour
     fo.close()
     return
 
+
+def pandas_plot(output_path):
+    # file = open(output_path, "r")
+    # for line in file:
+    #     print(line)
+    result = pd.read_csv(output_path,
+                              names=['DateTime', 'DeltaFollower'],
+                              index_col=['DateTime'],
+                              parse_dates=True)
+    print(result)
+    result.DeltaFollower.plot()
+    plt.show()
+    return
 
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
@@ -190,9 +206,6 @@ for each_choice in y_axis_choices:
             for i in range(0, len(data)):
                 estimate(data[i], data_estimate, i)
 
-            # print("Estimate Success")
-            print(data_estimate)
-
             # for i in range(0, len(data_estimate)):
             #     # if data_estimate[i] > 7:
             #     #     print(str(i) + ": " + str(data_estimate[i]))
@@ -205,3 +218,4 @@ for each_choice in y_axis_choices:
             # plot_example_wtf()
 
             # write_date_date_csv(output_csv, data_estimate, unix_time_start, each_topic)
+            pandas_plot(output_csv)
