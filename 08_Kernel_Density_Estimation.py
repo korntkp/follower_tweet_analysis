@@ -7,7 +7,7 @@ import numpy as np
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 
-import datetime
+from datetime import datetime
 from matplotlib.dates import MONDAY
 from matplotlib.finance import quotes_historical_yahoo_ochl
 from matplotlib.dates import MonthLocator, WeekdayLocator, DateFormatter
@@ -63,9 +63,9 @@ def process_data(source_path_param, output, choice):
         y = 0.0
         if choice == 'retweet':
             y = float(value[3].strip())  # diff_retweet
-        elif choice == 'follower w/t mc':
+        elif choice == 'follower_wt_mc':
             y = float(value[10].strip())  # diff_follower_wt_mc
-        elif choice == 'follower w/o mc':
+        elif choice == 'follower_wo_mc':
             y = float(value[13].strip())  # diff_follower_wo_mc
         output[x].append(y)
 
@@ -112,10 +112,10 @@ def plot_kde(data_estimate_param, choose_str, topic_name, fold_num):
     elif topic_name == 'hormonestheseries' or topic_name == 'thefacethailand':
         ax.set_xlabel("Time(Hour) from 09-Nov-2015 06:00 am")
 
-    if choose_str == 'follower w/t mc':
+    if choose_str == 'follower_wt_mc':
         ax.set_ylabel('Delta Follower with Message Count')
         ax.set_title('Graph of Time and Delta Follower(with Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
-    elif choose_str == 'follower w/o mc':
+    elif choose_str == 'follower_wo_mc':
         ax.set_ylabel('Delta Follower without Message Count')
         ax.set_title('Graph of Time and Delta Follower(without Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
     elif choose_str == 'retweet':
@@ -126,19 +126,38 @@ def plot_kde(data_estimate_param, choose_str, topic_name, fold_num):
     plt.show()
 
 
-def write_date_date_csv(output_path, list_data):
-    print(output_path)
-    print(len(list_data))
-    # for line in list_data:
-    #     print(line)
+def write_date_date_csv(output_path, list_data, start_unix_time, topic_name):
+    fo = open(output_path, "w")
+    before_start_time = 0
+    one_hour = 3600
+
+    if each_topic == "apple" or each_topic == "aroii":
+        before_start_time = start_unix_time[0] - one_hour
+    elif each_topic == "hormonestheseries" or each_topic == "thefacethailand":
+        before_start_time = start_unix_time[1] - one_hour
+    unix_time = before_start_time
+
+    for line in list_data:
+
+        if unix_time != before_start_time:
+            date_time_str = datetime.fromtimestamp(unix_time).strftime('%Y-%m-%d %H:%M:%S')
+            result = str(date_time_str) + "," + str(line)
+            fo.write(result)
+        unix_time += one_hour
+    fo.close()
     return
 
 
-# y_axis_choices = ['retweet', 'follower w/t mc', 'follower w/o mc']
-y_axis_choices = ['follower w/o mc']
+# y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
+y_axis_choices = ['follower_wo_mc']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+# topics = ["apple"]
 folds = ["1", "2", "3", "4", "5"]
-# folds = ["1", "2"]
+# folds = ["1"]
+
+unix_time_start = [1447023600, 1447714800]  # 2015-11-09 06:00:00   2015-11-17 06:00:00
+last_hour_app_aroii = 1651
+last_hour_hor_theface = 1627
 
 for each_choice in y_axis_choices:
     for each_topic in topics:
@@ -152,9 +171,6 @@ for each_choice in y_axis_choices:
             # source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/aroii/fold_1/t1.csv"
             output_csv = "E:/tweet_process/result_follower-ret/07_csv_for_find_trend/" + each_topic + "/date_" + each_choice + "_" + each_fold + ".csv"
 
-            # Index of time
-            last_hour_app_aroii = 1651
-            last_hour_hor_theface = 1627
             if each_topic == "apple" or each_topic == "aroii":
                 for i in range(0, last_hour_app_aroii):
                     data.append([])
@@ -173,7 +189,9 @@ for each_choice in y_axis_choices:
             # KDE processing
             for i in range(0, len(data)):
                 estimate(data[i], data_estimate, i)
+
             # print("Estimate Success")
+            print(data_estimate)
 
             # for i in range(0, len(data_estimate)):
             #     # if data_estimate[i] > 7:
@@ -186,4 +204,4 @@ for each_choice in y_axis_choices:
             # plot_kde(data_estimate, each_choice, each_topic, each_fold)
             # plot_example_wtf()
 
-            write_date_date_csv(output_csv, data_estimate)
+            # write_date_date_csv(output_csv, data_estimate, unix_time_start, each_topic)
