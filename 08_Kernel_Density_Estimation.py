@@ -148,7 +148,7 @@ def write_date_date_csv(output_path, list_data, start_unix_time, topic_name):
             if line == 0.0:
                 result = str(date_time_str) + ",NA\n"
             else:
-                result = str(date_time_str) + "," + str(line) + "\n"
+                result = str(date_time_str) + "," + str(int(line)) + "\n"
             # print(result)
             fo.write(result)
         unix_time += one_hour
@@ -157,6 +157,7 @@ def write_date_date_csv(output_path, list_data, start_unix_time, topic_name):
 
 
 def pandas_plot(output_path):
+
     # file = open(output_path, "r")
     # for line in file:
     #     print(line)
@@ -164,15 +165,26 @@ def pandas_plot(output_path):
                               names=['DateTime', 'DeltaFollower'],
                               index_col=['DateTime'],
                               parse_dates=True)
-    print(kde_follower)
-    kde_follower.DeltaFollower.plot()
+    # print(kde_follower)
+    # print(kde_follower.DeltaFollower)
+    print(kde_follower.DeltaFollower.interpolate().values)
+    # kde_follower.DeltaFollower.plot()
 
-    decomp_freq = int(24*7)
-    res = sm.tsa.seasonal_decompose(kde_follower.DeltaFollower.interpolate(),
-                                freq="D",
-                                model='additive')
-    res_plot = res.plot()
-    plt.show()
+    decomp_freq = 24
+    # decomp_freq = "Q"
+
+    """
+    model : str {"additive", "multiplicative"}
+    """
+    res = sm.tsa.seasonal_decompose(kde_follower.DeltaFollower.interpolate().values, freq=decomp_freq, model='additive')
+    # res = sm.tsa.seasonal_decompose(kde_follower.DeltaFollower.interpolate().values, freq=decomp_freq)
+    # res = sm.tsa.seasonal_decompose(kde_follower.DeltaFollower.interpolate())
+    # res = sm.OLS(missing='drop')
+
+    # print(res)
+    # res_plot = res.plot()
+    # print(res_plot)
+    # plt.show()
     return
 
 
