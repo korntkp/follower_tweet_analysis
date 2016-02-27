@@ -165,35 +165,62 @@ def pandas_plot(output_path):
                               names=['DateTime', 'DeltaFollower'],
                               index_col=['DateTime'],
                               parse_dates=True)
-    # print(kde_follower)
-    # print(kde_follower.DeltaFollower)
-    print(kde_follower.DeltaFollower.interpolate().values)
+
     # kde_follower.DeltaFollower.plot()
 
-    decomp_freq = 24
-    # decomp_freq = "Q"
+    decomp_freq = int(24*5)
+
+    kde_follower_interpolated_forward = kde_follower.DeltaFollower.interpolate()
+    kde_follower_interpolated_only_bfill = kde_follower.DeltaFollower.interpolate().bfill()
+    kde_follower_interpolated_complete = kde_follower_interpolated_forward.interpolate().bfill()
+    print(kde_follower_interpolated_forward)
+    print(kde_follower_interpolated_only_bfill)
+    print(kde_follower_interpolated_complete)
+
+    # res_forward = sm.tsa.seasonal_decompose(kde_follower_interpolated_forward.values, freq=decomp_freq, model='additive')
+    # res_only_bfill = sm.tsa.seasonal_decompose(kde_follower_interpolated_only_bfill.values, freq=decomp_freq, model='additive')
+    # for k in range(1, 10):
+    res_complete = sm.tsa.seasonal_decompose(kde_follower_interpolated_complete.values, freq=decomp_freq, model='additive')
+    # res_complete1 = sm.tsa.seasonal_decompose(kde_follower_interpolated_complete.values, freq=21, model='additive')
+    # res_complete2 = sm.tsa.seasonal_decompose(kde_follower_interpolated_complete.values, freq=22, model='additive')
+    # res_complete3 = sm.tsa.seasonal_decompose(kde_follower_interpolated_complete.values, freq=23, model='additive')
+    # res_complete4 = sm.tsa.seasonal_decompose(kde_follower_interpolated_complete.values, freq=24, model='additive')
+    # res_complete5 = sm.tsa.seasonal_decompose(kde_follower_interpolated_complete.values, freq=25, model='additive')
+    # res_complete6 = sm.tsa.seasonal_decompose(kde_follower_interpolated_complete.values, freq=26, model='additive')
+    # res_complete7 = sm.tsa.seasonal_decompose(kde_follower_interpolated_complete.values, freq=27, model='additive')
+    # res_complete8 = sm.tsa.seasonal_decompose(kde_follower_interpolated_complete.values, freq=28, model='additive')
+    # res_complete9 = sm.tsa.seasonal_decompose(kde_follower_interpolated_complete.values, freq=29, model='additive')
+    # res_complete10 = sm.tsa.seasonal_decompose(kde_follower_interpolated_complete.values, freq=30, model='additive')
+    # res_complete11 = sm.tsa.seasonal_decompose(kde_follower_interpolated_complete.values, freq=31, model='additive')
 
     """
-    model : str {"additive", "multiplicative"}
+    PLOTING
     """
-    res = sm.tsa.seasonal_decompose(kde_follower.DeltaFollower.interpolate().values, freq=decomp_freq, model='additive')
-    # res = sm.tsa.seasonal_decompose(kde_follower.DeltaFollower.interpolate().values, freq=decomp_freq)
-    # res = sm.tsa.seasonal_decompose(kde_follower.DeltaFollower.interpolate())
-    # res = sm.OLS(missing='drop')
+    res_plot = res_complete.plot()
+    # res_plot1 = res_complete1.plot()
+    # res_plot2 = res_complete2.plot()
+    # res_plot3 = res_complete3.plot()
+    # res_plot4 = res_complete4.plot()
+    # res_plot5 = res_complete5.plot()
+    # res_plot6 = res_complete6.plot()
+    # res_plot7 = res_complete7.plot()
+    # res_plot8 = res_complete8.plot()
+    # res_plot9 = res_complete9.plot()
+    # res_plot10 = res_complete10.plot()
+    # res_plot11 = res_complete11.plot()
 
+    plt.show()
     # print(res)
-    # res_plot = res.plot()
     # print(res_plot)
-    # plt.show()
     return
 
 
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
-topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["apple"]
-folds = ["1", "2", "3", "4", "5"]
-# folds = ["1"]
+# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["apple"]
+# folds = ["1", "2", "3", "4", "5"]
+folds = ["1"]
 
 unix_time_start = [1447023600, 1447714800]  # 2015-11-09 06:00:00   2015-11-17 06:00:00
 last_hour_app_aroii = 1651
@@ -242,4 +269,6 @@ for each_choice in y_axis_choices:
             # plot_example_wtf()
 
             # write_date_date_csv(output_csv, data_estimate, unix_time_start, each_topic)
+            # for k in range(1, 10):
+            #     pandas_plot(output_csv, k)
             pandas_plot(output_csv)
