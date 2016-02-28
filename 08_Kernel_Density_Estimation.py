@@ -158,43 +158,30 @@ def write_date_date_csv(output_path, list_data, start_unix_time, topic_name):
 
 def pandas_plot(data_path, topic_name, fold_num):
 
-    output_path_non_interpolate = "E:/tweet_process/result_follower-ret/092_cmp_interpolate_and_bfill/" + topic_name + "/fold_" + fold_num + "/01_original_data.csv"
-    output_path_interpolate = "E:/tweet_process/result_follower-ret/092_cmp_interpolate_and_bfill/" + topic_name + "/fold_" + fold_num + "/02_original_interpolate.csv"
-    output_path_interpolate_bfill = "E:/tweet_process/result_follower-ret/092_cmp_interpolate_and_bfill/" + topic_name + "/fold_" + fold_num + "/03_bfill_interpolate.csv"
-    output_path_interpolate_complete = "E:/tweet_process/result_follower-ret/092_cmp_interpolate_and_bfill/" + topic_name + "/fold_" + fold_num + "/04_complete_interpolate.csv"
 
     kde_follower = pd.read_csv(data_path,
                               names=['DateTime', 'DeltaFollower'],
                               index_col=['DateTime'],
                               parse_dates=True)
 
-    # kde_follower.DeltaFollower.plot()
-
-    decomp_freq = int(24*5)
-
-    kde_follower_interpolated_forward = kde_follower.DeltaFollower.interpolate()
+    decomp_freq = int(18*7)
     kde_follower_interpolated_bfill = kde_follower.DeltaFollower.interpolate().bfill()
-    # print(kde_follower.DeltaFollower)
-    # print(kde_follower_interpolated_forward)
-    # print(kde_follower_interpolated_bfill)
 
     """
-    Write To CSV File
-    """
+    # Test Write To CSV File
+    # output_path_non_interpolate = "E:/tweet_process/result_follower-ret/092_cmp_interpolate_and_bfill/" + topic_name + "/fold_" + fold_num + "/01_original_data.csv"
+    # output_path_interpolate = "E:/tweet_process/result_follower-ret/092_cmp_interpolate_and_bfill/" + topic_name + "/fold_" + fold_num + "/02_original_interpolate.csv"
+    # output_path_interpolate_bfill = "E:/tweet_process/result_follower-ret/092_cmp_interpolate_and_bfill/" + topic_name + "/fold_" + fold_num + "/03_bfill_interpolate.csv"
     # kde_follower.DeltaFollower.to_csv(output_path_non_interpolate, sep='\t')
     # kde_follower_interpolated_forward.to_csv(output_path_interpolate, sep='\t')
     # kde_follower_interpolated_bfill.to_csv(output_path_interpolate_bfill, sep='\t')
-
     # print("Original - Forward ->  " + str(kde_follower.DeltaFollower.equals(kde_follower_interpolated_forward)))
     # print("Forward - OnlyBfill -> " + str(kde_follower_interpolated_forward.equals(kde_follower_interpolated_bfill)))
-
-    # res_forward = sm.tsa.seasonal_decompose(kde_follower_interpolated_forward.values,
-    #                                         freq=decomp_freq,
-    #                                         model='additive')
+    """
     res_only_bfill = sm.tsa.seasonal_decompose(kde_follower_interpolated_bfill.values,
                                                freq=decomp_freq,
                                                model='additive')
-
+    kde_follower.DeltaFollower.plot()
     res_plot = res_only_bfill.plot()
     plt.show()
     return
