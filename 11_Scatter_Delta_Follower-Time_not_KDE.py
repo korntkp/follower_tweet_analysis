@@ -149,7 +149,7 @@ for each_choice in follower_choices:
             # dataf.plot(kind='scatter', x='a', y='b')
             # plt.show()
 
-            test_diff_follower = pd.read_csv('test_file.csv',
+            test_diff_follower = pd.read_csv('test_pandas_scatter_plot.csv',
                               names=['Hours', 'DeltaFollower'])
             test_diff_follower.plot(kind='scatter', x='Hours', y='DeltaFollower')
             plt.show()
