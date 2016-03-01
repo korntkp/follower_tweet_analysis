@@ -158,7 +158,6 @@ def write_date_date_csv(output_path, list_data, start_unix_time, topic_name):
 
 def pandas_plot(data_path, topic_name, fold_num):
 
-
     kde_follower = pd.read_csv(data_path,
                               names=['DateTime', 'DeltaFollower'],
                               index_col=['DateTime'],
@@ -181,8 +180,17 @@ def pandas_plot(data_path, topic_name, fold_num):
     res_only_bfill = sm.tsa.seasonal_decompose(kde_follower_interpolated_bfill.values,
                                                freq=decomp_freq,
                                                model='additive')
-    kde_follower.DeltaFollower.plot()
+
+    # SELECT GRAPH PLOT
+    # 1 not Interpolate Plot
+    # ori_plot = kde_follower.DeltaFollower.plot()
+    # ori_plot.set_title("Topic: " + str(topic_name) + " Fold: " + str(fold_num))
+    # 2 Interpolate Plot
+    ori_interpolated_plot = kde_follower.DeltaFollower.interpolate().plot()
+    ori_interpolated_plot.set_title("Topic: " + str(topic_name) + " Fold: " + str(fold_num))
+    # 3 Decomposition Plot
     res_plot = res_only_bfill.plot()
+
     plt.show()
     return
 
