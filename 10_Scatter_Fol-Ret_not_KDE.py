@@ -1,6 +1,7 @@
 import fileinput
 import math
 import matplotlib.pyplot as plt
+import scipy.stats as scs
 
 
 def extract_diff_ret_or_fol(source_path_param, choose_str, is_log_delta_retweet_param, is_log_delta_follower_param, log_base):
@@ -94,7 +95,7 @@ topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 # folds = ["1", "2", "3", "4", "5"]
 folds = ["2", "3", "4", "5"]
 is_log_delta_retweet = True
-is_log_delta_follower = True
+is_log_delta_follower = False
 logarithm_base_num = 10
 
 for each_choice in follower_choices:
@@ -116,3 +117,5 @@ for each_choice in follower_choices:
             print("Min of Delta follower -> " + str(min(list_diff_fol)))
 
             plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower)
+            print(scs.pearsonr(list_diff_ret, list_diff_fol))
+            print(scs.spearmanr(list_diff_ret, list_diff_fol))
