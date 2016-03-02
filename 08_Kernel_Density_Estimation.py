@@ -1,18 +1,15 @@
 from __future__ import print_function
-import fileinput
-import os.path
-from numpy import *
-from matplotlib import dates
-import numpy as np
-import scipy.stats as stats
-import matplotlib.pyplot as plt
-
 from datetime import datetime
-
-import pandas as pd
-import statsmodels.api as sm
+from numpy import *
 
 import operator
+import fileinput
+
+import numpy as np
+import pandas as pd
+import scipy.stats as stats
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
 
 
 def process_data(source_path_param, output, choice):
@@ -153,7 +150,8 @@ def pandas_plot(data_path, topic_name, fold_num):
 
 
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
-y_axis_choices = ['follower_wo_mc']
+# y_axis_choices = ['follower_wo_mc']
+y_axis_choices = ['retweet']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["apple"]
 folds = ["1", "2", "3", "4", "5"]
@@ -173,7 +171,8 @@ for each_choice in y_axis_choices:
 
             source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/" + each_topic + "/fold_" + each_fold + "/all_tweet.csv"
             # source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/aroii/fold_1/t1.csv"
-            output_csv = "E:/tweet_process/result_follower-ret/07_csv_for_find_trend/" + each_topic + "/date_" + each_choice + "_" + each_fold + ".csv"
+            output_follower_csv = "E:/tweet_process/result_follower-ret/07_follower_csv_for_pandas/" + each_topic + "/date_" + each_choice + "_" + each_fold + ".csv"
+            output_retweet_csv = "E:/tweet_process/result_follower-ret/08_retweet_csv_for_pandas/" + each_topic + "/date_" + each_choice + "_" + each_fold + ".csv"
 
             if each_topic == "apple" or each_topic == "aroii":
                 for i in range(0, last_hour_app_aroii):
@@ -197,23 +196,31 @@ for each_choice in y_axis_choices:
             # # print(data_estimate[0])
 
             # print("Ploting Graph")
-            plot_kde(data_estimate, each_choice, each_topic, each_fold)
+            # plot_kde(data_estimate, each_choice, each_topic, each_fold)
 
-            # write_date_date_csv(output_csv, data_estimate, unix_time_start, each_topic)
-            # for k in range(1, 10):
-            #     pandas_plot(output_csv, k)
+            """
+            Write Data
+            """
+            # if each_choice == 'follower_wo_mc':
+            #     write_date_date_csv(output_follower_csv, data_estimate, unix_time_start, each_topic)
+            # elif each_choice == 'retweet':
+            #     write_date_date_csv(output_retweet_csv, data_estimate, unix_time_start, each_topic)
 
-            df_kde_follower = pandas_plot(output_csv, each_topic, each_fold)
-            # print(df_kde_follower)
+            if each_choice == 'follower_wo_mc':
+                df_kde_value = pandas_plot(output_follower_csv, each_topic, each_fold)
+            elif each_choice == 'retweet':
+                df_kde_value = pandas_plot(output_retweet_csv, each_topic, each_fold)
+            # print(df_kde_value)
 
             """
             Print TOP KDE delta_follower
             """
             dict_max = {}
-            for k in range(0, len(df_kde_follower)):
-                dict_max[str(k)] = df_kde_follower.values[k]
+            for k in range(1, len(df_kde_value)):
+                dict_max[str(k)] = df_kde_value.values[k]
 
             sorted_x = sorted(dict_max.items(), key=operator.itemgetter(1))
             sorted_x.reverse()
+            print(len(sorted_x))
 
             print(sorted_x[:10])
