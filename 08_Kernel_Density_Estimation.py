@@ -12,6 +12,8 @@ from datetime import datetime
 import pandas as pd
 import statsmodels.api as sm
 
+import operator
+
 
 def process_data(source_path_param, output, choice):
     for line in fileinput.input([source_path_param]):
@@ -144,10 +146,10 @@ def pandas_plot(data_path, topic_name, fold_num):
     ori_interpolated_plot = kde_follower.DeltaFollower.interpolate().plot()
     ori_interpolated_plot.set_title("Topic: " + str(topic_name) + " Fold: " + str(fold_num))
     # 3 Decomposition Plot
-    res_plot = res_only_bfill.plot()
+    # res_plot = res_only_bfill.plot()
 
     plt.show()
-    return
+    return kde_follower_interpolated_bfill
 
 
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
@@ -182,11 +184,6 @@ for each_choice in y_axis_choices:
 
             # Read data from file and collect in array
             process_data(source_path, data, each_choice)
-            # print("Process Data Success")
-            # for i in range(0, num_index):
-            #     print("data[" + str(i) + "]: " + str(data[i]))
-            #     if not data[i]:
-            #         print("EMPTY")
 
             # KDE processing
             for i in range(0, len(data)):
@@ -200,9 +197,23 @@ for each_choice in y_axis_choices:
             # # print(data_estimate[0])
 
             # print("Ploting Graph")
-            # plot_kde(data_estimate, each_choice, each_topic, each_fold)
+            plot_kde(data_estimate, each_choice, each_topic, each_fold)
 
             # write_date_date_csv(output_csv, data_estimate, unix_time_start, each_topic)
             # for k in range(1, 10):
             #     pandas_plot(output_csv, k)
-            pandas_plot(output_csv, each_topic, each_fold)
+
+            df_kde_follower = pandas_plot(output_csv, each_topic, each_fold)
+            # print(df_kde_follower)
+
+            """
+            Print TOP KDE delta_follower
+            """
+            dict_max = {}
+            for k in range(0, len(df_kde_follower)):
+                dict_max[str(k)] = df_kde_follower.values[k]
+
+            sorted_x = sorted(dict_max.items(), key=operator.itemgetter(1))
+            sorted_x.reverse()
+
+            print(sorted_x[:10])
