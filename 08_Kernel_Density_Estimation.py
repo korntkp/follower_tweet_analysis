@@ -84,28 +84,32 @@ def plot_kde(data_estimate_param, choose_str, topic_name, fold_num):
 
 
 def write_date_date_csv(output_path, list_data, start_unix_time, topic_name):
-
+    # print(list_data)
     before_start_time = 0
     one_hour = 3600
 
-    if each_topic == "apple" or each_topic == "aroii":
+    if each_topic == "hormonestheseries" or each_topic == "thefacethailand":
         before_start_time = start_unix_time[0] - one_hour
-    elif each_topic == "hormonestheseries" or each_topic == "thefacethailand":
+    elif each_topic == "apple" or each_topic == "aroii":
         before_start_time = start_unix_time[1] - one_hour
     unix_time = before_start_time
+    t = 1
 
     fo = open(output_path, "w")
     for line in list_data:
-
         if unix_time != before_start_time:
             date_time_str = datetime.fromtimestamp(unix_time).strftime('%Y-%m-%d %H:%M:%S')
             if line == 0.0:
                 result = str(date_time_str) + ",NA\n"
+                # result = str(t) + " " + str(date_time_str) + ",NA\n"  # TEST
             else:
-                result = str(date_time_str) + "," + str(int(line)) + "\n"
-            # print(result)
+                result = str(date_time_str) + "," + str(line) + "\n"
+                # result = str(t) + " " + str(date_time_str) + "," + str(line) + "\n"  # TEST
+            # print(result)  # TEST
+            t += 1
             fo.write(result)
         unix_time += one_hour
+
     fo.close()
     return
 
@@ -150,10 +154,10 @@ def pandas_plot(data_path, topic_name, fold_num):
 
 
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
-# y_axis_choices = ['follower_wo_mc']
-y_axis_choices = ['retweet']
+y_axis_choices = ['follower_wo_mc']
+# y_axis_choices = ['retweet']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["apple"]
+# topics = ["aroii"]
 folds = ["1", "2", "3", "4", "5"]
 # folds = ["3"]
 
@@ -188,6 +192,8 @@ for each_choice in y_axis_choices:
             for i in range(0, len(data)):
                 estimate(data[i], data_estimate, i)
 
+            # print(data_estimate)
+
             # for i in range(0, len(data_estimate)):
             #     # if data_estimate[i] > 7:
             #     #     print(str(i) + ": " + str(data_estimate[i]))
@@ -201,26 +207,26 @@ for each_choice in y_axis_choices:
             """
             Write Data
             """
-            # if each_choice == 'follower_wo_mc':
-            #     write_date_date_csv(output_follower_csv, data_estimate, unix_time_start, each_topic)
-            # elif each_choice == 'retweet':
-            #     write_date_date_csv(output_retweet_csv, data_estimate, unix_time_start, each_topic)
-
             if each_choice == 'follower_wo_mc':
-                df_kde_value = pandas_plot(output_follower_csv, each_topic, each_fold)
+                write_date_date_csv(output_follower_csv, data_estimate, unix_time_start, each_topic)
             elif each_choice == 'retweet':
-                df_kde_value = pandas_plot(output_retweet_csv, each_topic, each_fold)
-            # print(df_kde_value)
+                write_date_date_csv(output_retweet_csv, data_estimate, unix_time_start, each_topic)
 
-            """
-            Print TOP KDE delta_follower
-            """
-            dict_max = {}
-            for k in range(1, len(df_kde_value)):
-                dict_max[str(k)] = df_kde_value.values[k]
-
-            sorted_x = sorted(dict_max.items(), key=operator.itemgetter(1))
-            sorted_x.reverse()
-            print(len(sorted_x))
-
-            print(sorted_x[:10])
+            # if each_choice == 'follower_wo_mc':
+            #     df_kde_value = pandas_plot(output_follower_csv, each_topic, each_fold)
+            # elif each_choice == 'retweet':
+            #     df_kde_value = pandas_plot(output_retweet_csv, each_topic, each_fold)
+            # # print(df_kde_value)
+            #
+            # """
+            # Print TOP KDE delta_follower
+            # """
+            # dict_max = {}
+            # for k in range(1, len(df_kde_value)):
+            #     dict_max[str(k)] = df_kde_value.values[k]
+            #
+            # sorted_x = sorted(dict_max.items(), key=operator.itemgetter(1))
+            # sorted_x.reverse()
+            # print(len(sorted_x))
+            #
+            # print(sorted_x[:10])
