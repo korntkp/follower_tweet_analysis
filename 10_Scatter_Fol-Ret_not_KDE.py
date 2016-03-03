@@ -46,9 +46,12 @@ def extract_diff_ret_or_fol(source_path_param, choose_str, is_log_delta_retweet_
     return list1
 
 
-def plot_diff_ret_and_diff_fol(list_ret, list_fol, choose_str, topic_name, fold_num, is_log_delta_retweet_param, is_log_delta_follower_param):
+def plot_diff_ret_and_diff_fol(list_ret, list_fol, choose_str, topic_name, fold_num, is_log_delta_retweet_param, is_log_delta_follower_param, is_limit_axis_param, max_fol, max_ret, min_fol, min_ret):
     plt.plot(list_ret, list_fol, 'ro')
-    plt.axis([min(list_ret), max(list_ret), min(list_fol), max(list_fol)])
+    if is_limit_axis_param:
+        plt.axis([min_ret, max_ret, min_fol, max_fol])
+    else:
+        plt.axis([min(list_ret), max(list_ret), min(list_fol), max(list_fol)])
     # plt.axis('tight')
     if is_log_delta_retweet_param and is_log_delta_follower_param:
         plt.xlabel('Log(Delta Retweet)')
@@ -92,11 +95,16 @@ def plot_diff_ret_and_diff_fol(list_ret, list_fol, choose_str, topic_name, fold_
 # follower_choices = ['follower w/t mc', 'follower w/o mc']
 follower_choices = ['follower w/o mc']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# folds = ["1", "2", "3", "4", "5"]
-folds = ["2", "3", "4", "5"]
+folds = ["1", "2", "3", "4", "5"]
+# folds = ["1"]
 is_log_delta_retweet = True
 is_log_delta_follower = False
-logarithm_base_num = 10
+logarithm_base_num = 2
+max_ret_plot = 15
+min_ret_plot = -5
+max_fol_plot = 15
+min_fol_plot = -5
+is_limit_axis = True
 
 for each_choice in follower_choices:
     for each_topic in topics:
@@ -116,6 +124,6 @@ for each_choice in follower_choices:
             print("Min of Delta retweet  -> " + str(min(list_diff_ret)))
             print("Min of Delta follower -> " + str(min(list_diff_fol)))
 
-            plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower)
-            print(scs.pearsonr(list_diff_ret, list_diff_fol))
-            print(scs.spearmanr(list_diff_ret, list_diff_fol))
+            plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+            # print(scs.pearsonr(list_diff_ret, list_diff_fol))
+            # print(scs.spearmanr(list_diff_ret, list_diff_fol))
