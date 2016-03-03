@@ -207,26 +207,26 @@ for each_choice in y_axis_choices:
             """
             Write Data
             """
-            if each_choice == 'follower_wo_mc':
-                write_date_date_csv(output_follower_csv, data_estimate, unix_time_start, each_topic)
-            elif each_choice == 'retweet':
-                write_date_date_csv(output_retweet_csv, data_estimate, unix_time_start, each_topic)
-
             # if each_choice == 'follower_wo_mc':
-            #     df_kde_value = pandas_plot(output_follower_csv, each_topic, each_fold)
+            #     write_date_date_csv(output_follower_csv, data_estimate, unix_time_start, each_topic)
             # elif each_choice == 'retweet':
-            #     df_kde_value = pandas_plot(output_retweet_csv, each_topic, each_fold)
-            # # print(df_kde_value)
-            #
-            # """
-            # Print TOP KDE delta_follower
-            # """
-            # dict_max = {}
-            # for k in range(1, len(df_kde_value)):
-            #     dict_max[str(k)] = df_kde_value.values[k]
-            #
-            # sorted_x = sorted(dict_max.items(), key=operator.itemgetter(1))
-            # sorted_x.reverse()
-            # print(len(sorted_x))
-            #
-            # print(sorted_x[:10])
+            #     write_date_date_csv(output_retweet_csv, data_estimate, unix_time_start, each_topic)
+
+            if each_choice == 'follower_wo_mc':
+                df_kde_value = pandas_plot(output_follower_csv, each_topic, each_fold)
+            elif each_choice == 'retweet':
+                df_kde_value = pandas_plot(output_retweet_csv, each_topic, each_fold)
+            # print(df_kde_value)
+
+            """
+            Print TOP KDE delta_follower
+            """
+            dict_max = {}
+            for k in range(1, len(df_kde_value)):
+                dict_max[str(k)] = df_kde_value.values[k]
+
+            sorted_x = sorted(dict_max.items(), key=operator.itemgetter(1))
+            sorted_x.reverse()
+            print(len(sorted_x))
+
+            print(sorted_x[:10])

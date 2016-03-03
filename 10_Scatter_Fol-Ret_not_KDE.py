@@ -127,3 +127,5 @@ for each_choice in follower_choices:
             plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
             # print(scs.pearsonr(list_diff_ret, list_diff_fol))
             # print(scs.spearmanr(list_diff_ret, list_diff_fol))
+
+            # print(len(list_diff_fol), len(list_diff_ret))

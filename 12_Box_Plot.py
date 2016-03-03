@@ -25,49 +25,22 @@ def extract_diff_ret_or_fol(source_path_param, choose_str):
     return list1
 
 
-def write_date_date_csv(output_follower_csv, list_diff_ret, list_diff_fol):
-    before_start_time = 0
-    one_hour = 3600
-
-    if each_topic == "hormonestheseries" or each_topic == "thefacethailand":
-        before_start_time = start_unix_time[0] - one_hour
-    elif each_topic == "apple" or each_topic == "aroii":
-        before_start_time = start_unix_time[1] - one_hour
-    unix_time = before_start_time
-    t = 1
-
-    fo = open(output_path, "w")
-    for line in list_data:
-        if unix_time != before_start_time:
-            date_time_str = datetime.fromtimestamp(unix_time).strftime('%Y-%m-%d %H:%M:%S')
-            if line == 0.0:
-                result = str(date_time_str) + ",NA\n"
-                # result = str(t) + " " + str(date_time_str) + ",NA\n"  # TEST
-            else:
-                result = str(date_time_str) + "," + str(line) + "\n"
-                # result = str(t) + " " + str(date_time_str) + "," + str(line) + "\n"  # TEST
-            # print(result)  # TEST
-            t += 1
-            fo.write(result)
-        unix_time += one_hour
-
-    fo.close()
+def write_date_date_csv(output_path, list_diff_ret_param, list_diff_fol_param):
+    # fo = open(output_path, "w")
+    for i in range(0, len(list_diff_ret_param)):
+        result = str(list_diff_ret_param[i]) + " " + str(list_diff_fol_param[i]) + "\n"
+        # print(result)  # TEST
+        # fo.write(result)
+    # fo.close()
     return
 
 
 def pandas_df(data_path, topic_name, fold_num):
+    kde_follower = pd.read_csv(data_path, names=['DeltaRetweet', 'DeltaFollower'])
 
-    kde_follower = pd.read_csv(data_path,
-                              names=['DateTime', 'DeltaFollower'],
-                              index_col=['DateTime'],
-                              parse_dates=True)
-
+    # print(kde_follower)
     decomp_freq = int(18*7)
     kde_follower_interpolated_bfill = kde_follower.DeltaFollower.interpolate().bfill()
-
-    res_only_bfill = sm.tsa.seasonal_decompose(kde_follower_interpolated_bfill.values,
-                                               freq=decomp_freq,
-                                               model='additive')
 
     # SELECT GRAPH PLOT
     # 1 not Interpolate Plot
@@ -79,7 +52,7 @@ def pandas_df(data_path, topic_name, fold_num):
     # 3 Decomposition Plot
     # res_plot = res_only_bfill.plot()
 
-    plt.show()
+    # plt.show()
     return kde_follower_interpolated_bfill
 
 
@@ -98,10 +71,14 @@ for each_choice in follower_choices:
             list_diff_ret = extract_diff_ret_or_fol(source_path, 'retweet')
             list_diff_fol = extract_diff_ret_or_fol(source_path, each_choice)
 
+            # print(list_diff_fol)
+            print("===================================")
+            # print(list_diff_ret)
+
             """
             Write Data
             """
             write_date_date_csv(output_follower_csv, list_diff_ret, list_diff_fol)
 
             df_follower = pandas_df(output_follower_csv, each_topic, each_fold)
-            print(df_follower)
+            # print(df_follower)

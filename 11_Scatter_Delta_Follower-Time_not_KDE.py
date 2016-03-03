@@ -145,9 +145,9 @@ for each_choice in follower_choices:
             """
             Pandas Plot
             """
-            # dataf = pd.DataFrame(np.random.rand(50, 4), columns=['a', 'b', 'c', 'd'])
-            # dataf.plot(kind='scatter', x='a', y='b')
-            # plt.show()
+            dataf = pd.DataFrame(np.random.rand(50, 4), columns=['a', 'b', 'c', 'd'])
+            dataf.plot(kind='scatter', x='a', y='b')
+            plt.show()
 
             test_diff_follower = pd.read_csv('test_pandas_scatter_plot.csv',
                               names=['Hours', 'DeltaFollower'])
