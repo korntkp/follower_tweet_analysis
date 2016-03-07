@@ -82,3 +82,5 @@ for each_choice in follower_choices:
 
             df_follower = pandas_df(output_follower_csv, each_topic, each_fold)
             print(df_follower)
+            df_follower.boxplot()
+            plt.show()
