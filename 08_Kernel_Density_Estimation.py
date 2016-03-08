@@ -121,7 +121,8 @@ def pandas_plot(data_path, topic_name, fold_num):
                               index_col=['DateTime'],
                               parse_dates=True)
 
-    decomp_freq = int(18*7)
+    # decomp_freq = int(18*7)
+    decomp_freq = int(1)
     kde_follower_interpolated_bfill = kde_follower.DeltaFollower.interpolate().bfill()
 
     """
@@ -147,10 +148,56 @@ def pandas_plot(data_path, topic_name, fold_num):
     ori_interpolated_plot = kde_follower.DeltaFollower.interpolate().plot()
     ori_interpolated_plot.set_title("Topic: " + str(topic_name) + " Fold: " + str(fold_num))
     # 3 Decomposition Plot
-    # res_plot = res_only_bfill.plot()
+    res_plot = res_only_bfill.plot()
 
+    print(res_only_bfill.trend)
     plt.show()
     return kde_follower_interpolated_bfill
+
+
+def plot_diff_ret_and_diff_fol(list_ret, list_fol, choose_str, topic_name, fold_num, is_log_delta_retweet_param, is_log_delta_follower_param, is_limit_axis_param, max_fol, max_ret, min_fol, min_ret):
+    plt.plot(list_ret, list_fol, 'ro')
+    if is_limit_axis_param:
+        plt.axis([min_ret, max_ret, min_fol, max_fol])
+    else:
+        plt.axis([min(list_ret), max(list_ret), min(list_fol), max(list_fol)])
+    # plt.axis('tight')
+    if is_log_delta_retweet_param and is_log_delta_follower_param:
+        plt.xlabel('Log(Delta Retweet)')
+        if choose_str == 'follower w/t mc':
+            plt.ylabel('Log(Delta Follower with Message Count)')
+            plt.title('Graph of Log(Delta Retweet) and Log(Delta Follower(with Message Count)) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+        elif choose_str == 'follower w/o mc':
+            plt.ylabel('Log(Delta Follower without Message Count)')
+            plt.title('Graph of Log(Delta Retweet) and Log(Delta Follower(without Message Count)) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+
+    elif is_log_delta_retweet_param:
+        plt.xlabel('Log(Delta Retweet)')
+        if choose_str == 'follower w/t mc':
+            plt.ylabel('Delta Follower with Message Count')
+            plt.title('Graph of Log(Delta Retweet) and Delta Follower(with Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+        elif choose_str == 'follower w/o mc':
+            plt.ylabel('Delta Follower without Message Count')
+            plt.title('Graph of Log(Delta Retweet) and Delta Follower(without Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+
+    elif is_log_delta_follower_param:
+        plt.xlabel('Delta Retweet')
+        if choose_str == 'follower w/t mc':
+            plt.ylabel('Log(Delta Follower with Message Count)')
+            plt.title('Graph of Delta Retweet and Log(Delta Follower(with Message Count)) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+        elif choose_str == 'follower w/o mc':
+            plt.ylabel('Log(Delta Follower without Message Count)')
+            plt.title('Graph of Delta Retweet and Log(Delta Follower(without Message Count)) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+
+    else:
+        plt.xlabel('Delta Retweet')
+        if choose_str == 'follower w/t mc':
+            plt.ylabel('Delta Follower with Message Count')
+            plt.title('Graph of Delta Retweet and Delta Follower(with Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+        elif choose_str == 'follower w/o mc':
+            plt.ylabel('Delta Follower without Message Count')
+            plt.title('Graph of Delta Retweet and Delta Follower(without Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    plt.show()
 
 
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
@@ -175,8 +222,8 @@ for each_choice in y_axis_choices:
 
             source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/" + each_topic + "/fold_" + each_fold + "/all_tweet.csv"
             # source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/aroii/fold_1/t1.csv"
-            output_follower_csv = "E:/tweet_process/result_follower-ret/07_follower_csv_for_pandas/" + each_topic + "/date_" + each_choice + "_" + each_fold + ".csv"
-            output_retweet_csv = "E:/tweet_process/result_follower-ret/08_retweet_csv_for_pandas/" + each_topic + "/date_" + each_choice + "_" + each_fold + ".csv"
+            output_follower_csv = "E:/tweet_process/result_follower-ret/07_follower_csv/" + each_topic + "/date_" + each_choice + "_" + each_fold + ".csv"
+            output_retweet_csv = "E:/tweet_process/result_follower-ret/08_retweet_csv/" + each_topic + "/date_" + each_choice + "_" + each_fold + ".csv"
 
             if each_topic == "apple" or each_topic == "aroii":
                 for i in range(0, last_hour_app_aroii):
@@ -191,8 +238,8 @@ for each_choice in y_axis_choices:
             # KDE processing
             for i in range(0, len(data)):
                 estimate(data[i], data_estimate, i)
-
-            # print(data_estimate)
+            print(len(data_estimate))
+            print(data_estimate)
 
             # for i in range(0, len(data_estimate)):
             #     # if data_estimate[i] > 7:
@@ -212,21 +259,22 @@ for each_choice in y_axis_choices:
             # elif each_choice == 'retweet':
             #     write_date_date_csv(output_retweet_csv, data_estimate, unix_time_start, each_topic)
 
+            """
+            Plot Y-Time Graph (Pandas)
+            """
             if each_choice == 'follower_wo_mc':
                 df_kde_value = pandas_plot(output_follower_csv, each_topic, each_fold)
             elif each_choice == 'retweet':
                 df_kde_value = pandas_plot(output_retweet_csv, each_topic, each_fold)
             # print(df_kde_value)
 
-            """
-            Print TOP KDE delta_follower
-            """
-            dict_max = {}
-            for k in range(1, len(df_kde_value)):
-                dict_max[str(k)] = df_kde_value.values[k]
-
-            sorted_x = sorted(dict_max.items(), key=operator.itemgetter(1))
-            sorted_x.reverse()
-            print(len(sorted_x))
-
-            print(sorted_x[:10])
+            # """
+            # Print TOP KDE delta_follower
+            # """
+            # dict_max = {}
+            # for k in range(1, len(df_kde_value)):
+            #     dict_max[str(k)] = df_kde_value.values[k]
+            # sorted_x = sorted(dict_max.items(), key=operator.itemgetter(1))
+            # sorted_x.reverse()
+            # print(len(sorted_x))
+            # print(sorted_x[:10])
