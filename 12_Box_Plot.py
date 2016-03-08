@@ -1,4 +1,6 @@
 import fileinput
+from numpy import *
+import numpy as np
 import pandas as pd
 import scipy.stats as stats
 import statsmodels.api as sm
@@ -56,13 +58,65 @@ def pandas_df(data_path, topic_name, fold_num):
     return kde_follower
 
 
+def process_data(source_path_param, output, choice):
+    for line in fileinput.input([source_path_param]):
+        value = line.split(',')
+        # print(value)
+        x = int(value[12].strip())  # hour
+        y = 0.0
+        if choice == 'retweet':
+            y = float(value[3].strip())  # diff_retweet
+        elif choice == 'follower_wt_mc':
+            y = float(value[10].strip())  # diff_follower_wt_mc
+        elif choice == 'follower_wo_mc':
+            y = float(value[13].strip())  # diff_follower_wo_mc
+        output[x].append(y)
+
+
+def estimate(input_param, output, hour):
+    if not input_param:
+        nothing_message = "Nothing at t: " + str(hour)
+        # print(nothing_message)
+        output.append(0.0)
+    elif len(input_param) == 1:
+        nothing_message = "Only One Source Tweet at t: " + str(hour)
+        # print(nothing_message)
+        output.append(0.0)
+    else:
+        # print("Round :" + str(hour))
+        # print("input_param:  " + str(input_param))
+        x = array(input_param)
+        # print("Array x: " + str(x))
+        try:
+            kde = stats.gaussian_kde(x)
+        except np.linalg.linalg.LinAlgError:
+            # print("Singular Matrix at t: " + str(hour))
+            output.append(0.0)
+            return
+        xs = linspace(min(input_param), max(input_param), num=100)
+        kde.set_bandwidth(bw_method='silverman')
+        kde.set_bandwidth(bw_method=kde.factor / 2)
+        y = kde(xs)
+        sum_weight = 0
+        value = 0
+        for j in range(0, len(xs)):
+            value += xs[j]*y[j]
+            sum_weight += y[j]
+
+        avg = value/sum_weight
+        output.append(avg)
+
+
 # SET PARAMETER
-# follower_choices = ['follower w/t mc', 'follower w/o mc']
-follower_choices = ['follower w/o mc']
+# y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
+y_axis_choices = ['follower_wo_mc']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 folds = ["1", "2", "3", "4", "5"]
-# folds =
-for each_choice in follower_choices:
+
+last_hour_app_aroii = 1651
+last_hour_hor_theface = 1627
+
+for each_choice in y_axis_choices:
     for each_topic in topics:
         for each_fold in folds:
             print(each_topic, each_fold)
@@ -80,7 +134,33 @@ for each_choice in follower_choices:
             # print(list_diff_ret)
             # print("================= End Read & Write Data ==================")
 
-            df_follower = pandas_df(output_follower_csv, each_topic, each_fold)
-            print(df_follower)
-            df_follower.boxplot()
-            plt.show()
+            # """
+            # NOT KDE
+            # """
+            # df_follower = pandas_df(output_follower_csv, each_topic, each_fold)
+            # print(df_follower)
+            # df_follower.boxplot()
+            # # df_follower.boxplot(by='DeltaRetweet')
+            # plt.show()
+
+            """
+            KDE
+            """
+            data = []  # Array for collect original data
+            data_estimate = []  # Array for collect KDE processed data
+
+            if each_topic == "apple" or each_topic == "aroii":
+                for i in range(0, last_hour_app_aroii):
+                    data.append([])
+            else:
+                for i in range(0, last_hour_hor_theface):
+                    data.append([])
+
+            process_data(source_path, data, each_choice)
+
+            # KDE processing
+            for i in range(0, len(data)):
+                estimate(data[i], data_estimate, i)
+
+            print(len(data_estimate))
+            print(data_estimate)
