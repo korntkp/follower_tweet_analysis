@@ -37,7 +37,13 @@ def write_date_date_csv(output_path, list_diff_ret_param, list_diff_fol_param, c
             fo.write(result)
     elif choice == 'kde':
         for j in range(1, len(list_diff_ret_param)):
-            result = str(list_diff_ret_param[j]) + "," + str(list_diff_fol_param[j]) + "\n"
+            diff_ret_str = str(list_diff_ret_param[j])
+            diff_fol_str = str(list_diff_fol_param[j])
+            if diff_fol_str == '0.0':
+                diff_fol_str = 'NA'
+            if diff_ret_str == '0.0':
+                diff_ret_str = 'NA'
+            result = diff_ret_str + "," + diff_fol_str + "\n"
             # print(result)  # TEST
             fo.write(result)
     fo.close()
@@ -181,8 +187,14 @@ for each_choice in y_axis_choices:
             """
             Write KDE Data
             """
-            print(len(data_estimate_retweet))
-            print(data_estimate_retweet)
-            print(len(data_estimate_follower))
-            print(data_estimate_follower)
-            write_date_date_csv(output_kde_ret_fol_csv, data_estimate_retweet, data_estimate_follower, 'kde')
+            # print(len(data_estimate_retweet))
+            # print(data_estimate_retweet)
+            # print(len(data_estimate_follower))
+            # print(data_estimate_follower)
+            # write_date_date_csv(output_kde_ret_fol_csv, data_estimate_retweet, data_estimate_follower, 'kde')
+
+            kde_df_ret_fol = pd.read_csv(output_kde_ret_fol_csv, names=['DeltaRetweet', 'DeltaFollower'])
+            # print(kde_df_ret_fol)
+            kde_df_ret_fol.boxplot()
+            # df_follower.boxplot(by='DeltaRetweet')
+            plt.show()
