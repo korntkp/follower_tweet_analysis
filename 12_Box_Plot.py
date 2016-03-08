@@ -16,23 +16,30 @@ def extract_diff_ret_or_fol(source_path_param, choose_str):
             diff_ret_int = int(diff_ret[0:dot_index])
             list1.append(diff_ret_int)  # Normal
 
-        elif choose_str == 'follower w/t mc':
+        elif choose_str == 'follower_wt_mc':
             diff_fol = float(line.split(',')[10])
             list1.append(diff_fol)  # Normal
 
-        elif choose_str == 'follower w/o mc':
+        elif choose_str == 'follower_wo_mc':
             diff_fol = float(line.split(',')[13])
             list1.append(diff_fol)  # Normal
     fileinput.close()
     return list1
 
 
-def write_date_date_csv(output_path, list_diff_ret_param, list_diff_fol_param):
+def write_date_date_csv(output_path, list_diff_ret_param, list_diff_fol_param, choice):
     fo = open(output_path, "w")
-    for i in range(0, len(list_diff_ret_param)):
-        result = str(list_diff_ret_param[i]) + "," + str(list_diff_fol_param[i]) + "\n"
-        # print(result)  # TEST
-        fo.write(result)
+
+    if choice == 'all_tweet':
+        for j in range(0, len(list_diff_ret_param)):
+            result = str(list_diff_ret_param[j]) + "," + str(list_diff_fol_param[j]) + "\n"
+            # print(result)  # TEST
+            fo.write(result)
+    elif choice == 'kde':
+        for j in range(1, len(list_diff_ret_param)):
+            result = str(list_diff_ret_param[j]) + "," + str(list_diff_fol_param[j]) + "\n"
+            # print(result)  # TEST
+            fo.write(result)
     fo.close()
     return
 
@@ -111,7 +118,9 @@ def estimate(input_param, output, hour):
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+# topics = ["apple"]
 folds = ["1", "2", "3", "4", "5"]
+# folds = ["1"]
 
 last_hour_app_aroii = 1651
 last_hour_hor_theface = 1627
@@ -119,17 +128,18 @@ last_hour_hor_theface = 1627
 for each_choice in y_axis_choices:
     for each_topic in topics:
         for each_fold in folds:
-            print(each_topic, each_fold)
+            print(each_topic, each_fold, each_choice)
 
             source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/" + each_topic + "/fold_" + each_fold + "/all_tweet.csv"
-            output_follower_csv = "E:/tweet_process/result_follower-ret/09_follower_retweet_csv_for_pandas/" + each_topic + "/fold_" + each_fold + "/all_tweet.csv"
+            output_follower_csv = "E:/tweet_process/result_follower-ret/09_follower_retweet_csv/" + each_topic + "/fold_" + each_fold + "/all_tweet-diff_ret-diff_fol.csv"
+            output_kde_ret_fol_csv = "E:/tweet_process/result_follower-ret/10_KDE_fol_ret_csv/" + each_topic + "/fold_" + each_fold + "/kde-diff_ret-diff_fol.csv"
 
             """
             Read & Write Data
             """
             # list_diff_ret = extract_diff_ret_or_fol(source_path, 'retweet')
             # list_diff_fol = extract_diff_ret_or_fol(source_path, each_choice)
-            # write_date_date_csv(output_follower_csv, list_diff_ret, list_diff_fol)
+            # write_date_date_csv(output_follower_csv, list_diff_ret, list_diff_fol, 'all_tweet')
             # print(list_diff_fol)
             # print(list_diff_ret)
             # print("================= End Read & Write Data ==================")
@@ -146,21 +156,33 @@ for each_choice in y_axis_choices:
             """
             KDE
             """
-            data = []  # Array for collect original data
-            data_estimate = []  # Array for collect KDE processed data
+            data_retweet = []  # Array for collect original data
+            data_follower = []  # Array for collect original data
+            data_estimate_retweet = []  # Array for collect KDE processed data
+            data_estimate_follower = []  # Array for collect KDE processed data
 
             if each_topic == "apple" or each_topic == "aroii":
                 for i in range(0, last_hour_app_aroii):
-                    data.append([])
+                    data_retweet.append([])
+                    data_follower.append([])
             else:
                 for i in range(0, last_hour_hor_theface):
-                    data.append([])
+                    data_retweet.append([])
+                    data_follower.append([])
 
-            process_data(source_path, data, each_choice)
+            process_data(source_path, data_retweet, 'retweet')
+            process_data(source_path, data_follower, 'follower_wo_mc')
 
             # KDE processing
-            for i in range(0, len(data)):
-                estimate(data[i], data_estimate, i)
+            for i in range(0, len(data_retweet)):
+                estimate(data_retweet[i], data_estimate_retweet, i)
+                estimate(data_follower[i], data_estimate_follower, i)
 
-            print(len(data_estimate))
-            print(data_estimate)
+            """
+            Write KDE Data
+            """
+            print(len(data_estimate_retweet))
+            print(data_estimate_retweet)
+            print(len(data_estimate_follower))
+            print(data_estimate_follower)
+            write_date_date_csv(output_kde_ret_fol_csv, data_estimate_retweet, data_estimate_follower, 'kde')
