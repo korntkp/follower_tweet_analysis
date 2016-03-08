@@ -195,6 +195,11 @@ for each_choice in y_axis_choices:
 
             kde_df_ret_fol = pd.read_csv(output_kde_ret_fol_csv, names=['DeltaRetweet', 'DeltaFollower'])
             # print(kde_df_ret_fol)
-            kde_df_ret_fol.boxplot()
+            plotx = kde_df_ret_fol.boxplot(return_type='both', grid='on')
+            # kde_df_ret_fol.plot(title='Delta Retweet - Delta Follower')
             # df_follower.boxplot(by='DeltaRetweet')
+            print(plotx)
+            plt.title('Delta Retweet - Delta Follower (' + each_topic + ', ' + each_fold + ')')
+            axes = plt.gca()
+            axes.set_ylim([-10, 80])
             plt.show()
