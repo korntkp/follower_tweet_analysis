@@ -1,3 +1,4 @@
+import math
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -23,5 +24,10 @@ for each_choice in y_axis_choices:
             axes = plt.gca()
             axes.set_xlim([-5, 80])
             axes.set_ylim([-5, 80])
-            plt.show()
+            # plt.show()
+
+            kde_df_ret_fol.DeltaRetweet[0] = math.log(kde_df_ret_fol.DeltaRetweet[0])
+            print(kde_df_ret_fol.DeltaRetweet)  # OK
+
+
 
