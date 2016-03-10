@@ -50,27 +50,6 @@ def write_date_date_csv(output_path, list_diff_ret_param, list_diff_fol_param, c
     return
 
 
-def pandas_df(data_path, topic_name, fold_num):
-    kde_follower = pd.read_csv(data_path, names=['DeltaRetweet', 'DeltaFollower'])
-
-    # print(kde_follower)
-    decomp_freq = int(18*7)
-    # kde_follower_interpolated_bfill = kde_follower.DeltaFollower.interpolate().bfill()
-
-    # SELECT GRAPH PLOT
-    # 1 not Interpolate Plot
-    # ori_plot = kde_follower.DeltaFollower.plot()
-    # ori_plot.set_title("Topic: " + str(topic_name) + " Fold: " + str(fold_num))
-    # 2 Interpolate Plot
-    # ori_interpolated_plot = kde_follower.DeltaFollower.interpolate().plot()
-    # ori_interpolated_plot.set_title("Topic: " + str(topic_name) + " Fold: " + str(fold_num))
-    # 3 Decomposition Plot
-    # res_plot = res_only_bfill.plot()
-
-    # plt.show()
-    return kde_follower
-
-
 def process_data(source_path_param, output, choice):
     for line in fileinput.input([source_path_param]):
         value = line.split(',')
@@ -153,7 +132,7 @@ for each_choice in y_axis_choices:
             # """
             # NOT KDE
             # """
-            # df_follower = pandas_df(output_follower_csv, each_topic, each_fold)
+            # df_follower = pd.read_csv(output_follower_csv, names=['DeltaRetweet', 'DeltaFollower'])
             # print(df_follower)
             # df_follower.boxplot()
             # # df_follower.boxplot(by='DeltaRetweet')
@@ -193,9 +172,12 @@ for each_choice in y_axis_choices:
             # print(data_estimate_follower)
             # write_date_date_csv(output_kde_ret_fol_csv, data_estimate_retweet, data_estimate_follower, 'kde')
 
+            """
+            Box Plot
+            """
             kde_df_ret_fol = pd.read_csv(output_kde_ret_fol_csv, names=['DeltaRetweet', 'DeltaFollower'])
             # print(kde_df_ret_fol)
-            plotx = kde_df_ret_fol.boxplot(return_type='both', grid='on')
+            plotx = kde_df_ret_fol.boxplot(return_type='both')
             # kde_df_ret_fol.plot(title='Delta Retweet - Delta Follower')
             # df_follower.boxplot(by='DeltaRetweet')
             print(plotx)
