@@ -208,8 +208,8 @@ y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["aroii"]
-folds = ["1", "2", "3", "4", "5"]
-# folds = ["3"]
+# folds = ["1", "2", "3", "4", "5"]
+folds = ["1"]
 
 unix_time_start = [1447023600, 1447714800]  # 2015-11-09 06:00:00   2015-11-17 06:00:00
 last_hour_app_aroii = 1651
@@ -289,6 +289,7 @@ for each_choice in y_axis_choices:
             # kde = KernelDensity(kernel='gaussian', bandwidth=0.2).fit(x)
             # asdf = kde.score_samples(x)
             # print(asdf)
+            
             """
             KDE Plot 1 (sklearn.neighbors.kde)
             """
@@ -322,22 +323,27 @@ for each_choice in y_axis_choices:
             # plt.show()
 
             """
-            KDE Plot 2 (scipy.stats)
+            KDE Plot 2 (scipy.stats) OK
             """
-            kde = stats.gaussian_kde(df_kde_value.values)
-            xs = np.linspace(-10, 10, num=50)
-            y1 = kde(xs)
-            kde.set_bandwidth(bw_method='silverman')
-            y2 = kde(xs)
-            kde.set_bandwidth(bw_method=kde.factor / 3.)
-            y3 = kde(xs)
-
-            fig, ax = plt.subplots()
-            ax.plot(df_kde_value.values, np.ones(df_kde_value.values.shape) / (4. * df_kde_value.values.size), 'bo', label='Data points (rescaled)')
-            ax.plot(xs, y1, label='Scott (default)')
-            ax.plot(xs, y2, label='Silverman')
-            ax.plot(xs, y3, label='Const (1/3 * Silverman)')
-            ax.legend()
-            plt.show()
-            # print(df_kde_value)
-            # print(df_kde_value.values)
+            # kde = stats.gaussian_kde(df_kde_value.values)
+            # xs = np.linspace(-10, 10, num=50)
+            # y1 = kde(xs)
+            # print(kde.factor)
+            # kde.set_bandwidth(bw_method='silverman')
+            # y2 = kde(xs)
+            # print(kde.factor)
+            # kde.set_bandwidth(bw_method=kde.factor / 3)  # 100 - 1000
+            # # kde.set_bandwidth(bw_method=)
+            # y3 = kde(xs)
+            # print(kde.factor)
+            #
+            # fig, ax = plt.subplots()
+            # ax.plot(df_kde_value.values, np.ones(df_kde_value.values.shape) / (4. * df_kde_value.values.size), 'bo', label='Data points (rescaled)')
+            # # ax.plot(xs, y1, label='Scott (default)')
+            # # ax.plot(xs, y2, label='Silverman')
+            # ax.plot(xs, y3, label='Const (1/3 * Silverman)')
+            # ax.legend()
+            # plt.show()
+            # # print(df_kde_value)
+            # # print(df_kde_value.shape)
+            # # print(df_kde_value.values.size)
