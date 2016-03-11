@@ -91,17 +91,42 @@ def plot_diff_ret_and_diff_fol(list_ret, list_fol, choose_str, topic_name, fold_
     plt.show()
 
 
-def remove_more_than_y(list_ret, list_fol):
-    want_to_pop = []
-    for loop in range(0, len(list_fol)):
-        if list_fol[loop] > 10:
-            want_to_pop.append(loop)
+def remove_more_than_y(list_ret, list_fol, list_outlier, topic_name, fold_num):
+    topic_cal = 0   # 0 1 2 3
+    fold_cal = 0    # 0 1 2 3 4
 
-    count_outlier = 0
-    for pop_at in want_to_pop:
-        list_fol.pop(pop_at - count_outlier)
-        list_ret.pop(pop_at - count_outlier)
-        count_outlier += 1
+    if topic_name == 'apple':
+        topic_cal = 0
+    elif topic_name == 'aroii':
+        topic_cal = 1
+    elif topic_name == 'hormonestheseries':
+        topic_cal = 2
+    elif topic_name == 'thefacethailand':
+        topic_cal = 3
+
+    if fold_num == '1':
+        fold_cal = 0
+    elif fold_num == '2':
+        fold_cal = 1
+    elif fold_num == '3':
+        fold_cal = 2
+    elif fold_num == '4':
+        fold_cal = 3
+    elif fold_num == '5':
+        fold_cal = 4
+
+    for k in range(0, 4):
+        print(list_outlier[20*topic_cal + 4*fold_cal + k])
+    # want_to_pop = []
+    # for loop in range(0, len(list_fol)):
+    #     if list_fol[loop] > 10:
+    #         want_to_pop.append(loop)
+    #
+    # count_outlier = 0
+    # for pop_at in want_to_pop:
+    #     list_fol.pop(pop_at - count_outlier)
+    #     list_ret.pop(pop_at - count_outlier)
+    #     count_outlier += 1
     return list_ret, list_fol
 
 
@@ -113,8 +138,8 @@ topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 folds = ["1", "2", "3", "4", "5"]
 # folds = ["1"]
 
-is_log_delta_retweet = False
-is_log_delta_follower = True
+is_log_delta_retweet = True
+is_log_delta_follower = False
 logarithm_base_num = 2
 
 max_ret_plot = 15
@@ -132,23 +157,20 @@ remove_outlier_log_ret = ['170', '-', '-', '10.3',  # Apple 1
                           '70', '-5', '-', '8.5',
                           '50.5', '-', '-', '10.5',
                           '87', '-5', '-', '10.1',  # Aroii 1
-                          '130', '-10', '-', '10',
-                          '130', '-10', '-', '10',
-                          '130', '-10', '-', '10',
-                          '130', '-10', '-', '10',
-                          '130', '-10', '-', '10',  # Hormones 1
-                          '130', '-10', '-', '10',
-                          '130', '-10', '-', '10',
-                          '130', '-10', '-', '10',
-                          '130', '-10', '-', '10',
-                          '130', '-10', '-', '10',  # TheFace 1
-                          '130', '-10', '-', '10',
-                          '130', '-10', '-', '10',
-                          '130', '-10', '-', '10',
-                          '130', '-10', '-', '10']
-
-topic_cal = 0   # 0 1 2 3
-fold_cal = 0    # 0 1 2 3 4
+                          '170', '-5', '-', '10.2',
+                          '72', '-', '-', '9.7',
+                          '107', '-', '-', '9.8',
+                          '110', '-', '-', '10',
+                          '140', '-10', '-', '10.5',  # Hormones 1
+                          '115', '-16.1', '-', '10.3',
+                          '300', '-', '-', '11.8',
+                          '-', '-10', '-', '10.7',
+                          '240', '-', '-', '10.9',
+                          '153', '-14', '-', '-',  # TheFace 1
+                          '118', '-', '-', '10.63',
+                          '265', '-', '-', '10.8',
+                          '175', '-', '-', '10.4',
+                          '250', '-', '-', '11']
 
 
 for each_choice in follower_choices:
@@ -158,23 +180,6 @@ for each_choice in follower_choices:
 
             list_diff_ret = extract_diff_ret_or_fol(source_path, 'retweet', is_log_delta_retweet, is_log_delta_follower, logarithm_base_num)
             list_diff_fol = extract_diff_ret_or_fol(source_path, each_choice, is_log_delta_retweet, is_log_delta_follower, logarithm_base_num)
-
-            if each_topic == 'aroii':
-                topic_cal = 1
-            elif each_topic == 'hormonestheseries':
-                topic_cal = 2
-
-            if each_fold == '1':
-                fold_cal = 0
-            elif each_fold == '2':
-                fold_cal = 1
-            elif each_fold == '3':
-                fold_cal = 2
-            elif each_fold == '4':
-                fold_cal = 3
-            elif each_fold == '5':
-                fold_cal = 4
-
 
             """
             Print Area
@@ -192,7 +197,10 @@ for each_choice in follower_choices:
             """
             Outlier
             """
-            # list_diff_ret, list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol)
+            if is_log_delta_retweet is True and is_log_delta_follower is False:
+                list_diff_ret, list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_ret, each_topic, each_fold)
+            # elif is_log_delta_retweet is False and is_log_delta_follower is True
+                # list_diff_ret, list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_fol)
 
             """
             Plot
@@ -210,8 +218,3 @@ for each_choice in follower_choices:
             # print("Bottom   :")
             # print("Left     :")
             # print("Right    :")
-
-            print(remove_outlier_log_ret[20*topic_cal + 4*fold_cal + 0], ", ")
-            print(remove_outlier_log_ret[20*topic_cal + 4*fold_cal + 1], ", ")
-            print(remove_outlier_log_ret[20*topic_cal + 4*fold_cal + 2], ", ")
-            print(remove_outlier_log_ret[20*topic_cal + 4*fold_cal + 3])
