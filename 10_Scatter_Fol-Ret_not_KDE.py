@@ -267,7 +267,7 @@ for each_choice in follower_choices:
             # print(scs.spearmanr(list_diff_ret, list_diff_fol))
             # print(len(list_diff_fol), len(list_diff_ret))
             pearson_5_folds_result.append(scs.pearsonr(list_diff_ret, list_diff_fol)[0])
-            # spearman_5_folds_result.append(scs.pearsonr(list_diff_ret, list_diff_fol)[0])
+            spearman_5_folds_result.append(scs.spearmanr(list_diff_ret, list_diff_fol).correlation)
 
             """
             Print Note Outlier
@@ -280,9 +280,19 @@ for each_choice in follower_choices:
         """
         Average Pearson
         """
-        print(pearson_5_folds_result)
-        sum_pearson = 0
-        for each_pearson in pearson_5_folds_result:
-            sum_pearson += each_pearson
-        avg_pearson = sum_pearson/5
-        print(avg_pearson)
+        # print(pearson_5_folds_result)
+        # sum_pearson = 0
+        # for each_pearson in pearson_5_folds_result:
+        #     sum_pearson += each_pearson
+        # avg_pearson = sum_pearson/5
+        # print(avg_pearson)
+
+        """
+        Average Spearman
+        """
+        print(spearman_5_folds_result)
+        sum_spearman = 0
+        for each_spearman in spearman_5_folds_result:
+            sum_spearman += each_spearman
+        avg_spearman = sum_spearman/5
+        print(avg_spearman)
