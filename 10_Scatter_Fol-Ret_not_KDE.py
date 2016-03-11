@@ -50,7 +50,7 @@ def plot_diff_ret_and_diff_fol(list_ret, list_fol, choose_str, topic_name, fold_
     plt.plot(list_ret, list_fol, 'ro')
     if is_limit_axis_param:
         plt.axis([min_ret, max_ret, min_fol, max_fol])
-    else:
+    else:  # Default
         plt.axis([min(list_ret), max(list_ret), min(list_fol), max(list_fol)])
     # plt.axis('tight')
     if is_log_delta_retweet_param and is_log_delta_follower_param:
@@ -95,19 +95,15 @@ def remove_more_than_y(list_ret, list_fol):
     want_to_pop = []
     for loop in range(0, len(list_fol)):
         if list_fol[loop] > 10:
-        # if loop < 100:
-        #     print("Pop at: " + str(loop) + ", " + str(list_diff_fol[loop]))
             want_to_pop.append(loop)
 
-    """
-    Remove More Than Y
-    """
     count_outlier = 0
     for pop_at in want_to_pop:
         list_fol.pop(pop_at - count_outlier)
         list_ret.pop(pop_at - count_outlier)
         count_outlier += 1
     return list_ret, list_fol
+
 
 # SET PARAMETER
 # follower_choices = ['follower w/t mc', 'follower w/o mc']
@@ -127,6 +123,34 @@ max_fol_plot = 200
 min_fol_plot = -5
 is_limit_axis = False
 
+"""
+Top(Delta_Follower), Bottom(Delta_Follower), Left(Log-Delta_Retweet), Right(Log-Delta_Retweet)
+"""
+remove_outlier_log_ret = ['170', '-', '-', '10.3',  # Apple 1
+                          '130', '-10', '-', '10',
+                          '199', '-10', '-', '9',
+                          '70', '-5', '-', '8.5',
+                          '50.5', '-', '-', '10.5',
+                          '87', '-5', '-', '10.1',  # Aroii 1
+                          '130', '-10', '-', '10',
+                          '130', '-10', '-', '10',
+                          '130', '-10', '-', '10',
+                          '130', '-10', '-', '10',
+                          '130', '-10', '-', '10',  # Hormones 1
+                          '130', '-10', '-', '10',
+                          '130', '-10', '-', '10',
+                          '130', '-10', '-', '10',
+                          '130', '-10', '-', '10',
+                          '130', '-10', '-', '10',  # TheFace 1
+                          '130', '-10', '-', '10',
+                          '130', '-10', '-', '10',
+                          '130', '-10', '-', '10',
+                          '130', '-10', '-', '10']
+
+topic_cal = 0   # 0 1 2 3
+fold_cal = 0    # 0 1 2 3 4
+
+
 for each_choice in follower_choices:
     for each_topic in topics:
         for each_fold in folds:
@@ -134,6 +158,23 @@ for each_choice in follower_choices:
 
             list_diff_ret = extract_diff_ret_or_fol(source_path, 'retweet', is_log_delta_retweet, is_log_delta_follower, logarithm_base_num)
             list_diff_fol = extract_diff_ret_or_fol(source_path, each_choice, is_log_delta_retweet, is_log_delta_follower, logarithm_base_num)
+
+            if each_topic == 'aroii':
+                topic_cal = 1
+            elif each_topic == 'hormonestheseries':
+                topic_cal = 2
+
+            if each_fold == '1':
+                fold_cal = 0
+            elif each_fold == '2':
+                fold_cal = 1
+            elif each_fold == '3':
+                fold_cal = 2
+            elif each_fold == '4':
+                fold_cal = 3
+            elif each_fold == '5':
+                fold_cal = 4
+
 
             """
             Print Area
@@ -156,7 +197,7 @@ for each_choice in follower_choices:
             """
             Plot
             """
-            plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+            # plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
             """
             Coefficient of Correlation
@@ -169,3 +210,8 @@ for each_choice in follower_choices:
             # print("Bottom   :")
             # print("Left     :")
             # print("Right    :")
+
+            print(remove_outlier_log_ret[20*topic_cal + 4*fold_cal + 0], ", ")
+            print(remove_outlier_log_ret[20*topic_cal + 4*fold_cal + 1], ", ")
+            print(remove_outlier_log_ret[20*topic_cal + 4*fold_cal + 2], ", ")
+            print(remove_outlier_log_ret[20*topic_cal + 4*fold_cal + 3])
