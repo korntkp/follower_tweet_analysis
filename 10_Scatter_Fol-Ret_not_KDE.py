@@ -115,8 +115,8 @@ def remove_more_than_y(list_ret, list_fol, list_outlier, topic_name, fold_num):
     elif fold_num == '5':
         fold_cal = 4
 
-    for k in range(0, 4):
-        print(list_outlier[(20 * topic_cal) + (4 * fold_cal) + k])
+    for k in range(0, 4):  # k = 0 1 2 3 (Top Bottom Left Right)
+        # print(list_outlier[(20 * topic_cal) + (4 * fold_cal) + k])
 
         want_to_pop = []
         if k == 0:
@@ -146,7 +146,7 @@ def remove_more_than_y(list_ret, list_fol, list_outlier, topic_name, fold_num):
         elif k == 2:
             if list_outlier[(20 * topic_cal) + (4 * fold_cal) + k] != '-':
                 for loop in range(0, len(list_ret)):
-                    if list_ret[loop] < float(list_outlier[(20 * topic_cal) + (4 * fold_cal) + k]):
+                    if list_ret[loop] < float(list_outlier[(20 * topic_cal) + (4 * fold_cal) + k]):  # value < -x
                         want_to_pop.append(loop)
 
                 count_outlier = 0
@@ -158,7 +158,7 @@ def remove_more_than_y(list_ret, list_fol, list_outlier, topic_name, fold_num):
         elif k == 3:
             if list_outlier[(20 * topic_cal) + (4 * fold_cal) + k] != '-':
                 for loop in range(0, len(list_ret)):
-                    if list_ret[loop] > float(list_outlier[(20 * topic_cal) + (4 * fold_cal) + k]):
+                    if list_ret[loop] > float(list_outlier[(20 * topic_cal) + (4 * fold_cal) + k]):  # value > x
                         want_to_pop.append(loop)
 
                 count_outlier = 0
@@ -173,10 +173,10 @@ def remove_more_than_y(list_ret, list_fol, list_outlier, topic_name, fold_num):
 # SET PARAMETER
 # follower_choices = ['follower w/t mc', 'follower w/o mc']
 follower_choices = ['follower w/o mc']
-# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-topics = ["aroii"]
-# folds = ["1", "2", "3", "4", "5"]
-folds = ["5"]
+topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+# topics = ["thefacethailand"]
+folds = ["1", "2", "3", "4", "5"]
+# folds = ["5"]
 
 is_log_delta_retweet = True
 is_log_delta_follower = False
@@ -187,6 +187,7 @@ min_ret_plot = 0
 max_fol_plot = 200
 min_fol_plot = -5
 is_limit_axis = False
+
 
 """
 Top(Delta_Follower), Bottom(Delta_Follower), Left(Log-Delta_Retweet), Right(Log-Delta_Retweet)
@@ -215,6 +216,11 @@ remove_outlier_log_ret = ['170', '-', '-', '10.3',  # Apple 1
 
 for each_choice in follower_choices:
     for each_topic in topics:
+        pearson_5_folds_result = []
+        pearson_5_folds_p = []
+        spearman_5_folds_result = []
+        spearman_5_folds_p = []
+
         for each_fold in folds:
             source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/" + each_topic + "/fold_" + each_fold + "/all_tweet.csv"
 
@@ -231,11 +237,14 @@ for each_choice in follower_choices:
             # print("Log Delta Follower: " + str(is_log_delta_follower))
             # if is_log_delta_follower or is_log_delta_retweet:
             #     print("Logarithm Base Number: " + str(logarithm_base_num))
-            print("Max of Delta retweet  -> " + str(max(list_diff_ret)))
-            print("Max of Delta follower -> " + str(max(list_diff_fol)))
-            print("Min of Delta retweet  -> " + str(min(list_diff_ret)))
-            print("Min of Delta follower -> " + str(min(list_diff_fol)))
-            plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+            # print("Max of Delta retweet  -> " + str(max(list_diff_ret)))
+            # print("Max of Delta follower -> " + str(max(list_diff_fol)))
+            # print("Min of Delta retweet  -> " + str(min(list_diff_ret)))
+            # print("Min of Delta follower -> " + str(min(list_diff_fol)))
+            print(scs.pearsonr(list_diff_ret, list_diff_fol))
+            print(scs.spearmanr(list_diff_ret, list_diff_fol))
+            print(len(list_diff_fol), len(list_diff_ret))
+            # plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
             """
             Outlier Plot
@@ -244,19 +253,24 @@ for each_choice in follower_choices:
                 new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_ret, each_topic, each_fold)
             # elif is_log_delta_retweet is False and is_log_delta_follower is True
                 # new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_fol)
-            print("Max of Delta retweet  -> " + str(max(list_diff_ret)))
-            print("Max of Delta follower -> " + str(max(list_diff_fol)))
-            print("Min of Delta retweet  -> " + str(min(list_diff_ret)))
-            print("Min of Delta follower -> " + str(min(list_diff_fol)))
-            plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+            # print("Max of Delta retweet  -> " + str(max(list_diff_ret)))
+            # print("Max of Delta follower -> " + str(max(list_diff_fol)))
+            # print("Min of Delta retweet  -> " + str(min(list_diff_ret)))
+            # print("Min of Delta follower -> " + str(min(list_diff_fol)))
+            # plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
             """
             Coefficient of Correlation
             """
-            # print(scs.pearsonr(list_diff_ret, list_diff_fol))
-            # print(scs.spearmanr(list_diff_ret, list_diff_fol))
-            # print(len(list_diff_fol), len(list_diff_ret))
+            print(scs.pearsonr(list_diff_ret, list_diff_fol)[0])
+            print(scs.spearmanr(list_diff_ret, list_diff_fol))
+            print(len(list_diff_fol), len(list_diff_ret))
+            pearson_5_folds_result.append(scs.pearsonr(list_diff_ret, list_diff_fol)[0])
+            # spearman_5_folds_result.append(scs.pearsonr(list_diff_ret, list_diff_fol)[0])
 
+            """
+            Print Note Outlier
+            """
             # print("Top      :")
             # print("Bottom   :")
             # print("Left     :")
