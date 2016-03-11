@@ -216,6 +216,7 @@ remove_outlier_log_ret = ['170', '-', '-', '10.3',  # Apple 1
 
 for each_choice in follower_choices:
     for each_topic in topics:
+        print(each_topic)
         pearson_5_folds_result = []
         pearson_5_folds_p = []
         spearman_5_folds_result = []
@@ -232,7 +233,7 @@ for each_choice in follower_choices:
             """
             Print Area & Normal Plot
             """
-            print("============ Topic: " + each_topic + ", Fold: " + each_fold + ", " + each_choice + " =============")
+            # print("============ Topic: " + each_topic + ", Fold: " + each_fold + ", " + each_choice + " =============")
             # print("Log Delta Retweet:  " + str(is_log_delta_retweet))
             # print("Log Delta Follower: " + str(is_log_delta_follower))
             # if is_log_delta_follower or is_log_delta_retweet:
@@ -241,9 +242,9 @@ for each_choice in follower_choices:
             # print("Max of Delta follower -> " + str(max(list_diff_fol)))
             # print("Min of Delta retweet  -> " + str(min(list_diff_ret)))
             # print("Min of Delta follower -> " + str(min(list_diff_fol)))
-            print(scs.pearsonr(list_diff_ret, list_diff_fol))
-            print(scs.spearmanr(list_diff_ret, list_diff_fol))
-            print(len(list_diff_fol), len(list_diff_ret))
+            # print(scs.pearsonr(list_diff_ret, list_diff_fol))
+            # print(scs.spearmanr(list_diff_ret, list_diff_fol))
+            # print(len(list_diff_fol), len(list_diff_ret))
             # plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
             """
@@ -262,9 +263,9 @@ for each_choice in follower_choices:
             """
             Coefficient of Correlation
             """
-            print(scs.pearsonr(list_diff_ret, list_diff_fol)[0])
-            print(scs.spearmanr(list_diff_ret, list_diff_fol))
-            print(len(list_diff_fol), len(list_diff_ret))
+            # print(scs.pearsonr(list_diff_ret, list_diff_fol)[0])
+            # print(scs.spearmanr(list_diff_ret, list_diff_fol))
+            # print(len(list_diff_fol), len(list_diff_ret))
             pearson_5_folds_result.append(scs.pearsonr(list_diff_ret, list_diff_fol)[0])
             # spearman_5_folds_result.append(scs.pearsonr(list_diff_ret, list_diff_fol)[0])
 
@@ -275,3 +276,13 @@ for each_choice in follower_choices:
             # print("Bottom   :")
             # print("Left     :")
             # print("Right    :")
+
+        """
+        Average Pearson
+        """
+        print(pearson_5_folds_result)
+        sum_pearson = 0
+        for each_pearson in pearson_5_folds_result:
+            sum_pearson += each_pearson
+        avg_pearson = sum_pearson/5
+        print(avg_pearson)
