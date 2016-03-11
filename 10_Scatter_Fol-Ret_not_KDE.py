@@ -116,27 +116,67 @@ def remove_more_than_y(list_ret, list_fol, list_outlier, topic_name, fold_num):
         fold_cal = 4
 
     for k in range(0, 4):
-        print(list_outlier[20*topic_cal + 4*fold_cal + k])
-    # want_to_pop = []
-    # for loop in range(0, len(list_fol)):
-    #     if list_fol[loop] > 10:
-    #         want_to_pop.append(loop)
-    #
-    # count_outlier = 0
-    # for pop_at in want_to_pop:
-    #     list_fol.pop(pop_at - count_outlier)
-    #     list_ret.pop(pop_at - count_outlier)
-    #     count_outlier += 1
+        print(list_outlier[(20 * topic_cal) + (4 * fold_cal) + k])
+
+        want_to_pop = []
+        if k == 0:
+            if list_outlier[(20 * topic_cal) + (4 * fold_cal) + k] != '-':
+                for loop in range(0, len(list_fol)):
+                    if list_fol[loop] > float(list_outlier[(20 * topic_cal) + (4 * fold_cal) + k]):  # value > +y
+                        want_to_pop.append(loop)
+
+                count_outlier = 0
+                for pop_at in want_to_pop:
+                    list_fol.pop(pop_at - count_outlier)
+                    list_ret.pop(pop_at - count_outlier)
+                    count_outlier += 1
+
+        elif k == 1:
+            if list_outlier[(20 * topic_cal) + (4 * fold_cal) + k] != '-':
+                for loop in range(0, len(list_fol)):
+                    if list_fol[loop] < float(list_outlier[(20 * topic_cal) + (4 * fold_cal) + k]):  # value < -y
+                        want_to_pop.append(loop)
+
+                count_outlier = 0
+                for pop_at in want_to_pop:
+                    list_fol.pop(pop_at - count_outlier)
+                    list_ret.pop(pop_at - count_outlier)
+                    count_outlier += 1
+
+        elif k == 2:
+            if list_outlier[(20 * topic_cal) + (4 * fold_cal) + k] != '-':
+                for loop in range(0, len(list_ret)):
+                    if list_ret[loop] < float(list_outlier[(20 * topic_cal) + (4 * fold_cal) + k]):
+                        want_to_pop.append(loop)
+
+                count_outlier = 0
+                for pop_at in want_to_pop:
+                    list_fol.pop(pop_at - count_outlier)
+                    list_ret.pop(pop_at - count_outlier)
+                    count_outlier += 1
+
+        elif k == 3:
+            if list_outlier[(20 * topic_cal) + (4 * fold_cal) + k] != '-':
+                for loop in range(0, len(list_ret)):
+                    if list_ret[loop] > float(list_outlier[(20 * topic_cal) + (4 * fold_cal) + k]):
+                        want_to_pop.append(loop)
+
+                count_outlier = 0
+                for pop_at in want_to_pop:
+                    list_fol.pop(pop_at - count_outlier)
+                    list_ret.pop(pop_at - count_outlier)
+                    count_outlier += 1
+
     return list_ret, list_fol
 
 
 # SET PARAMETER
 # follower_choices = ['follower w/t mc', 'follower w/o mc']
 follower_choices = ['follower w/o mc']
-topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["apple"]
-folds = ["1", "2", "3", "4", "5"]
-# folds = ["1"]
+# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["aroii"]
+# folds = ["1", "2", "3", "4", "5"]
+folds = ["5"]
 
 is_log_delta_retweet = True
 is_log_delta_follower = False
@@ -153,7 +193,7 @@ Top(Delta_Follower), Bottom(Delta_Follower), Left(Log-Delta_Retweet), Right(Log-
 """
 remove_outlier_log_ret = ['170', '-', '-', '10.3',  # Apple 1
                           '130', '-10', '-', '10',
-                          '199', '-10', '-', '9',
+                          '199', '-', '-', '9',
                           '70', '-5', '-', '8.5',
                           '50.5', '-', '-', '10.5',
                           '87', '-5', '-', '10.1',  # Aroii 1
@@ -180,32 +220,35 @@ for each_choice in follower_choices:
 
             list_diff_ret = extract_diff_ret_or_fol(source_path, 'retweet', is_log_delta_retweet, is_log_delta_follower, logarithm_base_num)
             list_diff_fol = extract_diff_ret_or_fol(source_path, each_choice, is_log_delta_retweet, is_log_delta_follower, logarithm_base_num)
+            new_list_diff_ret = []
+            new_list_diff_fol = []
 
             """
-            Print Area
+            Print Area & Normal Plot
             """
             print("============ Topic: " + each_topic + ", Fold: " + each_fold + ", " + each_choice + " =============")
             # print("Log Delta Retweet:  " + str(is_log_delta_retweet))
             # print("Log Delta Follower: " + str(is_log_delta_follower))
             # if is_log_delta_follower or is_log_delta_retweet:
             #     print("Logarithm Base Number: " + str(logarithm_base_num))
-            # print("Max of Delta retweet  -> " + str(max(list_diff_ret)))
-            # print("Max of Delta follower -> " + str(max(list_diff_fol)))
-            # print("Min of Delta retweet  -> " + str(min(list_diff_ret)))
-            # print("Min of Delta follower -> " + str(min(list_diff_fol)))
+            print("Max of Delta retweet  -> " + str(max(list_diff_ret)))
+            print("Max of Delta follower -> " + str(max(list_diff_fol)))
+            print("Min of Delta retweet  -> " + str(min(list_diff_ret)))
+            print("Min of Delta follower -> " + str(min(list_diff_fol)))
+            plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
             """
-            Outlier
+            Outlier Plot
             """
             if is_log_delta_retweet is True and is_log_delta_follower is False:
-                list_diff_ret, list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_ret, each_topic, each_fold)
+                new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_ret, each_topic, each_fold)
             # elif is_log_delta_retweet is False and is_log_delta_follower is True
-                # list_diff_ret, list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_fol)
-
-            """
-            Plot
-            """
-            # plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+                # new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_fol)
+            print("Max of Delta retweet  -> " + str(max(list_diff_ret)))
+            print("Max of Delta follower -> " + str(max(list_diff_fol)))
+            print("Min of Delta retweet  -> " + str(min(list_diff_ret)))
+            print("Min of Delta follower -> " + str(min(list_diff_fol)))
+            plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
             """
             Coefficient of Correlation
