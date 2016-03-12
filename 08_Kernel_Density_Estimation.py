@@ -228,13 +228,44 @@ def stats_gaussian_kde_plot(dataframe):
     # print(df_kde_value.values.size)
 
 
+def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
+    N = dataframe.values.size
+    X = dataframe.values[:, np.newaxis]
+
+    # X_plot = np.linspace(min(dataframe.values), max(dataframe.values), num=500)[:, np.newaxis]
+    X_plot = np.linspace(min(dataframe.values), 20, num=500)[:, np.newaxis]                                     # SET THISS
+    # X_plot = np.linspace(min(dataframe.values), 10, num=500)[:, np.newaxis]
+    # print(min(dataframe.values))
+    print(max(dataframe.values))
+    # print(dataframe)
+
+    true_dens = (0.3 * norm(0, 1).pdf(X_plot[:, 0]) + 0.7 * norm(5, 1).pdf(X_plot[:, 0]))
+    fig, ax = plt.subplots()
+    ax.fill(X_plot, true_dens, fc='black', alpha=0.2, label='input distribution')
+
+    # kde = KernelDensity(kernel='gaussian', bandwidth=0.005).fit(X)  # 'tophat', 'epanechnikov'
+    kde = KernelDensity(kernel='gaussian', bandwidth=0.005).fit(X)  # 'tophat', 'epanechnikov'              SET THISSSSSSSS
+    log_dens = kde.score_samples(X_plot)
+    ax.plot(X_plot[:, 0], np.exp(log_dens), '-', label="kernel = '{0}'".format('gaussian'))
+
+    ax.text(6, 0.38, "N={0} points".format(N))
+    ax.legend(loc='upper right')
+    ax.plot(X[:, 0], -0.005 - 0.01 * np.random.random(X.shape[0]), '+k')
+
+    # ax.set_xlim(min(dataframe.values), max(dataframe.values))
+    ax.set_xlim(0, 20)                                                                                      # SET THISSSSSSSS
+    # ax.set_ylim(-0.02, 1)
+    ax.set_ylim(-0.02, 1.3)                                                                                 # SET THISSSSSSSS
+    plt.title('Density - ' + choose_choice + ' (' + topic_name + ', ' + fold_num + ')')
+    plt.show()
 
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["thefacethailand"]
-folds = ["1", "2", "3", "4", "5"]
+# folds = ["1", "2", "3", "4", "5"]
+folds = ["4", "5"]
 # folds = ["5"]
 
 unix_time_start = [1447023600, 1447714800]  # 2015-11-09 06:00:00   2015-11-17 06:00:00
@@ -309,50 +340,12 @@ for each_choice in y_axis_choices:
             # print(sorted_x[:10])
 
             """
-            KDE Plot 1 (sklearn.neighbors.kde)
+            KDE Plot 1 (sklearn.neighbors.kde) OK
             """
-            N = df_kde_value.values.size
-            X = df_kde_value.values[:, np.newaxis]
-
-            X_plot = np.linspace(min(df_kde_value.values), max(df_kde_value.values), num=500)[:, np.newaxis]
-            # X_plot = np.linspace(min(df_kde_value.values), 10, num=500)[:, np.newaxis]
-            # print(min(df_kde_value.values))
-            print(max(df_kde_value.values))
-            # print(df_kde_value)
-
-            true_dens = (0.3 * norm(0, 1).pdf(X_plot[:, 0]) + 0.7 * norm(5, 1).pdf(X_plot[:, 0]))
-
-            fig, ax = plt.subplots()
-            ax.fill(X_plot, true_dens, fc='black', alpha=0.2, label='input distribution')
-
-            # for kernel in ['gaussian', 'tophat', 'epanechnikov']:
-            #     kde = KernelDensity(kernel='gaussian', bandwidth=0.005).fit(X)
-            #     log_dens = kde.score_samples(X_plot)
-            #     ax.plot(X_plot[:, 0], np.exp(log_dens), '-', label="kernel = '{0}'".format(kernel))
-
-            # kde = KernelDensity(kernel='gaussian', bandwidth=0.005).fit(X)
-            kde = KernelDensity(kernel='gaussian', bandwidth=0.05).fit(X)
-            # print(kde.score(X))
-            # print(kde.score_samples(X))
-            # print(kde.score_samples(X_plot))
-
-            # print(len(kde.score_samples(X)))
-            # print(len(kde.score_samples(X_plot)))
-
-            log_dens = kde.score_samples(X_plot)
-            ax.plot(X_plot[:, 0], np.exp(log_dens), '-', label="kernel = '{0}'".format('gaussian'))
-
-            ax.text(6, 0.38, "N={0} points".format(N))
-            ax.legend(loc='upper right')
-            ax.plot(X[:, 0], -0.005 - 0.01 * np.random.random(X.shape[0]), '+k')
-
-            ax.set_xlim(min(df_kde_value.values), max(df_kde_value.values))
-            ax.set_ylim(-0.02, 1)
-            plt.title('Density - ' + each_choice + ' (' + each_topic + ', ' + each_fold + ')')
-            # plt.show()
+            sklearn_kde_plot(df_kde_value, each_choice, each_topic, each_fold)
 
             """
-            KDE Plot 2 (scipy.stats) OK
+            KDE Plot 2 (scipy.stats) (Unused)
             """
             # stats_gaussian_kde_plot(df_kde_value)
 
