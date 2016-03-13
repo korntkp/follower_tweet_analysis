@@ -204,7 +204,7 @@ def plot_diff_ret_and_diff_fol(list_ret, list_fol, choose_str, topic_name, fold_
 
 
 def stats_gaussian_kde_plot(dataframe):
-    kde = stats.gaussian_kde(df_kde_value.values)
+    kde = stats.gaussian_kde(dataframe.values)
     xs = np.linspace(-10, 10, num=50)
     y1 = kde(xs)
     print(kde.factor)
@@ -217,7 +217,7 @@ def stats_gaussian_kde_plot(dataframe):
     print(kde.factor)
 
     fig, ax = plt.subplots()
-    ax.plot(df_kde_value.values, np.ones(df_kde_value.values.shape) / (4. * df_kde_value.values.size), 'bo', label='Data points (rescaled)')
+    ax.plot(dataframe.values, np.ones(dataframe.values.shape) / (4. * dataframe.values.size), 'bo', label='Data points (rescaled)')
     # ax.plot(xs, y1, label='Scott (default)')
     # ax.plot(xs, y2, label='Silverman')
     ax.plot(xs, y3, label='Const (1/3 * Silverman)')
@@ -285,20 +285,29 @@ for each_choice in y_axis_choices:
             output_follower_csv = "E:/tweet_process/result_follower-ret/07_follower_csv/" + each_topic + "/date_" + each_choice + "_" + each_fold + ".csv"
             output_retweet_csv = "E:/tweet_process/result_follower-ret/08_retweet_csv/" + each_topic + "/date_" + each_choice + "_" + each_fold + ".csv"
 
-            if each_topic == "apple" or each_topic == "aroii":
-                for i in range(0, last_hour_app_aroii):
-                    data.append([])
-            else:
-                for i in range(0, last_hour_hor_theface):
-                    data.append([])
+            """
+            Initial List
+            """
+            # if each_topic == "apple" or each_topic == "aroii":
+            #     for i in range(0, last_hour_app_aroii):
+            #         data.append([])
+            # else:
+            #     for i in range(0, last_hour_hor_theface):
+            #         data.append([])
 
-            # Read data from file and collect in array
-            process_data(source_path, data, each_choice)
+            """
+            Read data from file (06_diff_ret_fol_result) and collect in array
+            (Select 'Retweet', 'Follower' by y_axis_choices parameter)
+            """
+            # process_data(source_path, data, each_choice)
+            # print(data)
 
-            # KDE processing
-            for i in range(0, len(data)):
-                estimate(data[i], data_estimate, i)
-            # print(len(data_estimate))
+            """
+            KDE processing
+            """
+            # for i in range(0, len(data)):
+            #     estimate(data[i], data_estimate, i)
+            # # print(len(data_estimate))
             # print(data_estimate)
 
             # for i in range(0, len(data_estimate)):
@@ -308,7 +317,9 @@ for each_choice in y_axis_choices:
             #         print(str(i) + ": " + str(data_estimate[i]))
             # # print(data_estimate[0])
 
-            # print("Ploting Graph")
+            """
+            Plot KDE_interpolated(Delta_Retweet or Delta_Follower) - Time(Hours)
+            """
             # plot_kde(data_estimate, each_choice, each_topic, each_fold)
 
             """
@@ -328,8 +339,15 @@ for each_choice in y_axis_choices:
                 df_kde_value = pandas_plot(output_retweet_csv, each_topic, each_fold)  # Date Time,Retweet_count
             # print(df_kde_value)
 
+            """
+            KDE Plot 1 (sklearn.neighbors.kde) OK
+            """
+            sklearn_kde_plot(df_kde_value, each_choice, each_topic, each_fold)
+            print(df_kde_value)
+
+            # ================================ Unused =====================================
             # """
-            # Print TOP KDE delta_follower
+            # Print TOP KDE delta_follower (Find Events) (Unused)
             # """
             # dict_max = {}
             # for k in range(1, len(df_kde_value)):
@@ -339,13 +357,7 @@ for each_choice in y_axis_choices:
             # print(len(sorted_x))
             # print(sorted_x[:10])
 
-            """
-            KDE Plot 1 (sklearn.neighbors.kde) OK
-            """
-            sklearn_kde_plot(df_kde_value, each_choice, each_topic, each_fold)
-            print(df_kde_value)
-
-            """
-            KDE Plot 2 (scipy.stats) (Unused)
-            """
+            # """
+            # KDE Plot 2 (scipy.stats) (Unused)
+            # """
             # stats_gaussian_kde_plot(df_kde_value)
