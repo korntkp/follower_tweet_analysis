@@ -179,8 +179,27 @@ def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_n
         # print(df3_delete_last.DeltaRetweet.values[1649])
 
     else:
-        print(" ")
-        # print(kde_df_ret_fol)
+        for j in range(0, len(kde_df_ret_fol)):
+            # print(kde_df_ret_fol.DeltaFollower.values[j])
+            if float(kde_df_ret_fol.DeltaFollower.values[j]) <= lowwer_bound:
+                low_follower_list.append(kde_df_ret_fol.DeltaRetweet.values[j])
+                medium_follower_list.append(np.nan)
+                high_follower_list.append(np.nan)
+            elif lowwer_bound < float(kde_df_ret_fol.DeltaFollower.values[j]) <= upper_bound:
+                low_follower_list.append(np.nan)
+                medium_follower_list.append(kde_df_ret_fol.DeltaRetweet.values[j])
+                high_follower_list.append(np.nan)
+            else:
+                low_follower_list.append(np.nan)
+                medium_follower_list.append(np.nan)
+                high_follower_list.append(kde_df_ret_fol.DeltaRetweet.values[j])
+
+        # print(len(high_follower_list))
+        combined_data = list(zip(low_follower_list, medium_follower_list, high_follower_list))
+        # print(combined_data)
+
+        df_low_medium_high = pd.DataFrame(combined_data, columns=['Low', 'Medium', 'High'])
+        print(df_low_medium_high)
 
     return df_low_medium_high
 
@@ -208,7 +227,7 @@ folds = ["1", "2", "3", "4", "5"]
 last_hour_app_aroii = 1651
 last_hour_hor_theface = 1627
 
-is_interpolate = True
+is_interpolate = False
 
 bound_delta_follower = ['1.67', '7.40',         # Apple 1
                         '2.10', '8.00',
