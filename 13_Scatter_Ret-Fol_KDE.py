@@ -16,7 +16,7 @@ for each_choice in y_axis_choices:
         for each_fold in folds:
             print(each_topic, each_fold, each_choice)
 
-            source_kde_ret_fol_csv = "E:/tweet_process/result_follower-ret/10_KDE_fol_ret_csv/" + each_topic + "/fold_" + each_fold + "/kde-diff_ret-diff_fol.csv"
+            source_kde_ret_fol_csv = "E:/tweet_process/result_follower-ret/10_KDE_ret_fol_csv/" + each_topic + "/fold_" + each_fold + "/kde-diff_ret-diff_fol.csv"
             kde_df_ret_fol = pd.read_csv(source_kde_ret_fol_csv, names=['DeltaRetweet', 'DeltaFollower'])
 
             title = 'Delta Retweet - Delta Follower (' + each_topic + ', ' + each_fold + ')'

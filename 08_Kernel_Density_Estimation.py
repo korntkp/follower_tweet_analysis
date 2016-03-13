@@ -264,8 +264,8 @@ y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["thefacethailand"]
-# folds = ["1", "2", "3", "4", "5"]
-folds = ["4", "5"]
+folds = ["1", "2", "3", "4", "5"]
+# folds = ["4", "5"]
 # folds = ["5"]
 
 unix_time_start = [1447023600, 1447714800]  # 2015-11-09 06:00:00   2015-11-17 06:00:00
@@ -343,9 +343,9 @@ for each_choice in y_axis_choices:
             KDE Plot 1 (sklearn.neighbors.kde) OK
             """
             sklearn_kde_plot(df_kde_value, each_choice, each_topic, each_fold)
+            print(df_kde_value)
 
             """
             KDE Plot 2 (scipy.stats) (Unused)
             """
             # stats_gaussian_kde_plot(df_kde_value)
-
