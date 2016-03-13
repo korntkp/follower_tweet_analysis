@@ -101,8 +101,10 @@ def estimate(input_param, output, hour):
 
 def normal_boxplot(output_kde_ret_fol_csv_path_param):
     kde_df_ret_fol = pd.read_csv(output_kde_ret_fol_csv_path_param, names=['DeltaRetweet', 'DeltaFollower'])
+    kde_df_ret_fol2 = pd.read_csv(output_kde_ret_fol_csv_path_param, names=['DeltaRetweet2', 'DeltaFollower2'])
     print(kde_df_ret_fol)
     plotx = kde_df_ret_fol.boxplot(return_type='both')
+    plotx2 = kde_df_ret_fol2.boxplot(return_type='both')
     # plotx = kde_df_ret_fol.boxplot(return_type='both', column='DeltaRetweet')
     # kde_df_ret_fol.plot(title='Delta Retweet - Delta Follower')
     # df_follower.boxplot(by='DeltaRetweet')
@@ -113,13 +115,100 @@ def normal_boxplot(output_kde_ret_fol_csv_path_param):
     plt.show()
 
 
+def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_num, is_interpolate_param):
+    topic_cal = 0
+    fold_cal = 0
+    if topic_name == 'apple':
+        topic_cal = 0
+    elif topic_name == 'aroii':
+        topic_cal = 1
+    elif topic_name == 'hormonestheseries':
+        topic_cal = 2
+    elif topic_name == 'thefacethailand':
+        topic_cal = 3
+
+    if fold_num == '1':
+        fold_cal = 0
+    elif fold_num == '2':
+        fold_cal = 1
+    elif fold_num == '3':
+        fold_cal = 2
+    elif fold_num == '4':
+        fold_cal = 3
+    elif fold_num == '5':
+        fold_cal = 4
+
+    lowwer_bound = float(bound_delta_follower[(10 * topic_cal) + (2 * fold_cal) + 0])
+    upper_bound = float(bound_delta_follower[(10 * topic_cal) + (2 * fold_cal) + 1])
+    print(lowwer_bound, upper_bound)
+
+    low_follower_list = []
+    medium_follower_list = []
+    high_follower_list = []
+    df_low_medium_high = []
+    kde_df_ret_fol = pd.read_csv(output_kde_ret_fol_csv_path_param, names=['DeltaRetweet', 'DeltaFollower'])
+    kde_df_ret_fol_interpolated = kde_df_ret_fol.interpolate().bfill()
+
+    if is_interpolate_param:
+        # print(len(kde_df_ret_fol_interpolated))
+        for j in range(0, len(kde_df_ret_fol_interpolated)):
+            # print(kde_df_ret_fol_interpolated.DeltaFollower.values[j])
+            if float(kde_df_ret_fol_interpolated.DeltaFollower.values[j]) <= lowwer_bound:
+                low_follower_list.append(kde_df_ret_fol_interpolated.DeltaRetweet.values[j])
+                medium_follower_list.append(np.nan)
+                high_follower_list.append(np.nan)
+            elif lowwer_bound < float(kde_df_ret_fol_interpolated.DeltaFollower.values[j]) <= upper_bound:
+                low_follower_list.append(np.nan)
+                medium_follower_list.append(kde_df_ret_fol_interpolated.DeltaRetweet.values[j])
+                high_follower_list.append(np.nan)
+            else:
+                low_follower_list.append(np.nan)
+                medium_follower_list.append(np.nan)
+                high_follower_list.append(kde_df_ret_fol_interpolated.DeltaRetweet.values[j])
+
+        # print(len(high_follower_list))
+        combined_data = list(zip(low_follower_list, medium_follower_list, high_follower_list))
+        # print(combined_data)
+
+        df_low_medium_high = pd.DataFrame(combined_data, columns=['Low', 'Medium', 'High'])
+        print(df_low_medium_high)
+
+        # df3 = kde_df_ret_fol_interpolated.append(df2, ignore_index=True)
+        # print(df3)
+        # df3_delete_last = df3.drop(df3.index[[1649]])
+        # print(df3_delete_last.DeltaRetweet.values[1649])
+
+    else:
+        print(" ")
+        # print(kde_df_ret_fol)
+
+    return df_low_medium_high
+
+
+def low_medium_high_boxplot_from_df(dataframe_low_medium_high):
+    plotx = dataframe_low_medium_high.boxplot(return_type='both')
+    # plotx = kde_df_ret_fol.boxplot(return_type='both', column='DeltaRetweet')
+    # kde_df_ret_fol.plot(title='Delta Retweet - Delta Follower')
+    # df_follower.boxplot(by='DeltaRetweet')
+    # print(plotx)
+    plt.title('Delta Retweet - Delta Follower (' + each_topic + ', ' + each_fold + ')')
+    axes = plt.gca()
+    axes.set_ylim([-10, 150])
+    plt.show()
+
+
 # SET PARAMETER
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
-# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-topics = ["apple"]
-# folds = ["1", "2", "3", "4", "5"]
-folds = ["1"]
+topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+# topics = ["apple"]
+folds = ["1", "2", "3", "4", "5"]
+# folds = ["1"]
+
+last_hour_app_aroii = 1651
+last_hour_hor_theface = 1627
+
+is_interpolate = True
 
 bound_delta_follower = ['1.67', '7.40',         # Apple 1
                         '2.10', '8.00',
@@ -142,10 +231,6 @@ bound_delta_follower = ['1.67', '7.40',         # Apple 1
                         '175', '-',
                         '250', '-']
 
-is_interpolate = True
-
-last_hour_app_aroii = 1651
-last_hour_hor_theface = 1627
 
 for each_choice in y_axis_choices:
     for each_topic in topics:
@@ -218,22 +303,7 @@ for each_choice in y_axis_choices:
 
             """
             Create Dataframe (Low, Medium, High)
+            Plot
             """
-            kde_df_ret_fol = pd.read_csv(output_kde_ret_fol_csv, names=['DeltaRetweet', 'DeltaFollower'])
-            kde_df_ret_fol_interpolated = kde_df_ret_fol.interpolate().bfill()
-            if is_interpolate:
-                # print(kde_df_ret_fol_interpolated)
-                # df2 = pd.Series({'DeltaRetweet': '123.2', 'DeltaFollower': '1234.5'})
-                data1 = [123.2]
-                data2 = [1234.5]
-                combined_data = list(zip(data1, data2))
-                df2 = pd.DataFrame(combined_data, columns=['DeltaRetweet', 'DeltaFollower'])
-                df3 = kde_df_ret_fol_interpolated.append(df2, ignore_index=True)
-                print(df3)
-                df3_delete_last = df3.drop(df3.index[[1649]])
-                print(df3_delete_last.DeltaRetweet.values[1649])
-
-            else:
-                print(" ")
-                # print(kde_df_ret_fol)
-
+            df_low_medium_high = create_low_medium_high(output_kde_ret_fol_csv, each_topic, each_fold, is_interpolate)
+            low_medium_high_boxplot_from_df(df_low_medium_high)
