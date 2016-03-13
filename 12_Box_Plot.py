@@ -121,6 +121,29 @@ topics = ["apple"]
 # folds = ["1", "2", "3", "4", "5"]
 folds = ["1"]
 
+bound_delta_follower = ['1.67', '7.40',         # Apple 1
+                        '2.10', '8.00',
+                        '3.8', '16.6',
+                        '2.2', '4.4',
+                        '50.5', '-',    # not change
+                        '87', '-5',        # Aroii 1
+                        '170', '-5',
+                        '72', '-',
+                        '107', '-',
+                        '110', '-',
+                        '140', '-10',        # Hormones 1
+                        '115', '-16.1',
+                        '300', '-',
+                        '-', '-10',
+                        '240', '-',
+                        '153', '-14',        # TheFace 1
+                        '118', '-',
+                        '265', '-',
+                        '175', '-',
+                        '250', '-']
+
+is_interpolate = True
+
 last_hour_app_aroii = 1651
 last_hour_hor_theface = 1627
 
@@ -196,3 +219,21 @@ for each_choice in y_axis_choices:
             """
             Create Dataframe (Low, Medium, High)
             """
+            kde_df_ret_fol = pd.read_csv(output_kde_ret_fol_csv, names=['DeltaRetweet', 'DeltaFollower'])
+            kde_df_ret_fol_interpolated = kde_df_ret_fol.interpolate().bfill()
+            if is_interpolate:
+                # print(kde_df_ret_fol_interpolated)
+                # df2 = pd.Series({'DeltaRetweet': '123.2', 'DeltaFollower': '1234.5'})
+                data1 = [123.2]
+                data2 = [1234.5]
+                combined_data = list(zip(data1, data2))
+                df2 = pd.DataFrame(combined_data, columns=['DeltaRetweet', 'DeltaFollower'])
+                df3 = kde_df_ret_fol_interpolated.append(df2, ignore_index=True)
+                print(df3)
+                df3_delete_last = df3.drop(df3.index[[1649]])
+                print(df3_delete_last.DeltaRetweet.values[1649])
+
+            else:
+                print(" ")
+                # print(kde_df_ret_fol)
+
