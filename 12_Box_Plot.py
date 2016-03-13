@@ -99,13 +99,27 @@ def estimate(input_param, output, hour):
         output.append(avg)
 
 
+def normal_boxplot(output_kde_ret_fol_csv_path_param):
+    kde_df_ret_fol = pd.read_csv(output_kde_ret_fol_csv_path_param, names=['DeltaRetweet', 'DeltaFollower'])
+    print(kde_df_ret_fol)
+    plotx = kde_df_ret_fol.boxplot(return_type='both')
+    # plotx = kde_df_ret_fol.boxplot(return_type='both', column='DeltaRetweet')
+    # kde_df_ret_fol.plot(title='Delta Retweet - Delta Follower')
+    # df_follower.boxplot(by='DeltaRetweet')
+    print(plotx)
+    plt.title('Delta Retweet - Delta Follower (' + each_topic + ', ' + each_fold + ')')
+    axes = plt.gca()
+    axes.set_ylim([-10, 80])
+    plt.show()
+
+
 # SET PARAMETER
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
-topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["apple"]
-folds = ["1", "2", "3", "4", "5"]
-# folds = ["1"]
+# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["apple"]
+# folds = ["1", "2", "3", "4", "5"]
+folds = ["1"]
 
 last_hour_app_aroii = 1651
 last_hour_hor_theface = 1627
@@ -117,7 +131,7 @@ for each_choice in y_axis_choices:
 
             source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/" + each_topic + "/fold_" + each_fold + "/all_tweet.csv"
             output_follower_csv = "E:/tweet_process/result_follower-ret/09_follower_retweet_csv/" + each_topic + "/fold_" + each_fold + "/all_tweet-diff_ret-diff_fol.csv"
-            output_kde_ret_fol_csv = "E:/tweet_process/result_follower-ret/10_KDE_fol_ret_csv/" + each_topic + "/fold_" + each_fold + "/kde-diff_ret-diff_fol.csv"
+            output_kde_ret_fol_csv = "E:/tweet_process/result_follower-ret/10_KDE_ret_fol_csv/" + each_topic + "/fold_" + each_fold + "/kde-diff_ret-diff_fol.csv"
 
             """
             Read & Write Data
@@ -139,29 +153,31 @@ for each_choice in y_axis_choices:
             # plt.show()
 
             """
-            KDE
+            Process Data
             """
-            data_retweet = []  # Array for collect original data
-            data_follower = []  # Array for collect original data
-            data_estimate_retweet = []  # Array for collect KDE processed data
-            data_estimate_follower = []  # Array for collect KDE processed data
+            # data_retweet = []  # Array for collect original data
+            # data_follower = []  # Array for collect original data
+            # data_estimate_retweet = []  # Array for collect KDE processed data
+            # data_estimate_follower = []  # Array for collect KDE processed data
+            #
+            # if each_topic == "apple" or each_topic == "aroii":
+            #     for i in range(0, last_hour_app_aroii):
+            #         data_retweet.append([])
+            #         data_follower.append([])
+            # else:
+            #     for i in range(0, last_hour_hor_theface):
+            #         data_retweet.append([])
+            #         data_follower.append([])
+            #
+            # process_data(source_path, data_retweet, 'retweet')
+            # process_data(source_path, data_follower, 'follower_wo_mc')
 
-            if each_topic == "apple" or each_topic == "aroii":
-                for i in range(0, last_hour_app_aroii):
-                    data_retweet.append([])
-                    data_follower.append([])
-            else:
-                for i in range(0, last_hour_hor_theface):
-                    data_retweet.append([])
-                    data_follower.append([])
-
-            process_data(source_path, data_retweet, 'retweet')
-            process_data(source_path, data_follower, 'follower_wo_mc')
-
-            # KDE processing
-            for i in range(0, len(data_retweet)):
-                estimate(data_retweet[i], data_estimate_retweet, i)
-                estimate(data_follower[i], data_estimate_follower, i)
+            """
+            KDE processing
+            """
+            # for i in range(0, len(data_retweet)):
+            #     estimate(data_retweet[i], data_estimate_retweet, i)
+            #     estimate(data_follower[i], data_estimate_follower, i)
 
             """
             Write KDE Data
@@ -173,15 +189,10 @@ for each_choice in y_axis_choices:
             # write_date_date_csv(output_kde_ret_fol_csv, data_estimate_retweet, data_estimate_follower, 'kde')
 
             """
-            Box Plot
+            Normal BoxPlot Test
             """
-            kde_df_ret_fol = pd.read_csv(output_kde_ret_fol_csv, names=['DeltaRetweet', 'DeltaFollower'])
-            # print(kde_df_ret_fol)
-            plotx = kde_df_ret_fol.boxplot(return_type='both')
-            # kde_df_ret_fol.plot(title='Delta Retweet - Delta Follower')
-            # df_follower.boxplot(by='DeltaRetweet')
-            print(plotx)
-            plt.title('Delta Retweet - Delta Follower (' + each_topic + ', ' + each_fold + ')')
-            axes = plt.gca()
-            axes.set_ylim([-10, 80])
-            plt.show()
+            # normal_boxplot(output_kde_ret_fol_csv)
+
+            """
+            Create Dataframe (Low, Medium, High)
+            """
