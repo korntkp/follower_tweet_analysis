@@ -257,6 +257,7 @@ def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
     ax.set_xlim(0, 6)                                                                                      # SET THISSSSSSSS
     # ax.set_ylim(-0.02, 1)
     ax.set_ylim(-0.02, 1.0)                                                                                 # SET THISSSSSSSS
+
     plt.title('Density - ' + choose_choice + ' (' + topic_name + ', ' + fold_num + ')')
     plt.show()
 

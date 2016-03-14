@@ -210,10 +210,29 @@ def low_medium_high_boxplot_from_df(dataframe_low_medium_high):
     # kde_df_ret_fol.plot(title='Delta Retweet - Delta Follower')
     # df_follower.boxplot(by='DeltaRetweet')
     # print(plotx)
-    plt.title('Delta Retweet - Delta Follower (' + each_topic + ', ' + each_fold + ')')
+    plt.title('Density of Delta Retweet - Delta Follower Group (Low, Medium, High) Box plot (' + each_topic + ', ' + each_fold + ')')
     axes = plt.gca()
-    axes.set_ylim([-10, 150])
+    axes.set_ylim([-10, 100])
+    axes.set_xlabel("Delta Follower Group")
+    axes.set_ylabel("Density of Delta Retweet")
     plt.show()
+
+def print_info_quartile_median(df_low_medium_high_param):
+    print("----- Low Delta_Follower -----")
+    print("1-Quartile: " + str(df_low_medium_high_param.Low.quantile(q=0.25)))
+    print("Median: " + str(df_low_medium_high_param.Low.median()))
+    print("3-Quartile: " + str(df_low_medium_high_param.Low.quantile(q=0.75)))
+
+    print("----- Medium Delta_Follower -----")
+    print("1-Quartile: " + str(df_low_medium_high_param.Medium.quantile(q=0.25)))
+    print("Median: " + str(df_low_medium_high_param.Medium.median()))
+    print("3-Quartile: " + str(df_low_medium_high_param.Medium.quantile(q=0.75)))
+
+    print("----- High Delta_Follower -----")
+    print("1-Quartile: " + str(df_low_medium_high_param.High.quantile(q=0.25)))
+    print("Median: " + str(df_low_medium_high_param.High.median()))
+    print("3-Quartile: " + str(df_low_medium_high_param.High.quantile(q=0.75)))
+
 
 
 # SET PARAMETER
@@ -331,18 +350,5 @@ for each_choice in y_axis_choices:
             Plot
             """
             df_low_medium_high = create_low_medium_high(output_kde_ret_fol_csv, each_topic, each_fold, is_interpolate)
-            print("----- Low Delta_Follower -----")
-            print("1-Quartile: " + str(df_low_medium_high.Low.quantile(q=0.25)))
-            print("Median: " + str(df_low_medium_high.Low.median()))
-            print("3-Quartile: " + str(df_low_medium_high.Low.quantile(q=0.75)))
-
-            print("----- Medium Delta_Follower -----")
-            print("1-Quartile: " + str(df_low_medium_high.Medium.quantile(q=0.25)))
-            print("Median: " + str(df_low_medium_high.Medium.median()))
-            print("3-Quartile: " + str(df_low_medium_high.Medium.quantile(q=0.75)))
-
-            print("----- High Delta_Follower -----")
-            print("1-Quartile: " + str(df_low_medium_high.High.quantile(q=0.25)))
-            print("Median: " + str(df_low_medium_high.High.median()))
-            print("3-Quartile: " + str(df_low_medium_high.High.quantile(q=0.75)))
+            print_info_quartile_median(df_low_medium_high)
             low_medium_high_boxplot_from_df(df_low_medium_high)
