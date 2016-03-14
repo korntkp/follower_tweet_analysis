@@ -264,14 +264,14 @@ def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
 # topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-topics = ["aroii", "hormonestheseries", "thefacethailand"]
+# topics = ["aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["hormonestheseries", "thefacethailand"]
-# topics = ["thefacethailand"]
-# folds = ["1", "2", "3", "4", "5"]
+topics = ["thefacethailand"]
+folds = ["1", "2", "3", "4", "5"]
 # folds = ["2", "3", "4", "5"]
 # folds = ["3", "4", "5"]
 # folds = ["4", "5"]
-folds = ["5"]
+# folds = ["5"]
 
 unix_time_start = [1447023600, 1447714800]  # 2015-11-09 06:00:00   2015-11-17 06:00:00
 last_hour_app_aroii = 1651
