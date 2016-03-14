@@ -219,10 +219,13 @@ def low_medium_high_boxplot_from_df(dataframe_low_medium_high):
 # SET PARAMETER
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
-topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["apple"]
-folds = ["1", "2", "3", "4", "5"]
-# folds = ["1"]
+# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["apple"]
+# folds = ["1", "2", "3", "4", "5"]
+# folds = ["2", "3", "4", "5"]
+# folds = ["3", "4", "5"]
+# folds = ["4", "5"]
+folds = ["5"]
 
 last_hour_app_aroii = 1651
 last_hour_hor_theface = 1627
@@ -233,8 +236,8 @@ bound_delta_follower = ['1.67', '7.40',         # Apple 1
                         '2.10', '8.00',
                         '3.8', '16.6',
                         '2.2', '4.4',
-                        '50.5', '-',    # not change
-                        '87', '-5',        # Aroii 1
+                        '3.53', '6.2',
+                        '87', '-5',        # Aroii 1# not change
                         '170', '-5',
                         '72', '-',
                         '107', '-',
@@ -325,4 +328,8 @@ for each_choice in y_axis_choices:
             Plot
             """
             df_low_medium_high = create_low_medium_high(output_kde_ret_fol_csv, each_topic, each_fold, is_interpolate)
+            print(df_low_medium_high.Low.median())
+            print(df_low_medium_high.Medium.median())
+            print(df_low_medium_high.High.median())
             low_medium_high_boxplot_from_df(df_low_medium_high)
+
