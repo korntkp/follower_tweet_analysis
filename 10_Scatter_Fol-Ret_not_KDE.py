@@ -286,6 +286,8 @@ for each_choice in follower_choices:
         pearson_5_folds_p = []
         spearman_5_folds_result = []
         spearman_5_folds_p = []
+        pearson_5_folds_result_not_rm_outlier = []
+        spearman_5_folds_result_not_rm_outlier = []
 
         for each_fold in folds:
             source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/" + each_topic + "/fold_" + each_fold + "/all_tweet.csv"
@@ -315,15 +317,16 @@ for each_choice in follower_choices:
             Scatter Plot (NOT Remove Outlier)
             """
             # plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
-            # chk_list_diff_ret = list(list_diff_ret)
+            not_rm_outlier_diff_ret = list(list_diff_ret)
+            not_rm_outlier_diff_fol = list(list_diff_fol)
 
             """
             Scatter Plot (Remove Outlier)
             """
-            if is_remove_outlier:
-                print(" ")
-            else:
-                print(" ")
+            # if is_remove_outlier:
+            #     print(" ")
+            # else:
+            #     print(" ")
 
             if is_log_delta_retweet is True and is_log_delta_follower is False:
                 new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_ret, each_topic, each_fold)
@@ -333,8 +336,7 @@ for each_choice in follower_choices:
             # print("Max of Delta follower -> " + str(max(list_diff_fol)))
             # print("Min of Delta retweet  -> " + str(min(list_diff_ret)))
             # print("Min of Delta follower -> " + str(min(list_diff_fol)))
-            plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
-
+            # plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
             """
             Coefficient of Correlation
@@ -344,6 +346,8 @@ for each_choice in follower_choices:
             # print(len(list_diff_fol), len(list_diff_ret))
             pearson_5_folds_result.append(scs.pearsonr(list_diff_ret, list_diff_fol)[0])
             spearman_5_folds_result.append(scs.spearmanr(list_diff_ret, list_diff_fol).correlation)
+            pearson_5_folds_result_not_rm_outlier.append(scs.pearsonr(not_rm_outlier_diff_ret, not_rm_outlier_diff_fol)[0])
+            spearman_5_folds_result_not_rm_outlier.append(scs.spearmanr(not_rm_outlier_diff_ret, not_rm_outlier_diff_fol).correlation)
 
             """
             Print Note Outlier
@@ -356,19 +360,44 @@ for each_choice in follower_choices:
         """
         Average Pearson (In each topic)
         """
-        # print(pearson_5_folds_result)
-        # sum_pearson = 0
-        # for each_pearson in pearson_5_folds_result:
-        #     sum_pearson += each_pearson
-        # avg_pearson = sum_pearson/5
-        # print(avg_pearson)
+        sum_pearson = 0
+        sum_pearson_not_rm_outlier = 0
+
+        for each_pearson in pearson_5_folds_result:
+            sum_pearson += each_pearson
+        avg_pearson = sum_pearson / 5
+
+        for each_pearson_not_rm_outlierult in pearson_5_folds_result_not_rm_outlier:
+            sum_pearson_not_rm_outlier += each_pearson_not_rm_outlierult
+        avg_pearson_not_rm_outlier = sum_pearson_not_rm_outlier / 5
+
+        print("====== Pearson ======")
+        print("Before Remove Outlier")
+        print(pearson_5_folds_result_not_rm_outlier)
+        print(avg_pearson_not_rm_outlier)
+        print("After Remove Outlier")
+        print(pearson_5_folds_result)
+        print(avg_pearson)
 
         """
         Average Spearman (In each topic)
         """
-        # print(spearman_5_folds_result)
-        # sum_spearman = 0
-        # for each_spearman in spearman_5_folds_result:
-        #     sum_spearman += each_spearman
-        # avg_spearman = sum_spearman/5
-        # print(avg_spearman)
+        sum_spearman = 0
+        sum_spearman_not_rm_outlier = 0
+
+        for each_spearman in spearman_5_folds_result:
+            sum_spearman += each_spearman
+        avg_spearman = sum_spearman / 5
+
+        for each_spearman_not_rm_outlier in spearman_5_folds_result_not_rm_outlier:
+            sum_spearman_not_rm_outlier += each_spearman_not_rm_outlier
+        avg_spearman_not_rm_outlier = sum_spearman_not_rm_outlier / 5
+
+        print("====== Spearman ======")
+        print("Before Remove Outlier")
+        print(spearman_5_folds_result_not_rm_outlier)
+        print(avg_spearman_not_rm_outlier)
+        print("After Remove Outlier")
+        print(spearman_5_folds_result)
+        print(avg_spearman)
+        print("==============================")
