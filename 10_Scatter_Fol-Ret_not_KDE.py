@@ -1,3 +1,22 @@
+"""
+Scatter Plot
+    - Remove Outlier
+        x- Delta_Follower - Delta_Retweet
+        x- Log(Delta_Follower) - Delta_Retweet
+        - Delta_Follower - Log(Delta_Retweet)
+        x- Log(Delta_Follower) - Log(Delta_Retweet)
+    - NOT Remove Outlier
+        - Delta_Follower - Delta_Retweet
+        - Log(Delta_Follower) - Delta_Retweet
+        - Delta_Follower - Log(Delta_Retweet)
+        - Log(Delta_Follower) - Log(Delta_Retweet)
+
+Coefficient of Correlation
+    - Average Pearson Correlation (In each topic)
+    - Average Spearman Correlation (In each topic)
+"""
+
+
 import fileinput
 import math
 import matplotlib.pyplot as plt
@@ -178,6 +197,8 @@ topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 folds = ["1", "2", "3", "4", "5"]
 # folds = ["5"]
 
+# is_log_delta_retweet = False
+# is_log_delta_follower = True
 is_log_delta_retweet = True
 is_log_delta_follower = False
 logarithm_base_num = 2
@@ -192,6 +213,29 @@ is_limit_axis = False
 """
 Top(Delta_Follower), Bottom(Delta_Follower), Left(Log-Delta_Retweet), Right(Log-Delta_Retweet)
 """
+is_remove_outlier = True
+
+remove_outlier_log_fol = ['-', '-', '-', '-',  # Apple 1
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',  # Aroii 1
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',  # Hormones 1
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',  # TheFace 1
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-',
+                          '-', '-', '-', '-']
+
 remove_outlier_log_ret = ['170', '-', '-', '10.3',  # Apple 1
                           '130', '-10', '-', '10',
                           '199', '-', '-', '9',
@@ -213,6 +257,27 @@ remove_outlier_log_ret = ['170', '-', '-', '10.3',  # Apple 1
                           '175', '-', '-', '10.4',
                           '250', '-', '-', '11']
 
+not_remove_outlier = ['-', '-', '-', '-',  # Apple 1
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',  # Aroii 1
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',  # Hormones 1
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',  # TheFace 1
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-',
+                      '-', '-', '-', '-']
+
 
 for each_choice in follower_choices:
     for each_topic in topics:
@@ -231,7 +296,7 @@ for each_choice in follower_choices:
             new_list_diff_fol = []
 
             """
-            Print Area & Normal Plot
+            Print info
             """
             # print("============ Topic: " + each_topic + ", Fold: " + each_fold + ", " + each_choice + " =============")
             # print("Log Delta Retweet:  " + str(is_log_delta_retweet))
@@ -245,20 +310,31 @@ for each_choice in follower_choices:
             # print(scs.pearsonr(list_diff_ret, list_diff_fol))
             # print(scs.spearmanr(list_diff_ret, list_diff_fol))
             # print(len(list_diff_fol), len(list_diff_ret))
-            # plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
             """
-            Outlier Plot
+            Scatter Plot (NOT Remove Outlier)
             """
+            # plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+            # chk_list_diff_ret = list(list_diff_ret)
+
+            """
+            Scatter Plot (Remove Outlier)
+            """
+            if is_remove_outlier:
+                print(" ")
+            else:
+                print(" ")
+
             if is_log_delta_retweet is True and is_log_delta_follower is False:
                 new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_ret, each_topic, each_fold)
-            # elif is_log_delta_retweet is False and is_log_delta_follower is True
-                # new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_fol)
+            elif is_log_delta_retweet is False and is_log_delta_follower is True:
+                new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_fol, each_topic, each_fold)
             # print("Max of Delta retweet  -> " + str(max(list_diff_ret)))
             # print("Max of Delta follower -> " + str(max(list_diff_fol)))
             # print("Min of Delta retweet  -> " + str(min(list_diff_ret)))
             # print("Min of Delta follower -> " + str(min(list_diff_fol)))
-            # plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+            plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+
 
             """
             Coefficient of Correlation
@@ -278,7 +354,7 @@ for each_choice in follower_choices:
             # print("Right    :")
 
         """
-        Average Pearson
+        Average Pearson (In each topic)
         """
         # print(pearson_5_folds_result)
         # sum_pearson = 0
@@ -288,11 +364,11 @@ for each_choice in follower_choices:
         # print(avg_pearson)
 
         """
-        Average Spearman
+        Average Spearman (In each topic)
         """
-        print(spearman_5_folds_result)
-        sum_spearman = 0
-        for each_spearman in spearman_5_folds_result:
-            sum_spearman += each_spearman
-        avg_spearman = sum_spearman/5
-        print(avg_spearman)
+        # print(spearman_5_folds_result)
+        # sum_spearman = 0
+        # for each_spearman in spearman_5_folds_result:
+        #     sum_spearman += each_spearman
+        # avg_spearman = sum_spearman/5
+        # print(avg_spearman)
