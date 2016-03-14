@@ -250,8 +250,8 @@ def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
 
     ax.text(6, 0.38, "N={0} points".format(N))
     ax.legend(loc='upper right')
-    # ax.plot(X[:, 0], -0.005 - 0.0005 * np.random.random(X.shape[0]), '+k')
-    ax.plot(X[:, 0], -0.005 - 0.005 * np.random.random(X.shape[0]), '+k')
+    ax.plot(X[:, 0], -0.005 - 0.0005 * np.random.random(X.shape[0]), '+k')
+    # ax.plot(X[:, 0], -0.005 - 0.005 * np.random.random(X.shape[0]), '+k')
 
     # ax.set_xlim(min(dataframe.values), max(dataframe.values))
     ax.set_xlim(0, 6)                                                                                      # SET THISSSSSSSS
@@ -267,11 +267,11 @@ y_axis_choices = ['follower_wo_mc']
 # topics = ["aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["hormonestheseries", "thefacethailand"]
 topics = ["thefacethailand"]
-folds = ["1", "2", "3", "4", "5"]
+# folds = ["1", "2", "3", "4", "5"]
 # folds = ["2", "3", "4", "5"]
 # folds = ["3", "4", "5"]
 # folds = ["4", "5"]
-# folds = ["5"]
+folds = ["5"]
 
 unix_time_start = [1447023600, 1447714800]  # 2015-11-09 06:00:00   2015-11-17 06:00:00
 last_hour_app_aroii = 1651

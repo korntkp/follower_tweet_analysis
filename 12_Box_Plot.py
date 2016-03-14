@@ -199,7 +199,7 @@ def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_n
         # print(combined_data)
 
         df_low_medium_high = pd.DataFrame(combined_data, columns=['Low', 'Medium', 'High'])
-        print(df_low_medium_high)
+        print(df_low_medium_high.all(skipna='False'))
 
     return df_low_medium_high
 
@@ -224,11 +224,11 @@ y_axis_choices = ['follower_wo_mc']
 # topics = ["hormonestheseries", "thefacethailand"]
 topics = ["thefacethailand"]
 # topics = ["apple"]
-folds = ["1", "2", "3", "4", "5"]
+# folds = ["1", "2", "3", "4", "5"]
 # folds = ["2", "3", "4", "5"]
 # folds = ["3", "4", "5"]
 # folds = ["4", "5"]
-# folds = ["5"]
+folds = ["5"]
 
 last_hour_app_aroii = 1651
 last_hour_hor_theface = 1627
@@ -250,11 +250,11 @@ bound_delta_follower = ['1.67', '7.40',         # Apple 1
                         '6.52', '10',        # Hormones 3
                         '2.25', '4.1',        # Hormones 4
                         '2.5', '5',        # Hormones 5
-                        '', '',        # TheFace 1
-                        '', '',        # TheFace 2
-                        '', '',        # TheFace 3
-                        '', '',        # TheFace 4
-                        '', '']        # TheFace 5
+                        '1.59', '3.5',        # TheFace 1
+                        '0.995', '1.51',        # TheFace 2
+                        '4.7', '7.3',        # TheFace 3        Shit
+                        '2.8', '4.1',        # TheFace 4
+                        '2.87', '4.75']        # TheFace 5
 
 
 for each_choice in y_axis_choices:
