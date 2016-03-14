@@ -244,7 +244,7 @@ def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
     ax.fill(X_plot, true_dens, fc='black', alpha=0.2, label='input distribution')
 
     # kde = KernelDensity(kernel='gaussian', bandwidth=0.005).fit(X)  # 'tophat', 'epanechnikov'
-    kde = KernelDensity(kernel='gaussian', bandwidth=0.005).fit(X)  # 'tophat', 'epanechnikov'              SET THISSSSSSSS
+    kde = KernelDensity(kernel='gaussian', bandwidth=0.01).fit(X)  # 'tophat', 'epanechnikov'              SET THISSSSSSSS
     log_dens = kde.score_samples(X_plot)
     ax.plot(X_plot[:, 0], np.exp(log_dens), '-', label="kernel = '{0}'".format('gaussian'))
 
@@ -255,16 +255,20 @@ def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
     # ax.set_xlim(min(dataframe.values), max(dataframe.values))
     ax.set_xlim(0, 20)                                                                                      # SET THISSSSSSSS
     # ax.set_ylim(-0.02, 1)
-    ax.set_ylim(-0.02, 1.3)                                                                                 # SET THISSSSSSSS
+    ax.set_ylim(-0.02, 1.0)                                                                                 # SET THISSSSSSSS
     plt.title('Density - ' + choose_choice + ' (' + topic_name + ', ' + fold_num + ')')
     plt.show()
 
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
-topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["aroii", "hormonestheseries", "thefacethailand"]
+# topics = ["hormonestheseries", "thefacethailand"]
 # topics = ["thefacethailand"]
-folds = ["1", "2", "3", "4", "5"]
+# folds = ["1", "2", "3", "4", "5"]
+folds = ["2", "3", "4", "5"]
+# folds = ["3", "4", "5"]
 # folds = ["4", "5"]
 # folds = ["5"]
 

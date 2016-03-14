@@ -220,12 +220,15 @@ def low_medium_high_boxplot_from_df(dataframe_low_medium_high):
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
 # topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-topics = ["apple"]
+topics = ["aroii", "hormonestheseries", "thefacethailand"]
+# topics = ["hormonestheseries", "thefacethailand"]
+# topics = ["thefacethailand"]
+# topics = ["apple"]
 # folds = ["1", "2", "3", "4", "5"]
-# folds = ["2", "3", "4", "5"]
+folds = ["2", "3", "4", "5"]
 # folds = ["3", "4", "5"]
 # folds = ["4", "5"]
-folds = ["5"]
+# folds = ["5"]
 
 last_hour_app_aroii = 1651
 last_hour_hor_theface = 1627
@@ -233,20 +236,20 @@ last_hour_hor_theface = 1627
 is_interpolate = False
 
 bound_delta_follower = ['1.67', '7.40',         # Apple 1
-                        '2.10', '8.00',
-                        '3.8', '16.6',
-                        '2.2', '4.4',
-                        '3.53', '6.2',
-                        '87', '-5',        # Aroii 1# not change
-                        '170', '-5',
-                        '72', '-',
-                        '107', '-',
-                        '110', '-',
-                        '140', '-10',        # Hormones 1
-                        '115', '-16.1',
-                        '300', '-',
-                        '-', '-10',
-                        '240', '-',
+                        '2.10', '8.00',         # Apple 2
+                        '3.8', '16.6',          # Apple 3
+                        '2.2', '4.4',           # Apple 4
+                        '3.53', '6.2',          # Apple 5
+                        '0.92', '2.1',          # Aroii 1
+                        '7.3', '12.1',           # Aroii 2
+                        '', '',         # Aroii 3
+                        '', '',                 # not change
+                        '', '',
+                        '', '',        # Hormones 1
+                        '', '',
+                        '', '',
+                        '', '',
+                        '', '-',
                         '153', '-14',        # TheFace 1
                         '118', '-',
                         '265', '-',
