@@ -225,10 +225,10 @@ topics = ["aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["thefacethailand"]
 # topics = ["apple"]
 # folds = ["1", "2", "3", "4", "5"]
-folds = ["2", "3", "4", "5"]
+# folds = ["2", "3", "4", "5"]
 # folds = ["3", "4", "5"]
 # folds = ["4", "5"]
-# folds = ["5"]
+folds = ["5"]
 
 last_hour_app_aroii = 1651
 last_hour_hor_theface = 1627
@@ -241,20 +241,20 @@ bound_delta_follower = ['1.67', '7.40',         # Apple 1
                         '2.2', '4.4',           # Apple 4
                         '3.53', '6.2',          # Apple 5
                         '0.92', '2.1',          # Aroii 1
-                        '7.3', '12.1',           # Aroii 2
-                        '', '',         # Aroii 3
-                        '', '',                 # not change
-                        '', '',
+                        '7.3', '12.1',          # Aroii 2
+                        '0.585', '1.2',         # Aroii 3
+                        '0.98', '1.76',         # Aroii 4
+                        '2.7', '4.1',           # Aroii 5
                         '', '',        # Hormones 1
-                        '', '',
-                        '', '',
-                        '', '',
-                        '', '-',
-                        '153', '-14',        # TheFace 1
-                        '118', '-',
-                        '265', '-',
-                        '175', '-',
-                        '250', '-']
+                        '', '',        # Hormones 2
+                        '', '',        # Hormones 3
+                        '', '',        # Hormones 4
+                        '', '',        # Hormones 5
+                        '', '',        # TheFace 1
+                        '', '',        # TheFace 2
+                        '', '',        # TheFace 3
+                        '', '',        # TheFace 4
+                        '', '']        # TheFace 5
 
 
 for each_choice in y_axis_choices:
