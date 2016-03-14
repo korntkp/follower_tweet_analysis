@@ -281,7 +281,7 @@ for each_choice in y_axis_choices:
     for each_topic in topics:
         for each_fold in folds:
 
-            # print(each_topic, each_fold)
+            print("============ Topic: " + each_topic + ", Fold: " + each_fold + ", " + each_choice + " =============")
             data = []  # Array for collect original data
             data_estimate = []  # Array for collect KDE processed data
 

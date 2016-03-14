@@ -140,7 +140,7 @@ def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_n
 
     lowwer_bound = float(bound_delta_follower[(10 * topic_cal) + (2 * fold_cal) + 0])
     upper_bound = float(bound_delta_follower[(10 * topic_cal) + (2 * fold_cal) + 1])
-    print(lowwer_bound, upper_bound)
+    # print(lowwer_bound, upper_bound)
 
     low_follower_list = []
     medium_follower_list = []
@@ -171,7 +171,7 @@ def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_n
         # print(combined_data)
 
         df_low_medium_high = pd.DataFrame(combined_data, columns=['Low', 'Medium', 'High'])
-        print(df_low_medium_high)
+        # print(df_low_medium_high)
 
         # df3 = kde_df_ret_fol_interpolated.append(df2, ignore_index=True)
         # print(df3)
@@ -199,7 +199,7 @@ def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_n
         # print(combined_data)
 
         df_low_medium_high = pd.DataFrame(combined_data, columns=['Low', 'Medium', 'High'])
-        print(df_low_medium_high.all(skipna='False'))
+        # print(df_low_medium_high)
 
     return df_low_medium_high
 
@@ -219,16 +219,16 @@ def low_medium_high_boxplot_from_df(dataframe_low_medium_high):
 # SET PARAMETER
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
-# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["hormonestheseries", "thefacethailand"]
-topics = ["thefacethailand"]
+# topics = ["thefacethailand"]
 # topics = ["apple"]
-# folds = ["1", "2", "3", "4", "5"]
+folds = ["1", "2", "3", "4", "5"]
 # folds = ["2", "3", "4", "5"]
 # folds = ["3", "4", "5"]
 # folds = ["4", "5"]
-folds = ["5"]
+# folds = ["5"]
 
 last_hour_app_aroii = 1651
 last_hour_hor_theface = 1627
@@ -260,7 +260,7 @@ bound_delta_follower = ['1.67', '7.40',         # Apple 1
 for each_choice in y_axis_choices:
     for each_topic in topics:
         for each_fold in folds:
-            print(each_topic, each_fold, each_choice)
+            print("============ Topic: " + each_topic + ", Fold: " + each_fold + " =============")
 
             source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/" + each_topic + "/fold_" + each_fold + "/all_tweet.csv"
             output_follower_csv = "E:/tweet_process/result_follower-ret/09_follower_retweet_csv/" + each_topic + "/fold_" + each_fold + "/all_tweet-diff_ret-diff_fol.csv"
@@ -331,8 +331,18 @@ for each_choice in y_axis_choices:
             Plot
             """
             df_low_medium_high = create_low_medium_high(output_kde_ret_fol_csv, each_topic, each_fold, is_interpolate)
-            print(df_low_medium_high.Low.median())
-            print(df_low_medium_high.Medium.median())
-            print(df_low_medium_high.High.median())
-            low_medium_high_boxplot_from_df(df_low_medium_high)
+            print("----- Low Delta_Follower -----")
+            print("1-Quartile: " + str(df_low_medium_high.Low.quantile(q=0.25)))
+            print("Median: " + str(df_low_medium_high.Low.median()))
+            print("3-Quartile: " + str(df_low_medium_high.Low.quantile(q=0.75)))
 
+            print("----- Medium Delta_Follower -----")
+            print("1-Quartile: " + str(df_low_medium_high.Medium.quantile(q=0.25)))
+            print("Median: " + str(df_low_medium_high.Medium.median()))
+            print("3-Quartile: " + str(df_low_medium_high.Medium.quantile(q=0.75)))
+
+            print("----- High Delta_Follower -----")
+            print("1-Quartile: " + str(df_low_medium_high.High.quantile(q=0.25)))
+            print("Median: " + str(df_low_medium_high.High.median()))
+            print("3-Quartile: " + str(df_low_medium_high.High.quantile(q=0.75)))
+            low_medium_high_boxplot_from_df(df_low_medium_high)
