@@ -115,7 +115,7 @@ def normal_boxplot(output_kde_ret_fol_csv_path_param):
     plt.show()
 
 
-def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_num, is_interpolate_param, is_log_y_axis_param):
+def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_num, is_interpolate_param, is_log_y_axis_param, logarithm_base_num_param):
     topic_cal = 0
     fold_cal = 0
     if topic_name == 'apple':
@@ -149,18 +149,13 @@ def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_n
     kde_df_ret_fol = pd.read_csv(output_kde_ret_fol_csv_path_param, names=['DeltaRetweet', 'DeltaFollower'])
     kde_df_ret_fol_interpolated = kde_df_ret_fol.interpolate().bfill()
 
-    if is_log_y_axis_param:
-        count_line = 0
-        print(kde_df_ret_fol_interpolated.DeltaRetweet)
-        for j in range(0, len(kde_df_ret_fol_interpolated)):
-            count_line += 1
-            # print(kde_df_ret_fol_interpolated.DeltaRetweet.values[j])
-        print(count_line)
-    else:
-        print("a ")
-
     if is_interpolate_param:
-        # print(len(kde_df_ret_fol_interpolated))
+        if is_log_y_axis_param:
+            # print(kde_df_ret_fol_interpolated.DeltaRetweet)
+            for j in range(0, len(kde_df_ret_fol_interpolated)):
+                kde_df_ret_fol_interpolated.DeltaRetweet.values[j] = log2(kde_df_ret_fol_interpolated.DeltaRetweet.values[j])
+            # print(len(kde_df_ret_fol_interpolated))
+
         for j in range(0, len(kde_df_ret_fol_interpolated)):
             # print(kde_df_ret_fol_interpolated.DeltaFollower.values[j])
             if float(kde_df_ret_fol_interpolated.DeltaFollower.values[j]) <= lowwer_bound:
@@ -189,6 +184,11 @@ def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_n
         # print(df3_delete_last.DeltaRetweet.values[1649])
 
     else:
+        if is_log_y_axis_param:
+            # print(kde_df_ret_fol.DeltaRetweet)
+            for j in range(0, len(kde_df_ret_fol)):
+                kde_df_ret_fol.DeltaRetweet.values[j] = log2(kde_df_ret_fol.DeltaRetweet.values[j])
+            # print(len(kde_df_ret_fol))
         for j in range(0, len(kde_df_ret_fol)):
             # print(kde_df_ret_fol.DeltaFollower.values[j])
             if float(kde_df_ret_fol.DeltaFollower.values[j]) <= lowwer_bound:
@@ -222,13 +222,15 @@ def low_medium_high_boxplot_from_df(df_low_medium_high_param, is_log_y_axis_para
     # print(plotx)
 
     axes = plt.gca()
-    axes.set_ylim([-10, 100])
+
     axes.set_xlabel("Delta Follower Group")
     if is_log_y_axis_param:
         axes.set_ylabel("Density of Log(Delta Retweet)")
+        axes.set_ylim([-5, 15])
         plt.title('Density of Log(Delta Retweet) - Delta Follower Group (Low, Medium, High) Box plot (' + each_topic + ', ' + each_fold + ')')
     else:
         axes.set_ylabel("Density of Delta Retweet")
+        axes.set_ylim([-10, 100])
         plt.title('Density of Delta Retweet - Delta Follower Group (Low, Medium, High) Box plot (' + each_topic + ', ' + each_fold + ')')
     plt.show()
 
@@ -254,17 +256,16 @@ def print_info_quartile_median(df_low_medium_high_param, is_log_y_axis_param):
     print("3-Quartile: " + str(df_low_medium_high_param.High.quantile(q=0.75)))
 
 
-
 # SET PARAMETER
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
-# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["hormonestheseries", "thefacethailand"]
 # topics = ["thefacethailand"]
-topics = ["apple"]
-folds = ["1"]
-# folds = ["1", "2", "3", "4", "5"]
+# topics = ["apple"]
+# folds = ["1"]
+folds = ["1", "2", "3", "4", "5"]
 # folds = ["2", "3", "4", "5"]
 # folds = ["3", "4", "5"]
 # folds = ["4", "5"]
@@ -274,7 +275,9 @@ last_hour_app_aroii = 1651
 last_hour_hor_theface = 1627
 
 is_interpolate = False
+
 is_log_y_axis = True
+logarithm_base_num = 2
 
 bound_delta_follower = ['1.67', '7.40',         # Apple 1
                         '2.10', '8.00',         # Apple 2
@@ -371,6 +374,6 @@ for each_choice in y_axis_choices:
             Create Dataframe (Low, Medium, High)
             Plot
             """
-            df_low_medium_high = create_low_medium_high(output_kde_ret_fol_csv, each_topic, each_fold, is_interpolate, is_log_y_axis)
-            # print_info_quartile_median(df_low_medium_high, is_log_y_axis)
-            # low_medium_high_boxplot_from_df(df_low_medium_high, is_log_y_axis)
+            df_low_medium_high = create_low_medium_high(output_kde_ret_fol_csv, each_topic, each_fold, is_interpolate, is_log_y_axis, logarithm_base_num)
+            print_info_quartile_median(df_low_medium_high, is_log_y_axis)
+            low_medium_high_boxplot_from_df(df_low_medium_high, is_log_y_axis)
