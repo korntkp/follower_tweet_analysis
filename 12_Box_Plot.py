@@ -1,3 +1,4 @@
+from math import log
 import fileinput
 from numpy import *
 import numpy as np
@@ -153,7 +154,9 @@ def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_n
         if is_log_y_axis_param:
             # print(kde_df_ret_fol_interpolated.DeltaRetweet)
             for j in range(0, len(kde_df_ret_fol_interpolated)):
-                kde_df_ret_fol_interpolated.DeltaRetweet.values[j] = log2(kde_df_ret_fol_interpolated.DeltaRetweet.values[j])
+                if kde_df_ret_fol_interpolated.DeltaRetweet.values[j] <= 0:
+                    kde_df_ret_fol_interpolated.DeltaRetweet.values[j] = np.nan
+                kde_df_ret_fol_interpolated.DeltaRetweet.values[j] = math.log(kde_df_ret_fol_interpolated.DeltaRetweet.values[j], logarithm_base_num_param)
             # print(len(kde_df_ret_fol_interpolated))
 
         for j in range(0, len(kde_df_ret_fol_interpolated)):
@@ -187,7 +190,9 @@ def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_n
         if is_log_y_axis_param:
             # print(kde_df_ret_fol.DeltaRetweet)
             for j in range(0, len(kde_df_ret_fol)):
-                kde_df_ret_fol.DeltaRetweet.values[j] = log2(kde_df_ret_fol.DeltaRetweet.values[j])
+                if kde_df_ret_fol.DeltaRetweet.values[j] <= 0:
+                    kde_df_ret_fol.DeltaRetweet.values[j] = np.nan
+                kde_df_ret_fol.DeltaRetweet.values[j] = math.log(kde_df_ret_fol.DeltaRetweet.values[j], logarithm_base_num_param)
             # print(len(kde_df_ret_fol))
         for j in range(0, len(kde_df_ret_fol)):
             # print(kde_df_ret_fol.DeltaFollower.values[j])
