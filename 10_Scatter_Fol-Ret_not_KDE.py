@@ -214,10 +214,10 @@ def explore_diff_ret(list_diff_ret_param, list_diff_fol_param, not_more_than_par
 # SET PARAMETER
 # follower_choices = ['follower w/t mc', 'follower w/o mc']
 follower_choices = ['follower w/o mc']
-# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-topics = ["thefacethailand"]
-# folds = ["1", "2", "3", "4", "5"]
-folds = ["5"]
+topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+# topics = ["thefacethailand"]
+folds = ["1", "2", "3", "4", "5"]
+# folds = ["5"]
 
 is_log_delta_retweet = False
 is_log_delta_follower = True
@@ -251,13 +251,13 @@ remove_outlier_log_fol = ['7.34', '-', '-', '580',  # Apple 1
                           '6', '-', '-10', '570',  # Hormones 1
                           '-', '-', '-5', '730',
                           '8', '-', '-5', '670',
-                          '-', '-', '-', '715',
+                          '-', '-', '-5', '715',
                           '-', '-', '-', '780',
                           '7.2', '-', '-', '900',  # TheFace 1
                           '7', '-', '-5', '820',
                           '7.9', '-', '-5', '1360',
                           '7', '-', '-', '800',
-                          '7.4', '-', '-', '1180']
+                          '7.4', '-', '-5', '1180']
 
 remove_outlier_log_ret = ['170', '-', '-', '10.3',  # Apple 1
                           '130', '-10', '-', '10',
@@ -323,7 +323,7 @@ for each_choice in follower_choices:
             """
             Explore List of Delta_Retweet
             """
-            explore_diff_ret(list_diff_ret, list_diff_fol, max_ret_plot)
+            # explore_diff_ret(list_diff_ret, list_diff_fol, max_ret_plot)
 
             """
             Print info
@@ -346,7 +346,7 @@ for each_choice in follower_choices:
             """
             not_rm_outlier_diff_ret = list(list_diff_ret)
             not_rm_outlier_diff_fol = list(list_diff_fol)
-            plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+            # plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
 
             """
@@ -356,7 +356,7 @@ for each_choice in follower_choices:
                 new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_ret, each_topic, each_fold)
             elif is_log_delta_retweet is False and is_log_delta_follower is True:
                 new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_fol, each_topic, each_fold)
-            plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+            # plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
             """
             Coefficient of Correlation
@@ -402,22 +402,22 @@ for each_choice in follower_choices:
         """
         Average Spearman (In each topic)
         """
-        # sum_spearman = 0
-        # sum_spearman_not_rm_outlier = 0
-        #
-        # for each_spearman in spearman_5_folds_result:
-        #     sum_spearman += each_spearman
-        # avg_spearman = sum_spearman / len(folds)
-        #
-        # for each_spearman_not_rm_outlier in spearman_5_folds_result_not_rm_outlier:
-        #     sum_spearman_not_rm_outlier += each_spearman_not_rm_outlier
-        # avg_spearman_not_rm_outlier = sum_spearman_not_rm_outlier / len(folds)
-        #
-        # print("====== Spearman ======")
-        # print("Before Remove Outlier")
-        # # print(spearman_5_folds_result_not_rm_outlier)
-        # print(avg_spearman_not_rm_outlier)
-        # print("After Remove Outlier")
-        # # print(spearman_5_folds_result)
-        # print(avg_spearman)
-        # print("==============================")
+        sum_spearman = 0
+        sum_spearman_not_rm_outlier = 0
+
+        for each_spearman in spearman_5_folds_result:
+            sum_spearman += each_spearman
+        avg_spearman = sum_spearman / len(folds)
+
+        for each_spearman_not_rm_outlier in spearman_5_folds_result_not_rm_outlier:
+            sum_spearman_not_rm_outlier += each_spearman_not_rm_outlier
+        avg_spearman_not_rm_outlier = sum_spearman_not_rm_outlier / len(folds)
+
+        print("====== Spearman ======")
+        print("Before Remove Outlier")
+        # print(spearman_5_folds_result_not_rm_outlier)
+        print(avg_spearman_not_rm_outlier)
+        print("After Remove Outlier")
+        # print(spearman_5_folds_result)
+        print(avg_spearman)
+        print("==============================")
