@@ -189,35 +189,52 @@ def remove_more_than_y(list_ret, list_fol, list_outlier, topic_name, fold_num):
     return list_ret, list_fol
 
 
-def explore_diff_ret(list_diff_ret_param, list_diff_fol_param, not_more_than_param):
+def explore_diff_ret(list_diff_ret_param, list_diff_fol_param, not_more_than_ret_param, not_more_than_fol_param):
     count_ret = 0
-    outlier_list = []
-    outlier_dict = {}
+    count_fol = 0
+    outlier_list_ret = []
+    outlier_dict_ret = {}
+    outlier_list_fol = []
+    outlier_dict_fol = {}
     for i in range(0, len(list_diff_ret_param)):
-        if list_diff_ret_param[i] >= not_more_than_param:
+        if list_diff_ret_param[i] >= not_more_than_ret_param:
             count_ret += 1
-            outlier_dict[i] = list_diff_ret_param[i]
-            outlier_list.append(list_diff_ret_param[i])
+            outlier_dict_ret[i] = list_diff_ret_param[i]
+            outlier_list_ret.append(list_diff_ret_param[i])
             # print(list_diff_ret_param[i])
+    for i in range(0, len(list_diff_fol_param)):
+        if list_diff_fol_param[i] >= not_more_than_fol_param:
+            count_fol += 1
+            outlier_dict_fol[i] = list_diff_fol_param[i]
+            outlier_list_fol.append(list_diff_fol_param[i])
+            # print(list_diff_fol_param[i])
 
     print("Max Delta_Follower:", max(list_diff_fol_param))
     print("Max Delta_Retweet:", max(list_diff_ret_param))
-    print("Length of list:", len(list_diff_ret_param))
-    print("More than", not_more_than_param, ":", count_ret)
-    if len(outlier_list) > 0:
-        print("lowwest", min(outlier_list))
-    print(len(outlier_dict))
-    print(outlier_dict)
+    print("Max Delta_Follower:", min(list_diff_fol_param))
+    print("Max Delta_Retweet:", min(list_diff_ret_param))
+    print("Length of list Ret:", len(list_diff_ret_param))
+    print("Length of list Fol:", len(list_diff_fol_param))
+    print("Ret -> More than", not_more_than_ret_param, ":", count_ret)
+    print("Fol -> More than", not_more_than_fol_param, ":", count_fol)
+    if len(outlier_list_ret) > 0:
+        print("lowwest ret:", min(outlier_list_ret))
+    if len(outlier_list_fol) > 0:
+        print("lowwest fol:", min(outlier_list_fol))
+    print("Length Outlier Ret:", len(outlier_dict_ret))
+    print("Data in Outlier Ret", outlier_dict_ret)
+    print("Length Outlier Fol:", len(outlier_dict_fol))
+    print("Data in Outlier Fol", outlier_dict_fol)
     return
 
 
 # SET PARAMETER
 # follower_choices = ['follower w/t mc', 'follower w/o mc']
 follower_choices = ['follower w/o mc']
-topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["thefacethailand"]
-folds = ["1", "2", "3", "4", "5"]
-# folds = ["5"]
+# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["apple"]
+# folds = ["1", "2", "3", "4", "5"]
+folds = ["1"]
 
 # is_log_delta_retweet = False
 # is_log_delta_follower = True
@@ -227,7 +244,7 @@ is_log_delta_retweet = True
 is_log_delta_follower = True
 logarithm_base_num = 2
 
-max_ret_plot = 1280
+max_ret_plot = 10
 min_ret_plot = -5
 max_fol_plot = 10
 min_fol_plot = -1
@@ -346,7 +363,7 @@ for each_choice in follower_choices:
             """
             Explore List of Delta_Retweet
             """
-            explore_diff_ret(list_diff_ret, list_diff_fol, max_ret_plot)
+            explore_diff_ret(list_diff_ret, list_diff_fol, max_ret_plot, max_fol_plot)
 
             """
             Print info
@@ -404,24 +421,24 @@ for each_choice in follower_choices:
         """
         Average Pearson (In each topic)
         """
-        # sum_pearson = 0
-        # sum_pearson_not_rm_outlier = 0
-        #
-        # for each_pearson in pearson_5_folds_result:
-        #     sum_pearson += each_pearson
-        # avg_pearson = sum_pearson / len(folds)
-        #
-        # for each_pearson_not_rm_outlierult in pearson_5_folds_result_not_rm_outlier:
-        #     sum_pearson_not_rm_outlier += each_pearson_not_rm_outlierult
-        # avg_pearson_not_rm_outlier = sum_pearson_not_rm_outlier / len(folds)
-        #
-        # print("====== Pearson ======")
-        # print("Before Remove Outlier")
-        # print(pearson_5_folds_result_not_rm_outlier)
-        # print(avg_pearson_not_rm_outlier)
-        # print("After Remove Outlier")
-        # print(pearson_5_folds_result)
-        # print(avg_pearson)
+        sum_pearson = 0
+        sum_pearson_not_rm_outlier = 0
+
+        for each_pearson in pearson_5_folds_result:
+            sum_pearson += each_pearson
+        avg_pearson = sum_pearson / len(folds)
+
+        for each_pearson_not_rm_outlierult in pearson_5_folds_result_not_rm_outlier:
+            sum_pearson_not_rm_outlier += each_pearson_not_rm_outlierult
+        avg_pearson_not_rm_outlier = sum_pearson_not_rm_outlier / len(folds)
+
+        print("====== Pearson ======")
+        print("Before Remove Outlier")
+        print(pearson_5_folds_result_not_rm_outlier)
+        print(avg_pearson_not_rm_outlier)
+        print("After Remove Outlier")
+        print(pearson_5_folds_result)
+        print(avg_pearson)
 
         """
         Average Spearman (In each topic)
