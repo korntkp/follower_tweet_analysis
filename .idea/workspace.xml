@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e5b5f6f4-09e4-4e06-9c7b-a60d4d1cae8e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/10_Scatter_Fol-Ret_not_KDE.py" afterPath="$PROJECT_DIR$/10_Scatter_Fol-Ret_not_KDE.py" />
     </list>
     <ignored path="Sampling Source User.iws" />
@@ -27,8 +26,8 @@
       <file leaf-file-name="10_Scatter_Fol-Ret_not_KDE.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/10_Scatter_Fol-Ret_not_KDE.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4811321">
-              <caret line="250" column="59" selection-start-line="250" selection-start-column="59" selection-end-line="250" selection-end-column="59" />
+            <state vertical-scroll-proportion="0.39100346">
+              <caret line="255" column="58" selection-start-line="255" selection-start-column="58" selection-end-line="255" selection-end-column="58" />
               <folding>
                 <element signature="e#569#585#0" expanded="true" />
               </folding>
@@ -780,8 +779,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/10_Scatter_Fol-Ret_not_KDE.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4811321">
-          <caret line="250" column="59" selection-start-line="250" selection-start-column="59" selection-end-line="250" selection-end-column="59" />
+        <state vertical-scroll-proportion="0.39100346">
+          <caret line="255" column="58" selection-start-line="255" selection-start-column="58" selection-end-line="255" selection-end-column="58" />
           <folding>
             <element signature="e#569#585#0" expanded="true" />
           </folding>

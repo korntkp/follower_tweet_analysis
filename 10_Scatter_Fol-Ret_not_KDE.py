@@ -215,7 +215,7 @@ def explore_diff_ret(list_diff_ret_param, list_diff_fol_param, not_more_than_par
 # follower_choices = ['follower w/t mc', 'follower w/o mc']
 follower_choices = ['follower w/o mc']
 # topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-topics = ["aroii"]
+topics = ["hormonestheseries"]
 # folds = ["1", "2", "3", "4", "5"]
 folds = ["5"]
 
@@ -225,7 +225,7 @@ is_log_delta_follower = True
 # is_log_delta_follower = False
 logarithm_base_num = 2
 
-max_ret_plot = 590
+max_ret_plot = 1280
 min_ret_plot = -5
 max_fol_plot = 10
 min_fol_plot = -1
@@ -248,11 +248,11 @@ remove_outlier_log_fol = ['7.34', '-', '-', '580',  # Apple 1
                           '6.3', '-', '-', '540',
                           '7', '-', '-', '610',
                           '6.5', '-', '-2.5', '590',
-                          '-', '-', '-', '-',  # Hormones 1
-                          '-', '-', '-', '-',
-                          '-', '-', '-', '-',
-                          '-', '-', '-', '-',
-                          '-', '-', '-', '-',
+                          '6', '-', '-10', '570',  # Hormones 1
+                          '-', '-', '-5', '730',
+                          '8', '-', '-5', '670',
+                          '-', '-', '-', '715',
+                          '-', '-', '-', '780',
                           '-', '-', '-', '-',  # TheFace 1
                           '-', '-', '-', '-',
                           '-', '-', '-', '-',
