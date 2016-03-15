@@ -231,18 +231,8 @@ def explore_diff_ret(list_diff_ret_param, list_diff_fol_param, not_more_than_ret
 # SET PARAMETER
 # follower_choices = ['follower w/t mc', 'follower w/o mc']
 follower_choices = ['follower w/o mc']
-topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-folds = ["1", "2", "3", "4", "5"]
-
-# topics = ["apple"]
-# topics = ["aroii"]
-# topics = ["hormonestheseries"]
-# topics = ["thefacethailand"]
-# folds = ["1"]
-# folds = ["2"]
-# folds = ["3"]
-# folds = ["4"]
-# folds = ["5"]
+# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+# folds = ["1", "2", "3", "4", "5"]
 
 # is_log_delta_retweet = False
 # is_log_delta_follower = True
@@ -266,11 +256,21 @@ Top(Delta_Follower), Bottom(Delta_Follower), Left(Delta_Retweet), Right(Delta_Re
 is_remove_outlier = True
 # not_more_than = 580
 
-remove_outlier_not_log = ['-', '-', '-', '-',  # Apple 1
-                          '-', '-', '-', '-',
-                          '-', '-', '-', '-',
-                          '-', '-', '-', '-',
-                          '-', '-', '-', '-',
+# topics = ["apple"]
+topics = ["aroii"]
+# topics = ["hormonestheseries"]
+# topics = ["thefacethailand"]
+folds = ["1"]
+# folds = ["2"]
+# folds = ["3"]
+# folds = ["4"]
+# folds = ["5"]
+
+remove_outlier_not_log = ['150', '-', '-', '660',  # Apple 1
+                          '110', '-10', '-', '200',
+                          '200', '-', '-', '250',
+                          '70', '-5', '-', '190',
+                          '50', '-', '-', '650',
                           '-', '-', '-', '-',  # Aroii 1
                           '-', '-', '-', '-',
                           '-', '-', '-', '-',
@@ -427,7 +427,7 @@ for each_choice in follower_choices:
                 new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_fol, each_topic, each_fold)
             elif is_log_delta_retweet and is_log_delta_follower:
                 new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_both_log, each_topic, each_fold)
-            elif is_log_delta_retweet == False and is_log_delta_follower == False:
+            elif not is_log_delta_retweet and not is_log_delta_follower:
                 new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_not_log, each_topic, each_fold)
             plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
