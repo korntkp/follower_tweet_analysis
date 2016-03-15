@@ -215,7 +215,7 @@ def explore_diff_ret(list_diff_ret_param, list_diff_fol_param, not_more_than_par
 # follower_choices = ['follower w/t mc', 'follower w/o mc']
 follower_choices = ['follower w/o mc']
 # topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-topics = ["hormonestheseries"]
+topics = ["thefacethailand"]
 # folds = ["1", "2", "3", "4", "5"]
 folds = ["5"]
 
@@ -253,11 +253,11 @@ remove_outlier_log_fol = ['7.34', '-', '-', '580',  # Apple 1
                           '8', '-', '-5', '670',
                           '-', '-', '-', '715',
                           '-', '-', '-', '780',
-                          '-', '-', '-', '-',  # TheFace 1
-                          '-', '-', '-', '-',
-                          '-', '-', '-', '-',
-                          '-', '-', '-', '-',
-                          '-', '-', '-', '-']
+                          '7.2', '-', '-', '900',  # TheFace 1
+                          '7', '-', '-5', '820',
+                          '7.9', '-', '-5', '1360',
+                          '7', '-', '-', '800',
+                          '7.4', '-', '-', '1180']
 
 remove_outlier_log_ret = ['170', '-', '-', '10.3',  # Apple 1
                           '130', '-10', '-', '10',
