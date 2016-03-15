@@ -231,18 +231,32 @@ def explore_diff_ret(list_diff_ret_param, list_diff_fol_param, not_more_than_ret
 # SET PARAMETER
 # follower_choices = ['follower w/t mc', 'follower w/o mc']
 follower_choices = ['follower w/o mc']
-# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# folds = ["1", "2", "3", "4", "5"]
+topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+folds = ["1", "2", "3", "4", "5"]
 
 # topics = ["apple"]
-topics = ["aroii"]
+# topics = ["aroii"]
 # topics = ["hormonestheseries"]
 # topics = ["thefacethailand"]
 # folds = ["1"]
 # folds = ["2"]
 # folds = ["3"]
 # folds = ["4"]
-folds = ["5"]
+# folds = ["5"]
+
+# is_log_delta_retweet = False
+# is_log_delta_follower = True
+# is_log_delta_retweet = True
+# is_log_delta_follower = False
+is_log_delta_retweet = True
+is_log_delta_follower = True
+logarithm_base_num = 2
+
+max_ret_plot = 10
+min_ret_plot = -5
+max_fol_plot = 10
+min_fol_plot = -1
+is_limit_axis = False
 
 """
 Top(Delta_Follower), Bottom(Delta_Follower), Left(Delta_Retweet), Right(Delta_Retweet)
@@ -260,30 +274,16 @@ remove_outlier_both_log = ['-', '-', '-', '-',  # Apple 1
                            '6.25', '-', '-', '-',
                            '6.85', '-', '-', '-',
                            '6.86', '-', '-', '10',
-                           '-', '-', '-', '-',  # Hormones 1
+                           '7', '-', '-', '10.5',  # Hormones 1
                            '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
+                           '8', '-', '-', '10.8',
+                           '-', '-', '-', '10.7',
                            '-', '-', '-', '-',
                            '-', '-', '-', '-',  # TheFace 1
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-']
-
-# is_log_delta_retweet = False
-# is_log_delta_follower = True
-# is_log_delta_retweet = True
-# is_log_delta_follower = False
-is_log_delta_retweet = True
-is_log_delta_follower = True
-logarithm_base_num = 2
-
-max_ret_plot = 10
-min_ret_plot = -5
-max_fol_plot = 10
-min_fol_plot = -1
-is_limit_axis = False
+                           '7', '-', '-', '10.6',
+                           '-', '-', '-', '10.8',
+                           '7', '-', '-', '10.35',
+                           '7.6', '-', '-', '10.6']
 
 remove_outlier_log_fol = ['7.34', '-', '-', '580',  # Apple 1
                           '7', '-', '-', '300',
@@ -393,7 +393,7 @@ for each_choice in follower_choices:
             """
             not_rm_outlier_diff_ret = list(list_diff_ret)
             not_rm_outlier_diff_fol = list(list_diff_fol)
-            plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+            # plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
             """
             Scatter Plot (Remove Outlier)
@@ -404,7 +404,7 @@ for each_choice in follower_choices:
                 new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_fol, each_topic, each_fold)
             elif is_log_delta_retweet and is_log_delta_follower:
                 new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_both_log, each_topic, each_fold)
-            plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+            # plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
             """
             Coefficient of Correlation
@@ -450,22 +450,22 @@ for each_choice in follower_choices:
         """
         Average Spearman (In each topic)
         """
-        # sum_spearman = 0
-        # sum_spearman_not_rm_outlier = 0
-        #
-        # for each_spearman in spearman_5_folds_result:
-        #     sum_spearman += each_spearman
-        # avg_spearman = sum_spearman / len(folds)
-        #
-        # for each_spearman_not_rm_outlier in spearman_5_folds_result_not_rm_outlier:
-        #     sum_spearman_not_rm_outlier += each_spearman_not_rm_outlier
-        # avg_spearman_not_rm_outlier = sum_spearman_not_rm_outlier / len(folds)
-        #
-        # print("====== Spearman ======")
-        # print("Before Remove Outlier")
-        # # print(spearman_5_folds_result_not_rm_outlier)
-        # print(avg_spearman_not_rm_outlier)
-        # print("After Remove Outlier")
-        # # print(spearman_5_folds_result)
-        # print(avg_spearman)
-        # print("==============================")
+        sum_spearman = 0
+        sum_spearman_not_rm_outlier = 0
+
+        for each_spearman in spearman_5_folds_result:
+            sum_spearman += each_spearman
+        avg_spearman = sum_spearman / len(folds)
+
+        for each_spearman_not_rm_outlier in spearman_5_folds_result_not_rm_outlier:
+            sum_spearman_not_rm_outlier += each_spearman_not_rm_outlier
+        avg_spearman_not_rm_outlier = sum_spearman_not_rm_outlier / len(folds)
+
+        print("====== Spearman ======")
+        print("Before Remove Outlier")
+        # print(spearman_5_folds_result_not_rm_outlier)
+        print(avg_spearman_not_rm_outlier)
+        print("After Remove Outlier")
+        # print(spearman_5_folds_result)
+        print(avg_spearman)
+        print("==============================")
