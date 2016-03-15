@@ -115,7 +115,7 @@ def normal_boxplot(output_kde_ret_fol_csv_path_param):
     plt.show()
 
 
-def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_num, is_interpolate_param):
+def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_num, is_interpolate_param, is_log_y_axis_param):
     topic_cal = 0
     fold_cal = 0
     if topic_name == 'apple':
@@ -145,9 +145,19 @@ def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_n
     low_follower_list = []
     medium_follower_list = []
     high_follower_list = []
-    df_low_medium_high = []
+    dataframe_low_medium_high = []
     kde_df_ret_fol = pd.read_csv(output_kde_ret_fol_csv_path_param, names=['DeltaRetweet', 'DeltaFollower'])
     kde_df_ret_fol_interpolated = kde_df_ret_fol.interpolate().bfill()
+
+    if is_log_y_axis_param:
+        count_line = 0
+        print(kde_df_ret_fol_interpolated.DeltaRetweet)
+        for j in range(0, len(kde_df_ret_fol_interpolated)):
+            count_line += 1
+            # print(kde_df_ret_fol_interpolated.DeltaRetweet.values[j])
+        print(count_line)
+    else:
+        print("a ")
 
     if is_interpolate_param:
         # print(len(kde_df_ret_fol_interpolated))
@@ -170,8 +180,8 @@ def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_n
         combined_data = list(zip(low_follower_list, medium_follower_list, high_follower_list))
         # print(combined_data)
 
-        df_low_medium_high = pd.DataFrame(combined_data, columns=['Low', 'Medium', 'High'])
-        # print(df_low_medium_high)
+        dataframe_low_medium_high = pd.DataFrame(combined_data, columns=['Low', 'Medium', 'High'])
+        # print(dataframe_low_medium_high)
 
         # df3 = kde_df_ret_fol_interpolated.append(df2, ignore_index=True)
         # print(df3)
@@ -198,26 +208,36 @@ def create_low_medium_high(output_kde_ret_fol_csv_path_param, topic_name, fold_n
         combined_data = list(zip(low_follower_list, medium_follower_list, high_follower_list))
         # print(combined_data)
 
-        df_low_medium_high = pd.DataFrame(combined_data, columns=['Low', 'Medium', 'High'])
-        # print(df_low_medium_high)
+        dataframe_low_medium_high = pd.DataFrame(combined_data, columns=['Low', 'Medium', 'High'])
+        # print(dataframe_low_medium_high)
 
-    return df_low_medium_high
+    return dataframe_low_medium_high
 
 
-def low_medium_high_boxplot_from_df(dataframe_low_medium_high):
-    plotx = dataframe_low_medium_high.boxplot(return_type='both')
+def low_medium_high_boxplot_from_df(df_low_medium_high_param, is_log_y_axis_param):
+    plotx = df_low_medium_high_param.boxplot(return_type='both')
     # plotx = kde_df_ret_fol.boxplot(return_type='both', column='DeltaRetweet')
     # kde_df_ret_fol.plot(title='Delta Retweet - Delta Follower')
     # df_follower.boxplot(by='DeltaRetweet')
     # print(plotx)
-    plt.title('Density of Delta Retweet - Delta Follower Group (Low, Medium, High) Box plot (' + each_topic + ', ' + each_fold + ')')
+
     axes = plt.gca()
     axes.set_ylim([-10, 100])
     axes.set_xlabel("Delta Follower Group")
-    axes.set_ylabel("Density of Delta Retweet")
+    if is_log_y_axis_param:
+        axes.set_ylabel("Density of Log(Delta Retweet)")
+        plt.title('Density of Log(Delta Retweet) - Delta Follower Group (Low, Medium, High) Box plot (' + each_topic + ', ' + each_fold + ')')
+    else:
+        axes.set_ylabel("Density of Delta Retweet")
+        plt.title('Density of Delta Retweet - Delta Follower Group (Low, Medium, High) Box plot (' + each_topic + ', ' + each_fold + ')')
     plt.show()
 
-def print_info_quartile_median(df_low_medium_high_param):
+
+def print_info_quartile_median(df_low_medium_high_param, is_log_y_axis_param):
+    if is_log_y_axis_param:
+        print("Y Axis: Log(Delta Retweet)")
+    else:
+        print("Y Axis: Delta Retweet")
     print("----- Low Delta_Follower -----")
     print("1-Quartile: " + str(df_low_medium_high_param.Low.quantile(q=0.25)))
     print("Median: " + str(df_low_medium_high_param.Low.median()))
@@ -238,12 +258,13 @@ def print_info_quartile_median(df_low_medium_high_param):
 # SET PARAMETER
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
-topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["hormonestheseries", "thefacethailand"]
 # topics = ["thefacethailand"]
-# topics = ["apple"]
-folds = ["1", "2", "3", "4", "5"]
+topics = ["apple"]
+folds = ["1"]
+# folds = ["1", "2", "3", "4", "5"]
 # folds = ["2", "3", "4", "5"]
 # folds = ["3", "4", "5"]
 # folds = ["4", "5"]
@@ -253,6 +274,7 @@ last_hour_app_aroii = 1651
 last_hour_hor_theface = 1627
 
 is_interpolate = False
+is_log_y_axis = True
 
 bound_delta_follower = ['1.67', '7.40',         # Apple 1
                         '2.10', '8.00',         # Apple 2
@@ -349,6 +371,6 @@ for each_choice in y_axis_choices:
             Create Dataframe (Low, Medium, High)
             Plot
             """
-            df_low_medium_high = create_low_medium_high(output_kde_ret_fol_csv, each_topic, each_fold, is_interpolate)
-            print_info_quartile_median(df_low_medium_high)
-            low_medium_high_boxplot_from_df(df_low_medium_high)
+            df_low_medium_high = create_low_medium_high(output_kde_ret_fol_csv, each_topic, each_fold, is_interpolate, is_log_y_axis)
+            # print_info_quartile_median(df_low_medium_high, is_log_y_axis)
+            # low_medium_high_boxplot_from_df(df_low_medium_high, is_log_y_axis)
