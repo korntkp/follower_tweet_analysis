@@ -232,9 +232,44 @@ def explore_diff_ret(list_diff_ret_param, list_diff_fol_param, not_more_than_ret
 # follower_choices = ['follower w/t mc', 'follower w/o mc']
 follower_choices = ['follower w/o mc']
 # topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-topics = ["apple"]
 # folds = ["1", "2", "3", "4", "5"]
-folds = ["1"]
+
+# topics = ["apple"]
+topics = ["aroii"]
+# topics = ["hormonestheseries"]
+# topics = ["thefacethailand"]
+# folds = ["1"]
+# folds = ["2"]
+# folds = ["3"]
+# folds = ["4"]
+folds = ["5"]
+
+"""
+Top(Delta_Follower), Bottom(Delta_Follower), Left(Delta_Retweet), Right(Delta_Retweet)
+"""
+is_remove_outlier = True
+# not_more_than = 580
+
+remove_outlier_both_log = ['-', '-', '-', '-',  # Apple 1
+                           '-', '-', '-', '9.7',
+                           '-', '-', '-', '10',
+                           '-', '-', '-', '8.8',
+                           '-', '-', '-', '10.31',
+                           '-', '-', '-', '10',  # Aroii 1
+                           '-', '-', '-', '10.2',
+                           '6.25', '-', '-', '-',
+                           '6.85', '-', '-', '-',
+                           '6.86', '-', '-', '10',
+                           '-', '-', '-', '-',  # Hormones 1
+                           '-', '-', '-', '-',
+                           '-', '-', '-', '-',
+                           '-', '-', '-', '-',
+                           '-', '-', '-', '-',
+                           '-', '-', '-', '-',  # TheFace 1
+                           '-', '-', '-', '-',
+                           '-', '-', '-', '-',
+                           '-', '-', '-', '-',
+                           '-', '-', '-', '-']
 
 # is_log_delta_retweet = False
 # is_log_delta_follower = True
@@ -249,34 +284,6 @@ min_ret_plot = -5
 max_fol_plot = 10
 min_fol_plot = -1
 is_limit_axis = False
-
-
-"""
-Top(Delta_Follower), Bottom(Delta_Follower), Left(Delta_Retweet), Right(Delta_Retweet)
-"""
-is_remove_outlier = True
-# not_more_than = 580
-
-remove_outlier_both_log = ['-', '-', '-', '-',  # Apple 1
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',  # Aroii 1
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',  # Hormones 1
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',  # TheFace 1
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-',
-                           '-', '-', '-', '-']
 
 remove_outlier_log_fol = ['7.34', '-', '-', '580',  # Apple 1
                           '7', '-', '-', '300',
@@ -363,7 +370,7 @@ for each_choice in follower_choices:
             """
             Explore List of Delta_Retweet
             """
-            explore_diff_ret(list_diff_ret, list_diff_fol, max_ret_plot, max_fol_plot)
+            # explore_diff_ret(list_diff_ret, list_diff_fol, max_ret_plot, max_fol_plot)
 
             """
             Print info
