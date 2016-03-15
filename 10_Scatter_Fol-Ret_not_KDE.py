@@ -217,7 +217,7 @@ follower_choices = ['follower w/o mc']
 # topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 topics = ["aroii"]
 # folds = ["1", "2", "3", "4", "5"]
-folds = ["1"]
+folds = ["5"]
 
 is_log_delta_retweet = False
 is_log_delta_follower = True
@@ -225,7 +225,7 @@ is_log_delta_follower = True
 # is_log_delta_follower = False
 logarithm_base_num = 2
 
-max_ret_plot = 650
+max_ret_plot = 590
 min_ret_plot = -5
 max_fol_plot = 10
 min_fol_plot = -1
@@ -243,11 +243,11 @@ remove_outlier_log_fol = ['7.34', '-', '-', '580',  # Apple 1
                           '-', '-', '-', '240',
                           '6.3', '-', '-', '340',
                           '5.7', '-', '-', '650',
-                          '-', '-', '-', '-',  # Aroii 1
-                          '-', '-', '-', '-',
-                          '-', '-', '-', '-',
-                          '-', '-', '-', '-',
-                          '-', '-', '-', '-',
+                          '-', '-', '-', '640',  # Aroii 1
+                          '7.4', '-', '-', '730',
+                          '6.3', '-', '-', '540',
+                          '7', '-', '-', '610',
+                          '6.5', '-', '-2.5', '590',
                           '-', '-', '-', '-',  # Hormones 1
                           '-', '-', '-', '-',
                           '-', '-', '-', '-',
@@ -280,26 +280,26 @@ remove_outlier_log_ret = ['170', '-', '-', '10.3',  # Apple 1
                           '175', '-', '-', '10.4',
                           '250', '-', '-', '11']
 
-not_remove_outlier = ['-', '-', '-', '-',  # Apple 1
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',  # Aroii 1
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',  # Hormones 1
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',  # TheFace 1
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-',
-                      '-', '-', '-', '-']
+# not_remove_outlier = ['-', '-', '-', '-',  # Apple 1
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',  # Aroii 1
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',  # Hormones 1
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',  # TheFace 1
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-',
+#                       '-', '-', '-', '-']
 
 
 for each_choice in follower_choices:
@@ -344,9 +344,10 @@ for each_choice in follower_choices:
             """
             Scatter Plot (NOT Remove Outlier)
             """
-            # plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
             not_rm_outlier_diff_ret = list(list_diff_ret)
             not_rm_outlier_diff_fol = list(list_diff_fol)
+            plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+
 
             """
             Scatter Plot (Remove Outlier)
@@ -355,7 +356,7 @@ for each_choice in follower_choices:
                 new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_ret, each_topic, each_fold)
             elif is_log_delta_retweet is False and is_log_delta_follower is True:
                 new_list_diff_ret, new_list_diff_fol = remove_more_than_y(list_diff_ret, list_diff_fol, remove_outlier_log_fol, each_topic, each_fold)
-            # plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+            plot_diff_ret_and_diff_fol(new_list_diff_ret, new_list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
             """
             Coefficient of Correlation
