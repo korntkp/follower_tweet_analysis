@@ -117,15 +117,15 @@ def write_date_date_csv(output_path, list_data, start_unix_time, topic_name):
     return
 
 
-def pandas_plot(data_path, topic_name, fold_num):
+def decompose_time_series_plot(data_path, topic_name, fold_num):
 
     kde_follower = pd.read_csv(data_path,
                               names=['DateTime', 'DeltaFollower'],
                               index_col=['DateTime'],
                               parse_dates=True)
 
-    # decomp_freq = int(18*7)
-    decomp_freq = int(1)
+    decomp_freq = int(18*7)
+    # decomp_freq = int(1)
     kde_follower_interpolated_bfill = kde_follower.DeltaFollower.interpolate().bfill()
 
     """
@@ -151,10 +151,10 @@ def pandas_plot(data_path, topic_name, fold_num):
     # ori_interpolated_plot = kde_follower.DeltaFollower.interpolate().plot()
     # ori_interpolated_plot.set_title("Topic: " + str(topic_name) + " Fold: " + str(fold_num))
     # 3 Decomposition Plot
-    # res_plot = res_only_bfill.plot()
+    res_plot = res_only_bfill.plot()
 
     # print(res_only_bfill.trend)
-    # plt.show()
+    plt.show()
     return kde_follower_interpolated_bfill
 
 
@@ -264,15 +264,15 @@ def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
-# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["aroii", "hormonestheseries", "thefacethailand"]
 # topics = ["hormonestheseries", "thefacethailand"]
-topics = ["thefacethailand"]
-# folds = ["1", "2", "3", "4", "5"]
+# topics = ["thefacethailand"]
+folds = ["1", "2", "3", "4", "5"]
 # folds = ["2", "3", "4", "5"]
 # folds = ["3", "4", "5"]
 # folds = ["4", "5"]
-folds = ["5"]
+# folds = ["5"]
 
 unix_time_start = [1447023600, 1447714800]  # 2015-11-09 06:00:00   2015-11-17 06:00:00
 last_hour_app_aroii = 1651
@@ -340,9 +340,9 @@ for each_choice in y_axis_choices:
             Plot Y-Time Graph (Pandas)
             """
             if each_choice == 'follower_wo_mc':
-                df_kde_value = pandas_plot(output_follower_csv, each_topic, each_fold)  # Date Time,Follower_count
+                df_kde_value = decompose_time_series_plot(output_follower_csv, each_topic, each_fold)  # Date Time,Follower_count
             elif each_choice == 'retweet':
-                df_kde_value = pandas_plot(output_retweet_csv, each_topic, each_fold)  # Date Time,Retweet_count
+                df_kde_value = decompose_time_series_plot(output_retweet_csv, each_topic, each_fold)  # Date Time,Retweet_count
             # print(df_kde_value)
 
             """
