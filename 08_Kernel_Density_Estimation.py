@@ -16,7 +16,7 @@ from sklearn.neighbors.kde import KernelDensity
 
 
 def process_data(source_path_param, output, choice):
-    for line in fileinput.input([source_path_param]):
+    for line in fileinput.input([source_path_param], openhook=fileinput.hook_encoded("utf8")):
         value = line.split(',')
         # print(value)
         x = int(value[12].strip())  # hour
@@ -28,6 +28,8 @@ def process_data(source_path_param, output, choice):
         elif choice == 'follower_wo_mc':
             y = float(value[13].strip())  # diff_follower_wo_mc
         output[x].append(y)
+    fileinput.close()
+    return
 
 
 def estimate(input_param, output, hour):
@@ -62,9 +64,10 @@ def estimate(input_param, output, hour):
 
         avg = value/sum_weight
         output.append(avg)
-
+    return
 
 def plot_kde(data_estimate_param, choose_str, topic_name, fold_num):
+    # print("dfgjhjtrter")
     fig, ax = plt.subplots()
     ax.plot(range(0, len(data_estimate_param)), data_estimate_param, label='KDE')
     if topic_name == 'apple' or topic_name == 'aroii':
@@ -84,6 +87,7 @@ def plot_kde(data_estimate_param, choose_str, topic_name, fold_num):
     axes = plt.gca()
     axes.set_xlim([0, len(data_estimate_param)])
     plt.show()
+    return
 
 
 def write_date_date_csv(output_path, list_data, start_unix_time, topic_name):
@@ -151,10 +155,10 @@ def decompose_time_series_plot(data_path, topic_name, fold_num):
     # ori_interpolated_plot = kde_follower.DeltaFollower.interpolate().plot()
     # ori_interpolated_plot.set_title("Topic: " + str(topic_name) + " Fold: " + str(fold_num))
     # 3 Decomposition Plot
-    res_plot = res_only_bfill.plot()
+    # res_plot = res_only_bfill.plot()
 
     # print(res_only_bfill.trend)
-    plt.show()
+    # plt.show()
     return kde_follower_interpolated_bfill
 
 
@@ -229,6 +233,7 @@ def stats_gaussian_kde_plot(dataframe):
 
 
 def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
+    print(dataframe)
     N = dataframe.values.size
     X = dataframe.values[:, np.newaxis]
 
@@ -257,22 +262,18 @@ def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
     ax.set_xlim(0, 6)                                                                                      # SET THISSSSSSSS
     # ax.set_ylim(-0.02, 1)
     ax.set_ylim(-0.02, 1.0)                                                                                 # SET THISSSSSSSS
-
+    ax.set_xlabel("Delta Follower")
+    ax.set_ylabel("Density")
     plt.title('Density - ' + choose_choice + ' (' + topic_name + ', ' + fold_num + ')')
     plt.show()
+    return
+
 
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["hormonestheseries", "thefacethailand"]
-# topics = ["thefacethailand"]
 folds = ["1", "2", "3", "4", "5"]
-# folds = ["2", "3", "4", "5"]
-# folds = ["3", "4", "5"]
-# folds = ["4", "5"]
-# folds = ["5"]
 
 unix_time_start = [1447023600, 1447714800]  # 2015-11-09 06:00:00   2015-11-17 06:00:00
 last_hour_app_aroii = 1651
@@ -294,27 +295,27 @@ for each_choice in y_axis_choices:
             """
             Initial List
             """
-            # if each_topic == "apple" or each_topic == "aroii":
-            #     for i in range(0, last_hour_app_aroii):
-            #         data.append([])
-            # else:
-            #     for i in range(0, last_hour_hor_theface):
-            #         data.append([])
+            if each_topic == "apple" or each_topic == "aroii":
+                for i in range(0, last_hour_app_aroii):
+                    data.append([])
+            else:
+                for i in range(0, last_hour_hor_theface):
+                    data.append([])
 
             """
             Read data from file (06_diff_ret_fol_result) and collect in array
             (Select 'Retweet', 'Follower' by y_axis_choices parameter)
             """
-            # process_data(source_path, data, each_choice)
+            process_data(source_path, data, each_choice)
             # print(data)
 
             """
             KDE processing
             """
-            # for i in range(0, len(data)):
-            #     estimate(data[i], data_estimate, i)
-            # # print(len(data_estimate))
-            # print(data_estimate)
+            for i in range(0, len(data)):
+                estimate(data[i], data_estimate, i)
+            # print(len(data_estimate))
+            print(data_estimate)
 
             # for i in range(0, len(data_estimate)):
             #     # if data_estimate[i] > 7:
@@ -326,10 +327,11 @@ for each_choice in y_axis_choices:
             """
             Plot KDE_interpolated(Delta_Retweet or Delta_Follower) - Time(Hours)
             """
+            # print(data_estimate)
             # plot_kde(data_estimate, each_choice, each_topic, each_fold)
 
             """
-            Write Data
+            !!!!! Write Data !!!!!
             """
             # if each_choice == 'follower_wo_mc':
             #     write_date_date_csv(output_follower_csv, data_estimate, unix_time_start, each_topic)
@@ -348,7 +350,7 @@ for each_choice in y_axis_choices:
             """
             KDE Plot 1 (sklearn.neighbors.kde) OK
             """
-            sklearn_kde_plot(df_kde_value, each_choice, each_topic, each_fold)
+            # sklearn_kde_plot(df_kde_value, each_choice, each_topic, each_fold)
             print(df_kde_value)
 
             # ================================ Unused =====================================
