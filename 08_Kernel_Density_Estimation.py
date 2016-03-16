@@ -158,8 +158,10 @@ def decompose_time_series_plot(data_path, topic_name, fold_num):
     # res_plot = res_only_bfill.plot()
 
     # print(res_only_bfill.trend)
+
+    # print(res_only_bfill)
     # plt.show()
-    return kde_follower_interpolated_bfill
+    return kde_follower_interpolated_bfill, res_only_bfill
 
 
 def plot_diff_ret_and_diff_fol(list_ret, list_fol, choose_str, topic_name, fold_num, is_log_delta_retweet_param, is_log_delta_follower_param, is_limit_axis_param, max_fol, max_ret, min_fol, min_ret):
@@ -233,7 +235,7 @@ def stats_gaussian_kde_plot(dataframe):
 
 
 def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
-    print(dataframe)
+    # print(dataframe)
     N = dataframe.values.size
     X = dataframe.values[:, np.newaxis]
 
@@ -241,7 +243,7 @@ def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
     X_plot = np.linspace(min(dataframe.values), 6, num=500)[:, np.newaxis]                                     # SET THISS
     # X_plot = np.linspace(min(dataframe.values), 10, num=500)[:, np.newaxis]
     # print(min(dataframe.values))
-    print(max(dataframe.values))
+    # print(max(dataframe.values))
     # print(dataframe)
 
     true_dens = (0.3 * norm(0, 1).pdf(X_plot[:, 0]) + 0.7 * norm(5, 1).pdf(X_plot[:, 0]))
@@ -270,8 +272,9 @@ def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
 
 
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
-y_axis_choices = ['follower_wo_mc']
-# y_axis_choices = ['retweet']
+# y_axis_choices = ['retweet', 'follower_wo_mc']
+# y_axis_choices = ['follower_wo_mc']
+y_axis_choices = ['retweet']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
 folds = ["1", "2", "3", "4", "5"]
 
@@ -291,6 +294,7 @@ for each_choice in y_axis_choices:
             # source_path = "E:/tweet_process/result_follower-ret/06_diff_ret_fol_result/aroii/fold_1/t1.csv"
             output_follower_csv = "E:/tweet_process/result_follower-ret/07_follower_csv/" + each_topic + "/date_" + each_choice + "_" + each_fold + ".csv"
             output_retweet_csv = "E:/tweet_process/result_follower-ret/08_retweet_csv/" + each_topic + "/date_" + each_choice + "_" + each_fold + ".csv"
+            output_decomposition = "E:/tweet_process/result_follower-ret/11_trend_decomposed/" + each_topic + "/decomposition_" + each_fold + "_" + each_choice + ".csv"
 
             """
             Initial List
@@ -306,16 +310,16 @@ for each_choice in y_axis_choices:
             Read data from file (06_diff_ret_fol_result) and collect in array
             (Select 'Retweet', 'Follower' by y_axis_choices parameter)
             """
-            process_data(source_path, data, each_choice)
+            # process_data(source_path, data, each_choice)
             # print(data)
 
             """
             KDE processing
             """
-            for i in range(0, len(data)):
-                estimate(data[i], data_estimate, i)
+            # for i in range(0, len(data)):
+            #     estimate(data[i], data_estimate, i)
             # print(len(data_estimate))
-            print(data_estimate)
+            # print(data_estimate)
 
             # for i in range(0, len(data_estimate)):
             #     # if data_estimate[i] > 7:
@@ -342,16 +346,30 @@ for each_choice in y_axis_choices:
             Plot Y-Time Graph (Pandas)
             """
             if each_choice == 'follower_wo_mc':
-                df_kde_value = decompose_time_series_plot(output_follower_csv, each_topic, each_fold)  # Date Time,Follower_count
+                df_kde_value, decomposed_value = decompose_time_series_plot(output_follower_csv, each_topic, each_fold)  # Date Time,Follower_count
             elif each_choice == 'retweet':
-                df_kde_value = decompose_time_series_plot(output_retweet_csv, each_topic, each_fold)  # Date Time,Retweet_count
+                df_kde_value, decomposed_value = decompose_time_series_plot(output_retweet_csv, each_topic, each_fold)  # Date Time,Retweet_count
             # print(df_kde_value)
+
+            """
+            Write Trend
+            """
+            # decomposed_value.trend.tofile(output_decomposition, sep='\n')
+            # print(decomposed_value.trend)
+
+            """
+            !!!!! Write Data Trend from Decomposition !!!!!
+            """
+            # if each_choice == 'follower_wo_mc':
+            #     write_date_date_csv(output_follower_csv, data_estimate, unix_time_start, each_topic)
+            # elif each_choice == 'retweet':
+            #     write_date_date_csv(output_retweet_csv, data_estimate, unix_time_start, each_topic)
 
             """
             KDE Plot 1 (sklearn.neighbors.kde) OK
             """
             # sklearn_kde_plot(df_kde_value, each_choice, each_topic, each_fold)
-            print(df_kde_value)
+            # print(df_kde_value)
 
             # ================================ Unused =====================================
             # """
