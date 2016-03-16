@@ -281,7 +281,7 @@ last_hour_hor_theface = 1627
 
 is_interpolate = False
 
-is_log_y_axis = False
+is_log_y_axis = True
 logarithm_base_num = 2
 
 bound_delta_follower = ['1.67', '7.40',         # Apple 1
