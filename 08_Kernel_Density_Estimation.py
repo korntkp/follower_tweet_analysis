@@ -157,6 +157,7 @@ def decompose_time_series_plot(data_path, topic_name, fold_num, is_plot_decompos
     # 3 Decomposition Plot
     if is_plot_decompose_param:
         res_plot = res_only_bfill.plot()
+        # plt.title('Decomposition of Delta Retweet) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
         plt.show()
 
     # print(res_only_bfill.trend)
@@ -241,7 +242,7 @@ def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
     X = dataframe.values[:, np.newaxis]
 
     # X_plot = np.linspace(min(dataframe.values), max(dataframe.values), num=500)[:, np.newaxis]
-    X_plot = np.linspace(min(dataframe.values), 6, num=500)[:, np.newaxis]                                     # SET THISS
+    X_plot = np.linspace(min(dataframe.values), 10, num=500)[:, np.newaxis]                                     # SET THISS
     # X_plot = np.linspace(min(dataframe.values), 10, num=500)[:, np.newaxis]
     # print(min(dataframe.values))
     # print(max(dataframe.values))
@@ -249,7 +250,7 @@ def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
 
     true_dens = (0.3 * norm(0, 1).pdf(X_plot[:, 0]) + 0.7 * norm(5, 1).pdf(X_plot[:, 0]))
     fig, ax = plt.subplots()
-    ax.fill(X_plot, true_dens, fc='black', alpha=0.2, label='input distribution')
+    # ax.fill(X_plot, true_dens, fc='black', alpha=0.2, label='input distribution')
 
     # kde = KernelDensity(kernel='gaussian', bandwidth=0.005).fit(X)  # 'tophat', 'epanechnikov'
     kde = KernelDensity(kernel='gaussian', bandwidth=0.01).fit(X)  # 'tophat', 'epanechnikov'              SET THISSSSSSSS
@@ -258,11 +259,11 @@ def sklearn_kde_plot(dataframe, choose_choice, topic_name, fold_num):
 
     ax.text(6, 0.38, "N={0} points".format(N))
     ax.legend(loc='upper right')
-    ax.plot(X[:, 0], -0.005 - 0.0005 * np.random.random(X.shape[0]), '+k')
-    # ax.plot(X[:, 0], -0.005 - 0.005 * np.random.random(X.shape[0]), '+k')
+    # ax.plot(X[:, 0], -0.005 - 0.0005 * np.random.random(X.shape[0]), '+k')
+    ax.plot(X[:, 0], -0.005 - 0.005 * np.random.random(X.shape[0]), '+k')
 
     # ax.set_xlim(min(dataframe.values), max(dataframe.values))
-    ax.set_xlim(0, 6)                                                                                      # SET THISSSSSSSS
+    ax.set_xlim(0, 10)                                                                                      # SET THISSSSSSSS
     # ax.set_ylim(-0.02, 1)
     ax.set_ylim(-0.02, 1.0)                                                                                 # SET THISSSSSSSS
     ax.set_xlabel("Delta Follower")
@@ -286,6 +287,9 @@ last_hour_hor_theface = 1627
 is_plot_kde = False
 is_plot_decompose = False
 is_plot_sklearn_kde = True
+
+is_write_decomposed_trend = False
+is_write_date_time_kde_value = False
 
 for each_choice in y_axis_choices:
     for each_topic in topics:
@@ -343,10 +347,11 @@ for each_choice in y_axis_choices:
             """
             !!!!! Write Data !!!!!
             """
-            # if each_choice == 'follower_wo_mc':
-            #     write_date_date_csv(output_follower_csv, data_estimate, unix_time_start, each_topic)
-            # elif each_choice == 'retweet':
-            #     write_date_date_csv(output_retweet_csv, data_estimate, unix_time_start, each_topic)
+            if is_write_date_time_kde_value:
+                if each_choice == 'follower_wo_mc':
+                    write_date_date_csv(output_follower_csv, data_estimate, unix_time_start, each_topic)
+                elif each_choice == 'retweet':
+                    write_date_date_csv(output_retweet_csv, data_estimate, unix_time_start, each_topic)
 
             """
             Plot Y-Time Graph (Pandas)
@@ -361,23 +366,15 @@ for each_choice in y_axis_choices:
             """
             !!!!! Write Data Trend from Decomposition !!!!!
             """
-            # decomposed_value.trend.tofile(output_decomposition, sep='\n')
+            if is_write_decomposed_trend:
+                decomposed_value.trend.tofile(output_decomposition, sep='\n')
             # print(decomposed_value.trend)
-
-            """
-            !!!!! Write Data !!!!!
-            """
-            # if each_choice == 'follower_wo_mc':
-            #     write_date_date_csv(output_follower_csv, data_estimate, unix_time_start, each_topic)
-            # elif each_choice == 'retweet':
-            #     write_date_date_csv(output_retweet_csv, data_estimate, unix_time_start, each_topic)
 
             """
             KDE Plot 1 (sklearn.neighbors.kde) OK
             """
             if is_plot_sklearn_kde:
                 sklearn_kde_plot(df_kde_value, each_choice, each_topic, each_fold)
-            # sklearn_kde_plot(df_kde_value, each_choice, each_topic, each_fold)
             # print(df_kde_value)
 
             # ================================ Unused =====================================
