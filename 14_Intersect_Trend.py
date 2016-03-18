@@ -1,6 +1,7 @@
 import fileinput
-import math
+from math import *
 from statistics import *
+import matplotlib.pyplot as plt
 
 
 def read_csv_file(source_path_param):
@@ -12,12 +13,101 @@ def read_csv_file(source_path_param):
     fileinput.close()
     return list1
 
+
+def two_plot_before(before_scale_retweet, before_scale_follower, choose_str, topic_name, fold_num):
+    # print("dfgjhjtrter")
+    fig, ax = plt.subplots()
+
+    ax.plot(range(0, len(before_scale_retweet)), before_scale_retweet, '-', label='Before Scale Retweet')
+    ax.plot(range(0, len(before_scale_follower)), before_scale_follower, '-', label='Before Scale Follower')
+
+    if topic_name == 'apple' or topic_name == 'aroii':
+        ax.set_xlabel("Time(Hour) from 17-Nov-2015 06:00 am")
+    elif topic_name == 'hormonestheseries' or topic_name == 'thefacethailand':
+        ax.set_xlabel("Time(Hour) from 09-Nov-2015 06:00 am")
+
+    if choose_str == 'follower_wt_mc':
+        ax.set_ylabel('Delta Follower with Message Count')
+        ax.set_title('Graph of Time and Delta Follower(with Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    elif choose_str == 'follower_wo_mc':
+        ax.set_ylabel('Delta Follower without Message Count')
+        ax.set_title('Graph of Time and Delta Follower(without Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    elif choose_str == 'retweet':
+        ax.set_ylabel('Delta Retweet')
+        ax.set_title('Graph of Time and Delta Retweet [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    axes = plt.gca()
+    axes.set_xlim([0, len(before_scale_retweet)])
+    axes.legend(loc='upper right')
+
+    plt.show()
+    return
+
+
+def two_plot_after(after_scale_retweet, after_scale_follower, choose_str, topic_name, fold_num):
+    # print("dfgjhjtrter")
+    fig, ax = plt.subplots()
+
+    ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', label='after Scale Retweet')
+    ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', label='after Scale Follower')
+
+    if topic_name == 'apple' or topic_name == 'aroii':
+        ax.set_xlabel("Time(Hour) from 17-Nov-2015 06:00 am")
+    elif topic_name == 'hormonestheseries' or topic_name == 'thefacethailand':
+        ax.set_xlabel("Time(Hour) from 09-Nov-2015 06:00 am")
+
+    if choose_str == 'follower_wt_mc':
+        ax.set_ylabel('Delta Follower with Message Count')
+        ax.set_title('Graph of Time and Delta Follower(with Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    elif choose_str == 'follower_wo_mc':
+        ax.set_ylabel('Delta Follower without Message Count')
+        ax.set_title('Graph of Time and Delta Follower(without Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    elif choose_str == 'retweet':
+        ax.set_ylabel('Delta Retweet')
+        ax.set_title('Graph of Time and Delta Retweet [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    axes = plt.gca()
+    axes.set_xlim([0, len(after_scale_retweet)])
+    axes.legend(loc='upper right')
+
+    plt.show()
+    return
+
+
+def four_plot(before_scale_retweet, after_scale_retweet, before_scale_follower, after_scale_follower, choose_str, topic_name, fold_num):
+    # print("dfgjhjtrter")
+    fig, ax = plt.subplots()
+
+    ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', label='After Scale Retweet')
+    ax.plot(range(0, len(before_scale_retweet)), before_scale_retweet, '-', label='Before Scale Retweet')
+    ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', label='After Scale Follower')
+    ax.plot(range(0, len(before_scale_follower)), before_scale_follower, '-', label='Before Scale Follower')
+
+    if topic_name == 'apple' or topic_name == 'aroii':
+        ax.set_xlabel("Time(Hour) from 17-Nov-2015 06:00 am")
+    elif topic_name == 'hormonestheseries' or topic_name == 'thefacethailand':
+        ax.set_xlabel("Time(Hour) from 09-Nov-2015 06:00 am")
+
+    if choose_str == 'follower_wt_mc':
+        ax.set_ylabel('Delta Follower with Message Count')
+        ax.set_title('Graph of Time and Delta Follower(with Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    elif choose_str == 'follower_wo_mc':
+        ax.set_ylabel('Delta Follower without Message Count')
+        ax.set_title('Graph of Time and Delta Follower(without Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    elif choose_str == 'retweet':
+        ax.set_ylabel('Delta Retweet')
+        ax.set_title('Graph of Time and Delta Retweet [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    axes = plt.gca()
+    axes.set_xlim([0, len(after_scale_retweet)])
+    axes.legend(loc='upper right')
+
+    plt.show()
+    return
+
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
-# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-topics = ["apple"]
-# folds = ["1", "2", "3", "4", "5"]
-folds = ["1"]
+topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+# topics = ["apple"]
+folds = ["1", "2", "3", "4", "5"]
+# folds = ["1"]
 
 for each_choice in y_axis_choices:
     for each_topic in topics:
@@ -41,6 +131,9 @@ for each_choice in y_axis_choices:
             count_follower = 0
             only_value_follower = []
 
+            new_scale_retweet = []
+            new_scale_follower = []
+
             for i in range(0, len(retweet_list)):
                 if retweet_list[i] != 'nan' and retweet_list[i] != 'na':
                     sum_of_retweet += float(retweet_list[i])
@@ -56,38 +149,25 @@ for each_choice in y_axis_choices:
             sd_retweet = pstdev(only_value_retweet)
             sd_follower = pstdev(only_value_follower)
 
-            # for j in range(0, len(only_value_follower)):
-            #     print(str(only_value_follower[j]) + ", ")
-
-            # print(sum_of_retweet)
-            # print(count_reweet)
-            # print("Average Retweet:", avg_retweet)
-
             print("Sum Follower:", sum_of_follower)
             print("Sum Retweet:", sum_of_retweet)
             print("N: ", count_follower)
             print("Average Follower:", avg_follower)
             print("Average Retweet:", avg_retweet)
-
-            """
-            PLEASE CHECK (sd)
-            https://www.easycalculation.com/statistics/standard-deviation.php
-            OK
-            """
-            # print(sd_retweet)
             print("Standard Variable Follower:", sd_follower)
             print("Standard Variable Retweet:", sd_retweet)
 
-            new_scale_retweet = []
-            new_scale_follower = []
-
-            print(len(only_value_retweet))
-            print(count_reweet)
-
             for i in range(0, len(only_value_retweet)):
-                print(only_value_retweet[i])
-                new_scale_retweet[i] = float((only_value_retweet[i] - avg_retweet) / (sd_retweet * count_reweet))
-                print(new_scale_retweet[i])
+                new_scale_retweet.append((only_value_retweet[i] - avg_retweet) / (sd_retweet * sqrt(count_reweet)))
+                new_scale_follower.append((only_value_follower[i] - avg_follower) / (sd_follower * sqrt(count_follower)))
 
             print(only_value_retweet)
             print(new_scale_retweet)
+
+            print(only_value_follower)
+            print(new_scale_follower)
+
+
+            two_plot_before(only_value_retweet, only_value_follower, 'follower_wo_mc', each_topic, each_fold)
+            two_plot_after(new_scale_retweet, new_scale_follower, 'follower_wo_mc', each_topic, each_fold)
+            # four_plot(only_value_retweet, new_scale_retweet, only_value_follower, new_scale_follower, 'follower_wo_mc', each_topic, each_fold)
