@@ -139,6 +139,8 @@ for each_choice in y_axis_choices:
             for i in range(0, len(only_value_retweet)):
                 new_scale_retweet.append((only_value_retweet[i] - avg_retweet) / (sd_retweet * sqrt(count_retweet)))
                 new_scale_follower.append((only_value_follower[i] - avg_follower) / (sd_follower * sqrt(count_follower)))
+                # new_scale_retweet.append((only_value_retweet[i] - avg_retweet) / (sd_retweet * count_retweet))
+                # new_scale_follower.append((only_value_follower[i] - avg_follower) / (sd_follower * count_follower))
 
             print(only_value_retweet)
             print(new_scale_retweet)
