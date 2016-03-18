@@ -14,8 +14,10 @@ def read_csv_file(source_path_param):
 
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
-topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-folds = ["1", "2", "3", "4", "5"]
+# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["apple"]
+# folds = ["1", "2", "3", "4", "5"]
+folds = ["1"]
 
 for each_choice in y_axis_choices:
     for each_topic in topics:
@@ -48,22 +50,44 @@ for each_choice in y_axis_choices:
                     sum_of_follower += float(follower_list[i])
                     count_follower += 1
                     only_value_follower.append(float(follower_list[i]))
+
             avg_retweet = sum_of_retweet / count_reweet
             avg_follower = sum_of_follower / count_follower
             sd_retweet = pstdev(only_value_retweet)
             sd_follower = pstdev(only_value_follower)
 
+            # for j in range(0, len(only_value_follower)):
+            #     print(str(only_value_follower[j]) + ", ")
+
             # print(sum_of_retweet)
             # print(count_reweet)
             # print("Average Retweet:", avg_retweet)
-            #
-            # print(sum_of_follower)
-            # print(count_follower)
-            # print("Average Follower:", avg_follower)
+
+            print("Sum Follower:", sum_of_follower)
+            print("Sum Retweet:", sum_of_retweet)
+            print("N: ", count_follower)
+            print("Average Follower:", avg_follower)
+            print("Average Retweet:", avg_retweet)
 
             """
             PLEASE CHECK (sd)
             https://www.easycalculation.com/statistics/standard-deviation.php
+            OK
             """
-            print(sd_retweet)
-            print(sd_follower)
+            # print(sd_retweet)
+            print("Standard Variable Follower:", sd_follower)
+            print("Standard Variable Retweet:", sd_retweet)
+
+            new_scale_retweet = []
+            new_scale_follower = []
+
+            print(len(only_value_retweet))
+            print(count_reweet)
+
+            for i in range(0, len(only_value_retweet)):
+                print(only_value_retweet[i])
+                new_scale_retweet[i] = float((only_value_retweet[i] - avg_retweet) / (sd_retweet * count_reweet))
+                print(new_scale_retweet[i])
+
+            print(only_value_retweet)
+            print(new_scale_retweet)
