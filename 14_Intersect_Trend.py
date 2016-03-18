@@ -83,10 +83,10 @@ def four_plot(before_scale_retweet, after_scale_retweet, before_scale_follower, 
 
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
-topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["apple"]
-folds = ["1", "2", "3", "4", "5"]
-# folds = ["5"]
+# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["apple"]
+# folds = ["1", "2", "3", "4", "5"]
+folds = ["3"]
 
 for each_choice in y_axis_choices:
     for each_topic in topics:
@@ -148,6 +148,8 @@ for each_choice in y_axis_choices:
             # print("Standard Variable Retweet:", sd_retweet)
 
             for i in range(0, len(only_value_retweet)):
+                # new_scale_retweet.append((only_value_retweet[i] - avg_retweet) / (sd_retweet * sqrt(count_retweet)))
+                # new_scale_follower.append((only_value_follower[i] - avg_follower) / (sd_follower * sqrt(count_follower)))
                 new_scale_retweet.append((only_value_retweet[i] - avg_retweet) / (sd_retweet * sqrt(count_retweet)))
                 new_scale_follower.append((only_value_follower[i] - avg_follower) / (sd_follower * sqrt(count_follower)))
 
@@ -178,25 +180,40 @@ for each_choice in y_axis_choices:
                 lowest_trend_ret_fol = lowest_trend_fol
             # print("The Lowest of Retweet", lowest_trend_ret)
             # print("The Lowest of Follower", lowest_trend_fol)
-            # print("The Lowest of Retweet and Follower", lowest_trend_ret_fol)
+            print("The Lowest of Retweet and Follower", lowest_trend_ret_fol)
 
             """
             Find Diff from The Lowest
             """
+            print("index 0:", new_scale_follower[0])
+            print(new_scale_follower[0] - lowest_trend_ret_fol)
+
+            # print(min(new_scale_retweet))
+            # print(min(new_scale_follower))
+            # print(new_scale_retweet)
+            # print(new_scale_follower)
+
             diff_from_lowest_retweet = []
             diff_from_lowest_follower = []
             sum_area_retweet = 0
             sum_area_follower = 0
             for i in range(0, len(new_scale_retweet)):
-                diff_from_lowest_retweet.append(new_scale_retweet[i] - lowest_trend_ret_fol)
-                diff_from_lowest_follower.append(new_scale_follower[i] - lowest_trend_ret_fol)
-                print(diff_from_lowest_retweet[i])
-                print(diff_from_lowest_follower[i])
+                temp_diff_retweet = new_scale_retweet[i] - lowest_trend_ret_fol
+                temp_diff_follower = new_scale_follower[i] - lowest_trend_ret_fol
+                print(temp_diff_retweet)
+                print(temp_diff_follower)
+
+                diff_from_lowest_retweet.append(temp_diff_retweet)
+                diff_from_lowest_follower.append(temp_diff_follower)
+
+                print(diff_from_lowest_retweet)
+                print(diff_from_lowest_follower)
+
                 # sum_area_retweet += diff_from_lowest_retweet[i]
                 # sum_area_follower += diff_from_lowest_follower[i]
 
-            # print(sum(diff_from_lowest_retweet))
-            # print(sum(diff_from_lowest_follower))
+            # print(mean(diff_from_lowest_retweet))
+            # print(mean(diff_from_lowest_follower))
             # print(diff_from_lowest_retweet)
             # print(diff_from_lowest_follower)
             # print(sum_area_retweet)
