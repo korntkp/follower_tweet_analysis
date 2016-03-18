@@ -102,17 +102,18 @@ def estimate(input_param, output, hour):
 
 def normal_boxplot(output_kde_ret_fol_csv_path_param):
     kde_df_ret_fol = pd.read_csv(output_kde_ret_fol_csv_path_param, names=['DeltaRetweet', 'DeltaFollower'])
-    kde_df_ret_fol2 = pd.read_csv(output_kde_ret_fol_csv_path_param, names=['DeltaRetweet2', 'DeltaFollower2'])
+    # kde_df_ret_fol2 = pd.read_csv(output_kde_ret_fol_csv_path_param, names=['DeltaRetweet2', 'DeltaFollower2'])
     print(kde_df_ret_fol)
     plotx = kde_df_ret_fol.boxplot(return_type='both')
-    plotx2 = kde_df_ret_fol2.boxplot(return_type='both')
+    # plotx2 = kde_df_ret_fol2.boxplot(return_type='both')
+
     # plotx = kde_df_ret_fol.boxplot(return_type='both', column='DeltaRetweet')
     # kde_df_ret_fol.plot(title='Delta Retweet - Delta Follower')
     # df_follower.boxplot(by='DeltaRetweet')
     print(plotx)
     plt.title('Delta Retweet - Delta Follower (' + each_topic + ', ' + each_fold + ')')
     axes = plt.gca()
-    axes.set_ylim([-10, 80])
+    axes.set_ylim([-10, 50])
     plt.show()
 
 
@@ -241,40 +242,31 @@ def low_medium_high_boxplot_from_df(df_low_medium_high_param, is_log_y_axis_para
 
 
 def print_info_quartile_median(df_low_medium_high_param, is_log_y_axis_param):
-    if is_log_y_axis_param:
-        print("Y Axis: Log(Delta Retweet)")
-    else:
-        print("Y Axis: Delta Retweet")
-    print("----- Low Delta_Follower -----")
-    print("1-Quartile: " + str(df_low_medium_high_param.Low.quantile(q=0.25)))
+    # if is_log_y_axis_param:
+    #     print("Y Axis: Log(Delta Retweet)")
+    # else:
+    #     print("Y Axis: Delta Retweet")
+    # print("----- Low Delta_Follower -----")
+    # print("1-Quartile: " + str(df_low_medium_high_param.Low.quantile(q=0.25)))
     print("Median: " + str(df_low_medium_high_param.Low.median()))
-    print("3-Quartile: " + str(df_low_medium_high_param.Low.quantile(q=0.75)))
+    # print("3-Quartile: " + str(df_low_medium_high_param.Low.quantile(q=0.75)))
 
-    print("----- Medium Delta_Follower -----")
-    print("1-Quartile: " + str(df_low_medium_high_param.Medium.quantile(q=0.25)))
+    # print("----- Medium Delta_Follower -----")
+    # print("1-Quartile: " + str(df_low_medium_high_param.Medium.quantile(q=0.25)))
     print("Median: " + str(df_low_medium_high_param.Medium.median()))
-    print("3-Quartile: " + str(df_low_medium_high_param.Medium.quantile(q=0.75)))
+    # print("3-Quartile: " + str(df_low_medium_high_param.Medium.quantile(q=0.75)))
 
-    print("----- High Delta_Follower -----")
-    print("1-Quartile: " + str(df_low_medium_high_param.High.quantile(q=0.25)))
+    # print("----- High Delta_Follower -----")
+    # print("1-Quartile: " + str(df_low_medium_high_param.High.quantile(q=0.25)))
     print("Median: " + str(df_low_medium_high_param.High.median()))
-    print("3-Quartile: " + str(df_low_medium_high_param.High.quantile(q=0.75)))
+    # print("3-Quartile: " + str(df_low_medium_high_param.High.quantile(q=0.75)))
 
 
 # SET PARAMETER
 # y_axis_choices = ['retweet', 'follower_wt_mc', 'follower_wo_mc']
 y_axis_choices = ['follower_wo_mc']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["hormonestheseries", "thefacethailand"]
-# topics = ["thefacethailand"]
-# topics = ["apple"]
-# folds = ["1"]
 folds = ["1", "2", "3", "4", "5"]
-# folds = ["2", "3", "4", "5"]
-# folds = ["3", "4", "5"]
-# folds = ["4", "5"]
-# folds = ["5"]
 
 last_hour_app_aroii = 1651
 last_hour_hor_theface = 1627
@@ -284,26 +276,26 @@ is_interpolate = False
 is_log_y_axis = True
 logarithm_base_num = 2
 
-bound_delta_follower = ['1.67', '7.40',         # Apple 1
-                        '2.10', '8.00',         # Apple 2
-                        '3.8', '16.6',          # Apple 3
-                        '2.2', '4.4',           # Apple 4
-                        '3.53', '6.2',          # Apple 5
-                        '0.92', '2.1',          # Aroii 1
-                        '7.3', '12.1',          # Aroii 2
-                        '0.585', '1.2',         # Aroii 3
-                        '0.98', '1.76',         # Aroii 4
-                        '2.7', '4.1',           # Aroii 5
-                        '1.1', '2.35',        # Hormones 1
-                        '2.7', '3.9',        # Hormones 2   Shit
-                        '6.52', '10',        # Hormones 3
-                        '2.25', '4.1',        # Hormones 4
-                        '2.5', '5',        # Hormones 5
-                        '1.59', '3.5',        # TheFace 1
-                        '0.995', '1.51',        # TheFace 2
-                        '4.7', '7.3',        # TheFace 3        Shit
-                        '2.8', '4.1',        # TheFace 4
-                        '2.87', '4.75']        # TheFace 5
+bound_delta_follower = ['1.67',  '7.40',         # Apple 1
+                        '2.10',  '8.00',         # Apple 2
+                        '3.8',   '16.6',         # Apple 3
+                        '2.2',   '4.4',          # Apple 4
+                        '3.53',  '6.2',          # Apple 5
+                        '0.92',  '2.1',          # Aroii 1
+                        '7.3',   '12.1',         # Aroii 2
+                        '0.585', '1.2',          # Aroii 3
+                        '0.98',  '1.76',         # Aroii 4
+                        '2.7',   '4.1',          # Aroii 5
+                        '1.1',   '2.35',         # Hormones 1
+                        '2.7',   '3.9',          # Hormones 2    !!!
+                        '6.52',  '10',           # Hormones 3
+                        '2.25',  '4.1',          # Hormones 4
+                        '2.5',   '5',            # Hormones 5
+                        '1.59',  '3.5',          # TheFace 1
+                        '0.995', '1.51',         # TheFace 2
+                        '4.7',   '7.3',          # TheFace 3     !!!
+                        '2.8',   '4.1',          # TheFace 4
+                        '2.87',  '4.75']         # TheFace 5
 
 
 for each_choice in y_axis_choices:
@@ -381,4 +373,4 @@ for each_choice in y_axis_choices:
             """
             df_low_medium_high = create_low_medium_high(output_kde_ret_fol_csv, each_topic, each_fold, is_interpolate, is_log_y_axis, logarithm_base_num)
             print_info_quartile_median(df_low_medium_high, is_log_y_axis)
-            low_medium_high_boxplot_from_df(df_low_medium_high, is_log_y_axis)
+            # low_medium_high_boxplot_from_df(df_low_medium_high, is_log_y_axis)

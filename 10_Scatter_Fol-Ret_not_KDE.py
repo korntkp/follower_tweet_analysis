@@ -236,12 +236,12 @@ folds = ["1", "2", "3", "4", "5"]
 
 # is_log_delta_retweet = False
 # is_log_delta_follower = True
-# is_log_delta_retweet = True
-# is_log_delta_follower = False
+is_log_delta_retweet = True
+is_log_delta_follower = False
 # is_log_delta_retweet = True
 # is_log_delta_follower = True
-is_log_delta_retweet = False
-is_log_delta_follower = False
+# is_log_delta_retweet = False
+# is_log_delta_follower = False
 logarithm_base_num = 2
 
 max_ret_plot = 10

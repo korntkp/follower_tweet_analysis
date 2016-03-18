@@ -1,4 +1,6 @@
 import fileinput
+import math
+from statistics import *
 
 
 def read_csv_file(source_path_param):
@@ -31,24 +33,37 @@ for each_choice in y_axis_choices:
 
             sum_of_retweet = 0
             count_reweet = 0
+            only_value_retweet = []
 
             sum_of_follower = 0
             count_follower = 0
+            only_value_follower = []
 
             for i in range(0, len(retweet_list)):
                 if retweet_list[i] != 'nan' and retweet_list[i] != 'na':
                     sum_of_retweet += float(retweet_list[i])
                     count_reweet += 1
+                    only_value_retweet.append(float(retweet_list[i]))
                 if follower_list[i] != 'nan' and follower_list[i] != 'na':
                     sum_of_follower += float(follower_list[i])
                     count_follower += 1
+                    only_value_follower.append(float(follower_list[i]))
             avg_retweet = sum_of_retweet / count_reweet
             avg_follower = sum_of_follower / count_follower
-            
-            print(sum_of_retweet)
-            print(count_reweet)
-            print("Average Retweet:", avg_retweet)
+            sd_retweet = pstdev(only_value_retweet)
+            sd_follower = pstdev(only_value_follower)
 
-            print(sum_of_follower)
-            print(count_follower)
-            print("Average Follower:", avg_follower)
+            # print(sum_of_retweet)
+            # print(count_reweet)
+            # print("Average Retweet:", avg_retweet)
+            #
+            # print(sum_of_follower)
+            # print(count_follower)
+            # print("Average Follower:", avg_follower)
+
+            """
+            PLEASE CHECK (sd)
+            https://www.easycalculation.com/statistics/standard-deviation.php
+            """
+            print(sd_retweet)
+            print(sd_follower)
