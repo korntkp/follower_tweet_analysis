@@ -83,10 +83,10 @@ def four_plot(before_scale_retweet, after_scale_retweet, before_scale_follower, 
 
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
-topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["apple"]
-folds = ["1", "2", "3", "4", "5"]
-# folds = ["1"]
+# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["apple"]
+# folds = ["1", "2", "3", "4", "5"]
+folds = ["5"]
 
 for each_choice in y_axis_choices:
     for each_topic in topics:
@@ -128,24 +128,36 @@ for each_choice in y_axis_choices:
             sd_retweet = pstdev(only_value_retweet)
             sd_follower = pstdev(only_value_follower)
 
-            print("Sum Follower:", sum_of_follower)
-            print("Sum Retweet:", sum_of_retweet)
-            print("N: ", count_follower)
-            print("Average Follower:", avg_follower)
-            print("Average Retweet:", avg_retweet)
-            print("Standard Variable Follower:", sd_follower)
-            print("Standard Variable Retweet:", sd_retweet)
+            """
+            Manual Standard Deviation
+            """
+            # sum_sqr_retweet = 0
+            # for i in range(0, len(only_value_retweet)):
+            #     sum_sqr_retweet += (only_value_retweet[i] - avg_retweet) * (only_value_retweet[i] - avg_retweet)
+            # sd_retweet_manual = sqrt(sum_sqr_retweet / count_retweet)
+            # sum_sqr_follower = 0
+            # for i in range(0, len(only_value_follower)):
+            #     sum_sqr_follower += (only_value_follower[i] - avg_follower) * (only_value_follower[i] - avg_follower)
+            # sd_follower_manual = sqrt(sum_sqr_follower / count_follower)
+
+            # print("Sum Follower:", sum_of_follower)
+            # print("Sum Retweet:", sum_of_retweet)
+            # print("N: ", count_follower)
+            # print("Average Follower:", avg_follower)
+            # print("Average Retweet:", avg_retweet)
+            # print("Standard Variable Follower:", sd_follower)
+            # print("Standard Variable Retweet:", sd_retweet)
 
             for i in range(0, len(only_value_retweet)):
                 new_scale_retweet.append((only_value_retweet[i] - avg_retweet) / (sd_retweet * sqrt(count_retweet)))
                 new_scale_follower.append((only_value_follower[i] - avg_follower) / (sd_follower * sqrt(count_follower)))
-                # new_scale_retweet.append((only_value_retweet[i] - avg_retweet) / (sd_retweet * count_retweet))
-                # new_scale_follower.append((only_value_follower[i] - avg_follower) / (sd_follower * count_follower))
 
-            print(only_value_retweet)
-            print(new_scale_retweet)
-            print(only_value_follower)
-            print(new_scale_follower)
+            print(sd_retweet)
+            print(sd_retweet_manual)
+            # print(only_value_retweet)
+            # print(new_scale_retweet)
+            # print(only_value_follower)
+            # print(new_scale_follower)
 
             two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
             two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)
