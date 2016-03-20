@@ -107,9 +107,9 @@ def intersect_plot(intersect_list, after_scale_retweet, after_scale_follower, to
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
 topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["apple"]
+# topics = ["thefacethailand"]
 folds = ["1", "2", "3", "4", "5"]
-# folds = ["1"]
+# folds = ["4"]
 
 for each_choice in y_axis_choices:
     for each_topic in topics:
@@ -271,21 +271,21 @@ for each_choice in y_axis_choices:
             # print(sum(intersect_area) / len(intersect_area))
 
 
-            print(intersect_area)
-            result = (sum(intersect_area) / sum_area_a_and_b) * 100
+            # print(intersect_area)
+            result = (sum(intersect_area) / sum_area_a_and_b) * 200
             print(result)
 
             intersect_area_for_plot = []
             for i in range(0, len(intersect_area)):
                 temp_new_intersect = intersect_area[i] + lowest_trend_ret_fol
                 intersect_area_for_plot.append(temp_new_intersect)
-            print(intersect_area_for_plot)
+            # print(intersect_area_for_plot)
 
             """
             Plot Graph
             """
             # two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
-            two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)
+            # two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)
             intersect_plot(intersect_area_for_plot, new_scale_retweet, new_scale_follower, each_topic, each_fold, lowest_trend_ret_fol)
             # four_plot(only_value_retweet, new_scale_retweet, only_value_follower, new_scale_follower, 'follower_wo_mc', each_topic, each_fold)
 
