@@ -87,24 +87,25 @@ def four_plot(before_scale_retweet, after_scale_retweet, before_scale_follower, 
 """
 REWRITE THIS
 """
-# def intersect_plot(intersect_list, after_scale_retweet, after_scale_follower, topic_name, fold_num, lowest_y):
-#     # print("dfgjhjtrter")
-#     fig, ax = plt.subplots()
-#
-#     ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', label='Trend Delta Retweet')
-#     ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', label='Trend Delta Follower')
-#     ax.fill_between(range(0, len(intersect_list)), 0, intersect_list, facecolor='black', alpha=0.5, label='Intersect Area')
-#
-#     ax.set_xlabel("Time")
-#     ax.set_ylabel('Trend Value After Scaling')
-#     ax.set_title('Trend Graph (After Scaling) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
-#
-#     axes = plt.gca()
-#     axes.set_xlim([0, len(after_scale_retweet)])
-#     axes.legend(loc='upper right')
-#
-#     plt.show()
-#     return
+def plot_union(union_list, after_scale_retweet, after_scale_follower, topic_name, fold_num):
+    print(after_scale_retweet[970], after_scale_follower[970])
+    print(union_list[970])
+    fig, ax = plt.subplots()
+
+    ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', label='Trend Delta Retweet')
+    ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', label='Trend Delta Follower')
+    ax.fill_between(range(0, len(union_list)), 0, union_list, facecolor='black', alpha=0.5, label='Intersect Area')
+
+    ax.set_xlabel("Time")
+    ax.set_ylabel('Trend Value After Scaling')
+    ax.set_title('Trend Graph (After Scaling) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+
+    axes = plt.gca()
+    axes.set_xlim([0, len(after_scale_retweet)])
+    axes.legend(loc='upper right')
+
+    plt.show()
+    return
 
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
@@ -117,7 +118,7 @@ for each_choice in y_axis_choices:
     for each_topic in topics:
         for each_fold in folds:
 
-            # print("=========== Topic: " + each_topic + ", Fold: " + each_fold + ", " + each_choice + " ============")
+            print("=========== Topic: " + each_topic + ", Fold: " + each_fold + ", " + each_choice + " ============")
             source_decomposition_retweet = "E:/tweet_process/result_follower-ret/11_trend_decomposed/" + each_topic + "/decomposition_" + each_fold + "_retweet.csv"
             source_decomposition_follower = "E:/tweet_process/result_follower-ret/11_trend_decomposed/" + each_topic + "/decomposition_" + each_fold + "_follower_wo_mc.csv"
             retweet_list = read_csv_file(source_decomposition_retweet)
@@ -157,14 +158,20 @@ for each_choice in y_axis_choices:
 
             """
             Find Diff from y axis == 0 (Intersection)
+            I Think it ok
             """
+            # print("start")
             non_intersection_area = []
             for i in range(0, len(new_scale_follower)):
                 temp_abs_diff = new_scale_follower[i] - new_scale_retweet[i]
                 if temp_abs_diff < 0:
                     temp_abs_diff *= -1
                 non_intersection_area.append(temp_abs_diff)
+                # print("Time:", i)
+                # print(new_scale_follower[i], new_scale_retweet[i])
+                # print(non_intersection_area[i])
             # print(non_intersection_area)
+
 
             """
             Find Union Area
@@ -174,27 +181,44 @@ for each_choice in y_axis_choices:
                 if new_scale_retweet[i] >= 0 and new_scale_follower[i] >= 0:    # + +
                     if new_scale_retweet[i] > new_scale_follower[i]:            # get max
                         union_area.append(new_scale_retweet[i])
+
                     else:
                         union_area.append(new_scale_follower[i])
+
                 elif new_scale_retweet[i] < 0 and new_scale_follower[i] < 0:       # - -
                     if new_scale_retweet[i] < new_scale_follower[i]:                # get |-max|
                         union_area.append(-1 * new_scale_retweet[i])
+
                     else:
                         union_area.append(-1 * new_scale_follower[i])
+
                 else:                                                              # + -, - +
                     temp_abs_diff = new_scale_follower[i] - new_scale_retweet[i]    # find + -> -
                     if temp_abs_diff < 0:
                         temp_abs_diff *= -1
-                        union_area.append(temp_abs_diff)
+                    union_area.append(temp_abs_diff)
 
             # for i in range(0, len(union_area)):
-            #     if union_area[i] == 0:
-            #         print(union_area[i])
+            #     print("Time:", i)
+            #     print(new_scale_follower[i], new_scale_retweet[i])
+            #     print(union_area[i])
+            # print(len(union_area))
 
             sum_non_intersect_area = sum(non_intersection_area)
             sum_union_area = sum(union_area)
-            un_similar = (sum_non_intersect_area / sum_union_area)
+
+            # print(sum_non_intersect_area, sum_union_area)
+            un_similar = (sum_non_intersect_area / sum_union_area) * 100
+            # print(un_similar)
             print(100 - un_similar)
+
+            """
+            Plot Graph
+            """
+            # two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
+            two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)        # THIS
+            plot_union(union_area, new_scale_retweet, new_scale_follower, each_topic, each_fold)
+            # four_plot(only_value_retweet, new_scale_retweet, only_value_follower, new_scale_follower, 'follower_wo_mc', each_topic, each_fold)
 
             """
             Print Info
@@ -219,13 +243,6 @@ for each_choice in y_axis_choices:
             # print("Trend Value Retweet After Scale:", len(new_scale_retweet))
             # print("Trend Value Follower Before Scale:", len(only_value_follower))
             # print("Trend Value Follower After Scale:", len(new_scale_follower))
-
-            """
-            Plot Graph
-            """
-            # two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
-            # two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)        # THIS
-            # four_plot(only_value_retweet, new_scale_retweet, only_value_follower, new_scale_follower, 'follower_wo_mc', each_topic, each_fold)
 
             # """
             # Unused Code

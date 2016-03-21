@@ -285,8 +285,8 @@ last_hour_app_aroii = 1651
 last_hour_hor_theface = 1627
 
 is_plot_kde = False
-is_plot_decompose = False
-is_plot_sklearn_kde = True
+is_plot_decompose = True
+is_plot_sklearn_kde = False
 
 is_write_decomposed_trend = False
 is_write_date_time_kde_value = False
