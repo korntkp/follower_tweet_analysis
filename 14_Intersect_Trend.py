@@ -232,7 +232,7 @@ for each_choice in y_axis_choices:
             # print("Union Area:", sum_union_area)
             # print("Not Intersect Area / Union Area:", un_similar)
             # print("Similarity:", similarity_result)
-            print(similarity_result)
+            # print(similarity_result)
             simi_topic.append(similarity_result)
 
             """
@@ -398,4 +398,7 @@ for each_choice in y_axis_choices:
             #     return
             # intersect_plot(intersect_area_for_plot, new_scale_retweet, new_scale_follower, each_topic, each_fold, lowest_trend_ret_fol)
         sum_simi_topic = sum(simi_topic)
-        print("Avg:", sum_simi_topic / len(folds))
+        # print("Standard Deviation: %0.5f" % pstdev(simi_topic))
+        print("%0.5f" % pstdev(simi_topic))
+        # print(pstdev(simi_topic))
+        # print("Avg:", sum_simi_topic / len(folds))
