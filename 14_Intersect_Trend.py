@@ -117,7 +117,7 @@ for each_choice in y_axis_choices:
     for each_topic in topics:
         for each_fold in folds:
 
-            # print("============ Topic: " + each_topic + ", Fold: " + each_fold + ", " + each_choice + " =============")
+            # print("=========== Topic: " + each_topic + ", Fold: " + each_fold + ", " + each_choice + " ============")
             source_decomposition_retweet = "E:/tweet_process/result_follower-ret/11_trend_decomposed/" + each_topic + "/decomposition_" + each_fold + "_retweet.csv"
             source_decomposition_follower = "E:/tweet_process/result_follower-ret/11_trend_decomposed/" + each_topic + "/decomposition_" + each_fold + "_follower_wo_mc.csv"
             retweet_list = read_csv_file(source_decomposition_retweet)
@@ -165,7 +165,37 @@ for each_choice in y_axis_choices:
                     temp_abs_diff *= -1
                 non_intersection_area.append(temp_abs_diff)
             # print(non_intersection_area)
-            
+
+            """
+            Find Union Area
+            """
+            union_area = []
+            for i in range(0, len(new_scale_follower)):
+                if new_scale_retweet[i] >= 0 and new_scale_follower[i] >= 0:    # + +
+                    if new_scale_retweet[i] > new_scale_follower[i]:            # get max
+                        union_area.append(new_scale_retweet[i])
+                    else:
+                        union_area.append(new_scale_follower[i])
+                elif new_scale_retweet[i] < 0 and new_scale_follower[i] < 0:       # - -
+                    if new_scale_retweet[i] < new_scale_follower[i]:                # get |-max|
+                        union_area.append(-1 * new_scale_retweet[i])
+                    else:
+                        union_area.append(-1 * new_scale_follower[i])
+                else:                                                              # + -, - +
+                    temp_abs_diff = new_scale_follower[i] - new_scale_retweet[i]    # find + -> -
+                    if temp_abs_diff < 0:
+                        temp_abs_diff *= -1
+                        union_area.append(temp_abs_diff)
+
+            # for i in range(0, len(union_area)):
+            #     if union_area[i] == 0:
+            #         print(union_area[i])
+
+            sum_non_intersect_area = sum(non_intersection_area)
+            sum_union_area = sum(union_area)
+            un_similar = (sum_non_intersect_area / sum_union_area)
+            print(100 - un_similar)
+
             """
             Print Info
             """
