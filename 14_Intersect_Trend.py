@@ -112,16 +112,17 @@ def plot_union(union_list, after_scale_retweet, after_scale_follower, topic_name
 
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
-# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-topics = ["hormonestheseries"]
-# folds = ["1", "2", "3", "4", "5"]
-folds = ["1", "2", "3"]
+topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+# topics = ["hormonestheseries"]
+folds = ["1", "2", "3", "4", "5"]
+# folds = ["1", "2", "3"]
 
 for each_choice in y_axis_choices:
     for each_topic in topics:
+        simi_topic = []
         for each_fold in folds:
 
-            print("=========== Topic: " + each_topic + ", Fold: " + each_fold + ", " + each_choice + " ============")
+            # print("=========== Topic: " + each_topic + ", Fold: " + each_fold + ", " + each_choice + " ============")
             source_decomposition_retweet = "E:/tweet_process/result_follower-ret/11_trend_decomposed/" + each_topic + "/decomposition_" + each_fold + "_retweet.csv"
             source_decomposition_follower = "E:/tweet_process/result_follower-ret/11_trend_decomposed/" + each_topic + "/decomposition_" + each_fold + "_follower_wo_mc.csv"
             retweet_list = read_csv_file(source_decomposition_retweet)
@@ -224,12 +225,15 @@ for each_choice in y_axis_choices:
             sum_union_area = sum(union_area)
             sum_plot_union = sum(for_plot_union_area) + sum(for_plot_union_area_plus) + sum(for_plot_union_area_minus)
             un_similar = (sum_non_intersect_area / sum_union_area) * 100
+            similarity_result = 100 - un_similar
 
 
             # print("Not Intersect Area:", sum_non_intersect_area)
             # print("Union Area:", sum_union_area)
             # print("Not Intersect Area / Union Area:", un_similar)
-            print("Similarity:", 100 - un_similar)
+            # print("Similarity:", similarity_result)
+            print(similarity_result)
+            simi_topic.append(similarity_result)
 
             """
             Plot Graph
@@ -393,3 +397,5 @@ for each_choice in y_axis_choices:
             #     plt.show()
             #     return
             # intersect_plot(intersect_area_for_plot, new_scale_retweet, new_scale_follower, each_topic, each_fold, lowest_trend_ret_fol)
+        sum_simi_topic = sum(simi_topic)
+        print("Avg:", sum_simi_topic / len(folds))
