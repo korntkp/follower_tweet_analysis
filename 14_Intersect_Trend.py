@@ -84,25 +84,27 @@ def four_plot(before_scale_retweet, after_scale_retweet, before_scale_follower, 
     plt.show()
     return
 
-
-def intersect_plot(intersect_list, after_scale_retweet, after_scale_follower, topic_name, fold_num, lowest_y):
-    # print("dfgjhjtrter")
-    fig, ax = plt.subplots()
-
-    ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', label='Trend Delta Retweet')
-    ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', label='Trend Delta Follower')
-    ax.fill_between(range(0, len(intersect_list)), lowest_y, intersect_list, facecolor='black', alpha=0.5, label='Intersect Area')
-
-    ax.set_xlabel("Time")
-    ax.set_ylabel('Trend Value After Scaling')
-    ax.set_title('Trend Graph (After Scaling) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
-
-    axes = plt.gca()
-    axes.set_xlim([0, len(after_scale_retweet)])
-    axes.legend(loc='upper right')
-
-    plt.show()
-    return
+"""
+REWRITE THIS
+"""
+# def intersect_plot(intersect_list, after_scale_retweet, after_scale_follower, topic_name, fold_num, lowest_y):
+#     # print("dfgjhjtrter")
+#     fig, ax = plt.subplots()
+#
+#     ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', label='Trend Delta Retweet')
+#     ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', label='Trend Delta Follower')
+#     ax.fill_between(range(0, len(intersect_list)), 0, intersect_list, facecolor='black', alpha=0.5, label='Intersect Area')
+#
+#     ax.set_xlabel("Time")
+#     ax.set_ylabel('Trend Value After Scaling')
+#     ax.set_title('Trend Graph (After Scaling) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+#
+#     axes = plt.gca()
+#     axes.set_xlim([0, len(after_scale_retweet)])
+#     axes.legend(loc='upper right')
+#
+#     plt.show()
+#     return
 
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
@@ -115,7 +117,7 @@ for each_choice in y_axis_choices:
     for each_topic in topics:
         for each_fold in folds:
 
-            print("============ Topic: " + each_topic + ", Fold: " + each_fold + ", " + each_choice + " =============")
+            # print("============ Topic: " + each_topic + ", Fold: " + each_fold + ", " + each_choice + " =============")
             source_decomposition_retweet = "E:/tweet_process/result_follower-ret/11_trend_decomposed/" + each_topic + "/decomposition_" + each_fold + "_retweet.csv"
             source_decomposition_follower = "E:/tweet_process/result_follower-ret/11_trend_decomposed/" + each_topic + "/decomposition_" + each_fold + "_follower_wo_mc.csv"
             retweet_list = read_csv_file(source_decomposition_retweet)
@@ -147,17 +149,15 @@ for each_choice in y_axis_choices:
             sd_retweet = pstdev(only_value_retweet)
             sd_follower = pstdev(only_value_follower)
 
+            for i in range(0, len(only_value_retweet)):
+                new_scale_retweet.append(float((only_value_retweet[i] - avg_retweet) / (sd_retweet * sqrt(count_retweet))))
+                new_scale_follower.append(float((only_value_follower[i] - avg_follower) / (sd_follower * sqrt(count_follower))))
+                # new_scale_retweet.append((only_value_retweet[i] - avg_retweet) / (sd_retweet * count_retweet))
+                # new_scale_follower.append((only_value_follower[i] - avg_follower) / (sd_follower * count_follower))
+
             """
-            Manual Standard Deviation (Unused)
+            Find Diff from y axis == 0 (Intersection)
             """
-            # sum_sqr_retweet = 0
-            # for i in range(0, len(only_value_retweet)):
-            #     sum_sqr_retweet += (only_value_retweet[i] - avg_retweet) * (only_value_retweet[i] - avg_retweet)
-            # sd_retweet_manual = sqrt(sum_sqr_retweet / count_retweet)
-            # sum_sqr_follower = 0
-            # for i in range(0, len(only_value_follower)):
-            #     sum_sqr_follower += (only_value_follower[i] - avg_follower) * (only_value_follower[i] - avg_follower)
-            # sd_follower_manual = sqrt(sum_sqr_follower / count_follower)
 
             """
             Print Info
@@ -171,12 +171,6 @@ for each_choice in y_axis_choices:
             # print("Standard Variable Follower:", sd_follower)
             # print("Standard Variable Retweet:", sd_retweet)
 
-            for i in range(0, len(only_value_retweet)):
-                new_scale_retweet.append(float((only_value_retweet[i] - avg_retweet) / (sd_retweet * sqrt(count_retweet))))
-                new_scale_follower.append(float((only_value_follower[i] - avg_follower) / (sd_follower * sqrt(count_follower))))
-                # new_scale_retweet.append((only_value_retweet[i] - avg_retweet) / (sd_retweet * count_retweet))
-                # new_scale_follower.append((only_value_follower[i] - avg_follower) / (sd_follower * count_follower))
-
             """
             Print Trend Value
             """
@@ -189,103 +183,140 @@ for each_choice in y_axis_choices:
             # print("Trend Value Follower Before Scale:", len(only_value_follower))
             # print("Trend Value Follower After Scale:", len(new_scale_follower))
 
-
-            """
-            Find The Lowest Trend Value
-            """
-            lowest_trend_ret = min(new_scale_retweet)
-            lowest_trend_fol = min(new_scale_follower)
-            # print(max(new_scale_retweet))
-            # print(max(new_scale_follower))
-            if lowest_trend_ret < lowest_trend_fol:
-                lowest_trend_ret_fol = lowest_trend_ret
-            else:
-                lowest_trend_ret_fol = lowest_trend_fol
-            # print("The Lowest of Retweet", lowest_trend_ret)
-            # print("The Lowest of Follower", lowest_trend_fol)
-            # print("The Lowest of Retweet and Follower", lowest_trend_ret_fol)
-            # print("The Lowest of Retweet and Follower, %.45f" % lowest_trend_ret_fol)
-
-            """
-            Find Diff from The Lowest
-            """
-            # print("index 0:", new_scale_follower[0])
-            # print(new_scale_follower[0] - lowest_trend_ret_fol)
-            # print(min(new_scale_retweet))
-            # print(min(new_scale_follower))
-            # print(new_scale_retweet)
-            # print(new_scale_follower)
-
-            diff_from_lowest_retweet = []
-            diff_from_lowest_follower = []
-            sum_area_retweet = 0
-            sum_area_follower = 0
-            for i in range(0, len(new_scale_retweet)):
-                temp_diff_retweet = new_scale_retweet[i] - lowest_trend_ret_fol
-                temp_diff_follower = new_scale_follower[i] - lowest_trend_ret_fol
-
-                diff_from_lowest_retweet.append(temp_diff_retweet)
-                diff_from_lowest_follower.append(temp_diff_follower)
-
-                sum_area_retweet += diff_from_lowest_retweet[i]
-                sum_area_follower += diff_from_lowest_follower[i]
-
-            """
-            Print info
-            """
-            # print(diff_from_lowest_retweet)
-            # print(min(diff_from_lowest_retweet))
-            # print(min(diff_from_lowest_follower))
-            # print(max(diff_from_lowest_retweet))
-            # print(max(diff_from_lowest_follower))
-            # print(diff_from_lowest_follower)
-            # print("%.45f" % mean(diff_from_lowest_retweet))
-            # print("%.45f" % mean(diff_from_lowest_follower))
-            # # print(diff_from_lowest_retweet)
-            # # print(diff_from_lowest_follower)
-            # print("%.45f" % sum_area_retweet)
-            # print("%.45f" % sum_area_follower)
-            # print("%.45f" % (sum_area_retweet - sum_area_follower))
-
-            """
-            Find Area by Library
-            """
-            # print(simps(new_scale_retweet))
-            # print(simps(new_scale_follower))
-            # print(trapz(new_scale_retweet))
-            # print(trapz(new_scale_follower))
-            sum_area_a_and_b = sum_area_retweet + sum_area_follower
-            # print(sum_area_a_and_b)
-
-            intersect_area = []
-            for i in range(0, len(new_scale_retweet)):
-                if new_scale_retweet[i] < new_scale_follower[i]:
-                    temp_intersect = new_scale_retweet[i] - lowest_trend_ret_fol
-                    intersect_area.append(temp_intersect)
-                else:
-                    temp_intersect = new_scale_follower[i] - lowest_trend_ret_fol
-                    intersect_area.append(temp_intersect)
-            # print(sum(intersect_area))
-            # print(len(intersect_area))
-            # print(mean(intersect_area))
-            # print(sum(intersect_area) / len(intersect_area))
-
-
-            # print(intersect_area)
-            result = (sum(intersect_area) / sum_area_a_and_b) * 200
-            print(result)
-
-            intersect_area_for_plot = []
-            for i in range(0, len(intersect_area)):
-                temp_new_intersect = intersect_area[i] + lowest_trend_ret_fol
-                intersect_area_for_plot.append(temp_new_intersect)
-            # print(intersect_area_for_plot)
-
             """
             Plot Graph
             """
             # two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
-            # two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)
-            intersect_plot(intersect_area_for_plot, new_scale_retweet, new_scale_follower, each_topic, each_fold, lowest_trend_ret_fol)
+            two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)
             # four_plot(only_value_retweet, new_scale_retweet, only_value_follower, new_scale_follower, 'follower_wo_mc', each_topic, each_fold)
 
+            # """
+            # Unused Code
+            # """
+            # """
+            # Manual Standard Deviation (Unused)
+            # """
+            # sum_sqr_retweet = 0
+            # for i in range(0, len(only_value_retweet)):
+            #     sum_sqr_retweet += (only_value_retweet[i] - avg_retweet) * (only_value_retweet[i] - avg_retweet)
+            # sd_retweet_manual = sqrt(sum_sqr_retweet / count_retweet)
+            # sum_sqr_follower = 0
+            # for i in range(0, len(only_value_follower)):
+            #     sum_sqr_follower += (only_value_follower[i] - avg_follower) * (only_value_follower[i] - avg_follower)
+            # sd_follower_manual = sqrt(sum_sqr_follower / count_follower)
+            # """
+            # Find The Lowest Trend Value
+            # """
+            # lowest_trend_ret = min(new_scale_retweet)
+            # lowest_trend_fol = min(new_scale_follower)
+            # # print(max(new_scale_retweet))
+            # # print(max(new_scale_follower))
+            # if lowest_trend_ret < lowest_trend_fol:
+            #     lowest_trend_ret_fol = lowest_trend_ret
+            # else:
+            #     lowest_trend_ret_fol = lowest_trend_fol
+            # # print("The Lowest of Retweet", lowest_trend_ret)
+            # # print("The Lowest of Follower", lowest_trend_fol)
+            # # print("The Lowest of Retweet and Follower", lowest_trend_ret_fol)
+            # # print("The Lowest of Retweet and Follower, %.45f" % lowest_trend_ret_fol)
+            #
+            # """
+            # Find Diff from The Lowest
+            # """
+            # # print("index 0:", new_scale_follower[0])
+            # # print(new_scale_follower[0] - lowest_trend_ret_fol)
+            # # print(min(new_scale_retweet))
+            # # print(min(new_scale_follower))
+            # print(new_scale_retweet)
+            # print(new_scale_follower)
+            #
+            # diff_from_lowest_retweet = []
+            # diff_from_lowest_follower = []
+            # sum_area_retweet = 0
+            # sum_area_follower = 0
+            # for i in range(0, len(new_scale_retweet)):
+            #     temp_diff_retweet = new_scale_retweet[i] - lowest_trend_ret_fol
+            #     temp_diff_follower = new_scale_follower[i] - lowest_trend_ret_fol
+            #
+            #     diff_from_lowest_retweet.append(temp_diff_retweet)
+            #     diff_from_lowest_follower.append(temp_diff_follower)
+            #
+            #     sum_area_retweet += diff_from_lowest_retweet[i]
+            #     sum_area_follower += diff_from_lowest_follower[i]
+            #
+            # print(sum(new_scale_retweet))
+            # # print(sum(new_scale_follower))
+            # print(sum_area_retweet)
+            #
+            # """
+            # Find Area by Library
+            # """
+            # # print(simps(new_scale_retweet))
+            # # print(simps(new_scale_follower))
+            # # print(trapz(new_scale_retweet))
+            # # print(trapz(new_scale_follower))
+            # sum_area_a_and_b = sum_area_retweet + sum_area_follower
+            # # print(sum_area_a_and_b)
+            #
+            # intersect_area = []
+            # for i in range(0, len(new_scale_retweet)):
+            #     if new_scale_retweet[i] < new_scale_follower[i]:
+            #         # temp_intersect = new_scale_retweet[i] - lowest_trend_ret_fol
+            #         temp_intersect = new_scale_retweet[i]
+            #         intersect_area.append(temp_intersect)
+            #     else:
+            #         # temp_intersect = new_scale_follower[i] - lowest_trend_ret_fol
+            #         temp_intersect = new_scale_follower[i]
+            #         intersect_area.append(temp_intersect)
+            # # print(sum(intersect_area))
+            # # print(len(intersect_area))
+            # # print(mean(intersect_area))
+            # # print(sum(intersect_area) / len(intersect_area))
+            #
+            #
+            # # print(intersect_area)
+            # result = (sum(intersect_area) / sum_area_a_and_b) * 200
+            # print("Intersect Area", each_topic, "Fold", each_fold + ":", result)
+            #
+            # intersect_area_for_plot = []
+            # for i in range(0, len(intersect_area)):
+            #     # temp_new_intersect = intersect_area[i] + lowest_trend_ret_fol
+            #     temp_new_intersect = intersect_area[i]
+            #     intersect_area_for_plot.append(temp_new_intersect)
+            # # print(intersect_area_for_plot)
+            #
+            # """
+            # Print info
+            # """
+            # # print(diff_from_lowest_retweet)
+            # # print(min(diff_from_lowest_retweet))
+            # # print(min(diff_from_lowest_follower))
+            # # print(max(diff_from_lowest_retweet))
+            # # print(max(diff_from_lowest_follower))
+            # # print(diff_from_lowest_follower)
+            # # print("%.45f" % mean(diff_from_lowest_retweet))
+            # # print("%.45f" % mean(diff_from_lowest_follower))
+            # # # print(diff_from_lowest_retweet)
+            # # # print(diff_from_lowest_follower)
+            # # print("%.45f" % sum_area_retweet)
+            # # print("%.45f" % sum_area_follower)
+            # # print("%.45f" % (sum_area_retweet - sum_area_follower))
+            # def intersect_plot(intersect_list, after_scale_retweet, after_scale_follower, topic_name, fold_num, lowest_y):
+            #     # print("dfgjhjtrter")
+            #     fig, ax = plt.subplots()
+            #
+            #     ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', label='Trend Delta Retweet')
+            #     ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', label='Trend Delta Follower')
+            #     ax.fill_between(range(0, len(intersect_list)), 0, intersect_list, facecolor='black', alpha=0.5, label='Intersect Area')
+            #
+            #     ax.set_xlabel("Time")
+            #     ax.set_ylabel('Trend Value After Scaling')
+            #     ax.set_title('Trend Graph (After Scaling) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+            #
+            #     axes = plt.gca()
+            #     axes.set_xlim([0, len(after_scale_retweet)])
+            #     axes.legend(loc='upper right')
+            #
+            #     plt.show()
+            #     return
+            # intersect_plot(intersect_area_for_plot, new_scale_retweet, new_scale_follower, each_topic, each_fold, lowest_trend_ret_fol)
