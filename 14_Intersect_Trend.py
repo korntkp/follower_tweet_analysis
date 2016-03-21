@@ -158,7 +158,14 @@ for each_choice in y_axis_choices:
             """
             Find Diff from y axis == 0 (Intersection)
             """
-
+            non_intersection_area = []
+            for i in range(0, len(new_scale_follower)):
+                temp_abs_diff = new_scale_follower[i] - new_scale_retweet[i]
+                if temp_abs_diff < 0:
+                    temp_abs_diff *= -1
+                non_intersection_area.append(temp_abs_diff)
+            # print(non_intersection_area)
+            
             """
             Print Info
             """
@@ -187,7 +194,7 @@ for each_choice in y_axis_choices:
             Plot Graph
             """
             # two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
-            two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)
+            # two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)        # THIS
             # four_plot(only_value_retweet, new_scale_retweet, only_value_follower, new_scale_follower, 'follower_wo_mc', each_topic, each_fold)
 
             # """
