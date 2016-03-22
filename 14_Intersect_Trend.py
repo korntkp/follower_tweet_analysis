@@ -42,6 +42,7 @@ def two_plot_after(after_scale_retweet, after_scale_follower, topic_name, fold_n
     ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', label='Trend Delta Retweet')
     ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', label='Trend Delta Follower')
 
+
     ax.set_xlabel("Time")
     ax.set_ylabel('Trend Value After Scaling')
     ax.set_title('Trend Graph (After Scaling) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
@@ -49,7 +50,7 @@ def two_plot_after(after_scale_retweet, after_scale_follower, topic_name, fold_n
     axes = plt.gca()
     axes.set_xlim([0, len(after_scale_retweet)])
     axes.legend(loc='upper right')
-
+    plt.axhline(0, color='Black')
     plt.show()
     return
 
@@ -94,9 +95,11 @@ def plot_union(union_list, after_scale_retweet, after_scale_follower, topic_name
 
     ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', label='Trend Delta Retweet')
     ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', label='Trend Delta Follower')
-    ax.fill_between(range(0, len(union_list)), 0, union_list, facecolor='black', alpha=0.5, label='Union Area')
-    ax.fill_between(range(0, len(plus_list)), 0, plus_list, facecolor='black', alpha=0.5)
-    ax.fill_between(range(0, len(minus_list)), 0, minus_list, facecolor='black', alpha=0.5)
+    # ax.fill_between(range(0, len(union_list)), 0, union_list, facecolor='black', alpha=0.5, label='Union Area')
+    ax.fill_between(range(0, 1), 0, facecolor='black', alpha=0.5, label='Intersection Area')                # Manual Fill Color
+    # ax.fill_between(range(0, len(plus_list)), 0, plus_list, facecolor='black', alpha=0.5)
+    # ax.fill_between(range(0, len(minus_list)), 0, minus_list, facecolor='black', alpha=0.5)
+
 
     ax.set_xlabel("Time")
     ax.set_ylabel('Trend Value After Scaling')
@@ -106,6 +109,7 @@ def plot_union(union_list, after_scale_retweet, after_scale_follower, topic_name
     axes.set_xlim([0, len(after_scale_retweet)])
     axes.legend(loc='upper right')
 
+    plt.axhline(0, color='Black')
     plt.show()
     return
 
@@ -157,6 +161,10 @@ for each_choice in y_axis_choices:
             for i in range(0, len(only_value_retweet)):
                 new_scale_retweet.append(float((only_value_retweet[i] - avg_retweet) / (sd_retweet * sqrt(count_retweet))))
                 new_scale_follower.append(float((only_value_follower[i] - avg_follower) / (sd_follower * sqrt(count_follower))))
+
+                # new_scale_retweet.append(float((only_value_retweet[i] - avg_retweet) / (sd_retweet)))
+                # new_scale_follower.append(float((only_value_follower[i] - avg_follower) / (sd_follower)))
+
                 # new_scale_retweet.append((only_value_retweet[i] - avg_retweet) / (sd_retweet * count_retweet))
                 # new_scale_follower.append((only_value_follower[i] - avg_follower) / (sd_follower * count_follower))
 
@@ -239,8 +247,8 @@ for each_choice in y_axis_choices:
             Plot Graph
             """
             # two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
-            # two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)        # THIS
-            # plot_union(for_plot_union_area, new_scale_retweet, new_scale_follower, each_topic, each_fold, for_plot_union_area_plus, for_plot_union_area_minus)
+            two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)        # THIS
+            plot_union(for_plot_union_area, new_scale_retweet, new_scale_follower, each_topic, each_fold, for_plot_union_area_plus, for_plot_union_area_minus)
             # four_plot(only_value_retweet, new_scale_retweet, only_value_follower, new_scale_follower, 'follower_wo_mc', each_topic, each_fold)
 
             """
