@@ -23,7 +23,7 @@ def two_plot_before(before_scale_retweet, before_scale_follower, topic_name, fol
     ax.plot(range(0, len(before_scale_retweet)), before_scale_retweet, '-', label='Trend Delta Retweet')
     ax.plot(range(0, len(before_scale_follower)), before_scale_follower, '-', label='Trend Delta Follower')
 
-    ax.set_xlabel("Time")
+    ax.set_xlabel("Time (Hour)")
     ax.set_ylabel('Trend Value Before Scaling')
     ax.set_title('Trend Graph (Before Scaling) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
 
@@ -39,11 +39,11 @@ def two_plot_after(after_scale_retweet, after_scale_follower, topic_name, fold_n
     # print("dfgjhjtrter")
     fig, ax = plt.subplots()
 
-    ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', label='Trend Delta Retweet')
-    ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', label='Trend Delta Follower')
+    ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', linewidth=0.8, color='green', label='Trend Delta Retweet')
+    ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', linewidth=3.5, color='black', label='Trend Delta Follower')
 
 
-    ax.set_xlabel("Time")
+    ax.set_xlabel("Time (Hour)")
     ax.set_ylabel('Trend Value After Scaling')
     ax.set_title('Trend Graph (After Scaling) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
 
@@ -116,8 +116,8 @@ def plot_union(union_list, after_scale_retweet, after_scale_follower, topic_name
 
 y_axis_choices = ['follower_wo_mc']
 # y_axis_choices = ['retweet']
-topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-# topics = ["hormonestheseries"]
+# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["hormonestheseries"]
 folds = ["1", "2", "3", "4", "5"]
 # folds = ["1", "2", "3"]
 
@@ -246,9 +246,11 @@ for each_choice in y_axis_choices:
             """
             Plot Graph
             """
-            # two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
+            print("Plot Before")
+            print("Plot After")
+            two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
             two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)        # THIS
-            plot_union(for_plot_union_area, new_scale_retweet, new_scale_follower, each_topic, each_fold, for_plot_union_area_plus, for_plot_union_area_minus)
+            # plot_union(for_plot_union_area, new_scale_retweet, new_scale_follower, each_topic, each_fold, for_plot_union_area_plus, for_plot_union_area_minus)
             # four_plot(only_value_retweet, new_scale_retweet, only_value_follower, new_scale_follower, 'follower_wo_mc', each_topic, each_fold)
 
             """
