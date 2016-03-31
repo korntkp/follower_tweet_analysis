@@ -17,6 +17,33 @@ def read_csv_file(source_path_param):
     return list1
 
 
+def one_plot_before(before_scale_retweet, before_scale_follower, topic_name, fold_num, each_choice_param):
+    fig, ax = plt.subplots()
+    # print(each_choice_param)
+    axes = plt.gca()
+    axes.set_xlim([0, len(before_scale_retweet)])
+
+    if each_choice_param == 'follower_wo_mc':
+        print("Plot Trend Decomposition (Delta Follower)")
+        ax.plot(range(0, len(before_scale_follower)), before_scale_follower, '-', label='Trend Delta Follower')
+        ax.set_ylabel('Trend Decomposition (Delta Follower)')
+        ax.set_title('Trend Decomposition (Delta Follower) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+        axes.set_ylim([0, 4])
+    else:
+        print("Plot Trend Decomposition (Delta Retweet)")
+        ax.plot(range(0, len(before_scale_retweet)), before_scale_retweet, '-', label='Trend Delta Retweet')
+        ax.set_ylabel('Trend Decomposition (Delta Retweet)')
+        ax.set_title('Trend Decomposition (Delta Retweet) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+        axes.set_ylim([0, 20])
+        # axes.set_ylim([0, max(before_scale_retweet)])
+
+    ax.set_xlabel("Time (Hour)")
+    axes.legend(loc='upper right')
+
+    plt.show()
+    return
+
+
 def two_plot_before(before_scale_retweet, before_scale_follower, topic_name, fold_num):
     fig, ax = plt.subplots()
 
@@ -114,12 +141,12 @@ def plot_union(union_list, after_scale_retweet, after_scale_follower, topic_name
     return
 
 
-y_axis_choices = ['follower_wo_mc']
-# y_axis_choices = ['retweet']
-# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-topics = ["hormonestheseries"]
-folds = ["1", "2", "3", "4", "5"]
-# folds = ["1", "2", "3"]
+# y_axis_choices = ['follower_wo_mc']
+y_axis_choices = ['retweet']
+topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+# topics = ["hormonestheseries"]
+# folds = ["1", "2", "3", "4", "5"]
+folds = ["1"]
 
 for each_choice in y_axis_choices:
     for each_topic in topics:
@@ -246,10 +273,11 @@ for each_choice in y_axis_choices:
             """
             Plot Graph
             """
-            print("Plot Before")
-            print("Plot After")
-            two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
-            two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)        # THIS
+            # print("Plot Before")
+            # print("Plot After")
+            one_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold, each_choice)
+            # two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
+            # two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold)        # THIS
             # plot_union(for_plot_union_area, new_scale_retweet, new_scale_follower, each_topic, each_fold, for_plot_union_area_plus, for_plot_union_area_minus)
             # four_plot(only_value_retweet, new_scale_retweet, only_value_follower, new_scale_follower, 'follower_wo_mc', each_topic, each_fold)
 
@@ -409,6 +437,6 @@ for each_choice in y_axis_choices:
             # intersect_plot(intersect_area_for_plot, new_scale_retweet, new_scale_follower, each_topic, each_fold, lowest_trend_ret_fol)
         sum_simi_topic = sum(simi_topic)
         # print("Standard Deviation: %0.5f" % pstdev(simi_topic))
-        print("%0.5f" % pstdev(simi_topic))
+        # print("%0.5f" % pstdev(simi_topic))
         # print(pstdev(simi_topic))
         # print("Avg:", sum_simi_topic / len(folds))
