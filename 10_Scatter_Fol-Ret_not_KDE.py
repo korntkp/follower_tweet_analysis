@@ -73,31 +73,40 @@ def plot_diff_ret_and_diff_fol(list_ret, list_fol, choose_str, topic_name, fold_
         plt.axis([min(list_ret), max(list_ret), min(list_fol), max(list_fol)])
     # plt.axis('tight')
     if is_log_delta_retweet_param and is_log_delta_follower_param:
-        plt.xlabel('Log(Delta Retweet)')
+        plt.xlabel('Log Delta Retweet')
         if choose_str == 'follower w/t mc':
             plt.ylabel('Log(Delta Follower with Message Count)')
-            plt.title('Graph of Log(Delta Retweet) and Log(Delta Follower(with Message Count)) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+            # plt.title('Graph of Log(Delta Retweet) and Log(Delta Follower(with Message Count)) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+            plt.title('Scatter plot: Log Delta Retweet and Log Delta Follower [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
         elif choose_str == 'follower w/o mc':
-            plt.ylabel('Log(Delta Follower without Message Count)')
-            plt.title('Graph of Log(Delta Retweet) and Log(Delta Follower(without Message Count)) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+            # plt.ylabel('Log(Delta Follower without Message Count)')
+            plt.ylabel('Log Delta Follower')
+            # plt.title('Graph of Log(Delta Retweet) and Log(Delta Follower(without Message Count)) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+            plt.title('Scatter plot: Log Delta Retweet and Log Delta Follower [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
 
     elif is_log_delta_retweet_param:
-        plt.xlabel('Log(Delta Retweet)')
+        plt.xlabel('Log Delta Retweet')
         if choose_str == 'follower w/t mc':
-            plt.ylabel('Delta Follower with Message Count')
-            plt.title('Graph of Log(Delta Retweet) and Delta Follower(with Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+            # plt.ylabel('Delta Follower with Message Count')
+            plt.ylabel('Delta Follower')
+            # plt.title('Graph of Log(Delta Retweet) and Delta Follower(with Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+            plt.title('Scatter plot: Log Delta Retweet and Delta Follower [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
         elif choose_str == 'follower w/o mc':
-            plt.ylabel('Delta Follower without Message Count')
-            plt.title('Graph of Log(Delta Retweet) and Delta Follower(without Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+            # plt.ylabel('Delta Follower without Message Count')
+            plt.ylabel('Delta Follower')
+            # plt.title('Graph of Log(Delta Retweet) and Delta Follower(without Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+            plt.title('Scatter plot: Log Delta Retweet and Delta Follower [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
 
     elif is_log_delta_follower_param:
         plt.xlabel('Delta Retweet')
         if choose_str == 'follower w/t mc':
             plt.ylabel('Log(Delta Follower with Message Count)')
-            plt.title('Graph of Delta Retweet and Log(Delta Follower(with Message Count)) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+            # plt.ylabel('Log Delta Follower')
+            plt.title('Scatter plot: Delta Retweet and Log Delta Follower (with Message Count) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
         elif choose_str == 'follower w/o mc':
-            plt.ylabel('Log(Delta Follower without Message Count)')
-            plt.title('Graph of Delta Retweet and Log(Delta Follower(without Message Count)) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+            # plt.ylabel('Log(Delta Follower without Message Count)')
+            plt.ylabel('Log Delta Follower')
+            plt.title('Scatter plot: Delta Retweet and Log Delta Follower [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
 
     else:
         plt.xlabel('Delta Retweet')
@@ -231,15 +240,17 @@ def explore_diff_ret(list_diff_ret_param, list_diff_fol_param, not_more_than_ret
 # SET PARAMETER
 # follower_choices = ['follower w/t mc', 'follower w/o mc']
 follower_choices = ['follower w/o mc']
-topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-folds = ["1", "2", "3", "4", "5"]
+# topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+topics = ["hormonestheseries", "thefacethailand"]
+# folds = ["1", "2", "3", "4", "5"]
+folds = ["2", "3"]
 
 # is_log_delta_retweet = False
 # is_log_delta_follower = True
-is_log_delta_retweet = True
-is_log_delta_follower = False
 # is_log_delta_retweet = True
-# is_log_delta_follower = True
+# is_log_delta_follower = False
+is_log_delta_retweet = True
+is_log_delta_follower = True
 # is_log_delta_retweet = False
 # is_log_delta_follower = False
 logarithm_base_num = 2
@@ -253,7 +264,7 @@ is_limit_axis = False
 """
 Top(Delta_Follower), Bottom(Delta_Follower), Left(Delta_Retweet), Right(Delta_Retweet)
 """
-is_remove_outlier = True
+is_remove_outlier = False
 # not_more_than = 580
 
 remove_outlier_not_log = ['150',  '-',    '-',  '660',  # Apple 1
@@ -406,7 +417,7 @@ for each_choice in follower_choices:
             """
             not_rm_outlier_diff_ret = list(list_diff_ret)
             not_rm_outlier_diff_fol = list(list_diff_fol)
-            # plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
+            plot_diff_ret_and_diff_fol(list_diff_ret, list_diff_fol, each_choice, each_topic, each_fold, is_log_delta_retweet, is_log_delta_follower, is_limit_axis, max_fol_plot, max_ret_plot, min_fol_plot, min_ret_plot)
 
             """
             Scatter Plot (Remove Outlier)

@@ -63,23 +63,32 @@ def two_plot_before(before_scale_retweet, before_scale_follower, topic_name, fol
 
 
 def two_plot_after(after_scale_retweet, after_scale_follower, topic_name, fold_num, shade_option):
-    # print("dfgjhjtrter")
     fig, ax = plt.subplots()
 
-    ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', linewidth=0.8, color='green', label='Trend Delta Retweet')
-    ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', linewidth=3.5, color='black', label='Trend Delta Follower')
     """
-    shade_option = ['none', 'Union', 'Non-Intersect', 'Intersect']
+    Color
+    """
+    ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', linewidth=1, color='green', label='Trend Delta Retweet')
+    ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', linewidth=1, color='blue', label='Trend Delta Follower')
+
+    """
+    Black White Tolerance
+    """
+    # ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', linewidth=0.8, color='green', label='Trend Delta Retweet')
+    # ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', linewidth=3.5, color='black', label='Trend Delta Follower')
+
+    """
+    shade_option = ['none', 'Union', 'Non-Intersection', 'Intersection']
     """
     if shade_option == 'Union':
         print("Union")
         ax.fill_between(range(0, 1), 0, facecolor='black', alpha=0.5, label='Union Area')    # Manual Fill Color
-    elif shade_option == 'Non-Intersect':
-        print("Non-Intersect")
-        ax.fill_between(range(0, 1), 0, facecolor='black', alpha=0.5, label='Non Intersect Area')    # Manual Fill Color
-    elif shade_option == 'Intersect':
-        print("Intersect")
-        ax.fill_between(range(0, 1), 0, facecolor='black', alpha=0.5, label='Intersect Area')    # Manual Fill Color
+    elif shade_option == 'Non-Intersection':
+        print("Non-Intersection")
+        ax.fill_between(range(0, 1), 0, facecolor='black', alpha=0.5, label='Non Intersection Area')    # Manual Fill Color
+    elif shade_option == 'Intersection':
+        print("Intersection")
+        ax.fill_between(range(0, 1), 0, facecolor='black', alpha=0.5, label='Intersection Area')    # Manual Fill Color
     else:
         print("none")
 
@@ -90,13 +99,12 @@ def two_plot_after(after_scale_retweet, after_scale_follower, topic_name, fold_n
     axes = plt.gca()
     axes.set_xlim([0, len(after_scale_retweet)])
     axes.legend(loc='upper right')
-    plt.axhline(0, color='Black')
+    # plt.axhline(0, color='Black')
     plt.show()
     return
 
 
 def four_plot(before_scale_retweet, after_scale_retweet, before_scale_follower, after_scale_follower, choose_str, topic_name, fold_num):
-    # print("dfgjhjtrter")
     fig, ax = plt.subplots()
 
     ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', label='After Scale Retweet')
@@ -157,12 +165,12 @@ def plot_union(union_list, after_scale_retweet, after_scale_follower, topic_name
 # y_axis_choices = ['follower_wo_mc']
 y_axis_choices = ['retweet']
 # topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-topics = ["hormonestheseries"]
+topics = ["aroii"]
 # folds = ["1", "2", "3", "4", "5"]
-folds = ["1", "2", "3"]
+folds = ["1"]
 
 shade_area_num_param = 0
-shade_area = ['none', 'Union', 'Non-Intersect', 'Intersect']
+shade_area = ['none', 'Union', 'Non-Intersection', 'Intersection']
 
 for each_choice in y_axis_choices:
     for each_topic in topics:
@@ -282,7 +290,7 @@ for each_choice in y_axis_choices:
             # print("Not Intersect Area:", sum_non_intersect_area)
             # print("Union Area:", sum_union_area)
             # print("Not Intersect Area / Union Area:", un_similar)
-            # print("Similarity:", similarity_result)
+            print("Similarity:", similarity_result)
             # print(similarity_result)
             simi_topic.append(similarity_result)
 
@@ -292,7 +300,7 @@ for each_choice in y_axis_choices:
             # print("Plot Before")
             # print("Plot After")
             # one_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold, each_choice)
-            # two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
+            two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
             two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold, shade_area[shade_area_num_param])        # THIS
             # plot_union(for_plot_union_area, new_scale_retweet, new_scale_follower, each_topic, each_fold, for_plot_union_area_plus, for_plot_union_area_minus)
             # four_plot(only_value_retweet, new_scale_retweet, only_value_follower, new_scale_follower, 'follower_wo_mc', each_topic, each_fold)

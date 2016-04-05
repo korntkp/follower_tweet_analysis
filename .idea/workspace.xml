@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e5b5f6f4-09e4-4e06-9c7b-a60d4d1cae8e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/10_Scatter_Fol-Ret_not_KDE.py" afterPath="$PROJECT_DIR$/10_Scatter_Fol-Ret_not_KDE.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/12_Box_Plot.py" afterPath="$PROJECT_DIR$/12_Box_Plot.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/14_Intersect_Trend.py" afterPath="$PROJECT_DIR$/14_Intersect_Trend.py" />
     </list>
     <ignored path="Sampling Source User.iws" />
@@ -28,7 +30,7 @@
         <entry file="file://$PROJECT_DIR$/10_Scatter_Fol-Ret_not_KDE.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="430" column="53" selection-start-line="430" selection-start-column="53" selection-end-line="430" selection-end-column="53" />
+              <caret line="245" column="9" selection-start-line="245" selection-start-column="9" selection-end-line="245" selection-end-column="9" />
               <folding>
                 <element signature="e#569#585#0" expanded="true" />
               </folding>
@@ -40,7 +42,7 @@
         <entry file="file://$PROJECT_DIR$/08_Kernel_Density_Estimation.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="401" column="0" selection-start-line="401" selection-start-column="0" selection-end-line="401" selection-end-column="0" />
+              <caret line="49" column="12" selection-start-line="49" selection-start-column="12" selection-end-line="49" selection-end-column="12" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -58,11 +60,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="12_Box_Plot.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="12_Box_Plot.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/12_Box_Plot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="281" column="24" selection-start-line="281" selection-start-column="24" selection-end-line="281" selection-end-column="58" />
+            <state vertical-scroll-proportion="1.115942">
+              <caret line="262" column="56" selection-start-line="262" selection-start-column="56" selection-end-line="262" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -78,15 +80,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="14_Intersect_Trend.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="14_Intersect_Trend.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/14_Intersect_Trend.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3260274">
-              <caret line="163" column="24" selection-start-line="163" selection-start-column="24" selection-end-line="163" selection-end-column="24" />
+            <state vertical-scroll-proportion="-10.034483">
+              <caret line="170" column="0" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
-                <element signature="e#3899#5410#0" expanded="false" />
-                <element signature="e#5553#6651#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -145,10 +145,10 @@
         <option value="$PROJECT_DIR$/11_Scatter_Delta_Follower-Time_not_KDE.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/13_Scatter_Ret-Fol_KDE.py" />
-        <option value="$PROJECT_DIR$/12_Box_Plot.py" />
-        <option value="$PROJECT_DIR$/10_Scatter_Fol-Ret_not_KDE.py" />
         <option value="$PROJECT_DIR$/08_Kernel_Density_Estimation.py" />
+        <option value="$PROJECT_DIR$/10_Scatter_Fol-Ret_not_KDE.py" />
         <option value="$PROJECT_DIR$/14_Intersect_Trend.py" />
+        <option value="$PROJECT_DIR$/12_Box_Plot.py" />
       </list>
     </option>
   </component>
@@ -213,7 +213,7 @@
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://E:/follower_tweet_analysis/12_Box_Plot.py" />
     <property name="last_opened_file_path" value="$USER_HOME$/PycharmProjects/test_project" />
   </component>
-  <component name="RunManager" selected="Python.14_Intersect_Trend">
+  <component name="RunManager" selected="Python.12_Box_Plot">
     <configuration default="false" name="08_Kernel_Density_Estimation" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -430,10 +430,10 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.14_Intersect_Trend" />
-        <item index="1" class="java.lang.String" itemvalue="Python.08_Kernel_Density_Estimation" />
-        <item index="2" class="java.lang.String" itemvalue="Python.12_Box_Plot" />
-        <item index="3" class="java.lang.String" itemvalue="Python.10_Scatter_Fol-Ret_not_KDE" />
+        <item index="0" class="java.lang.String" itemvalue="Python.12_Box_Plot" />
+        <item index="1" class="java.lang.String" itemvalue="Python.14_Intersect_Trend" />
+        <item index="2" class="java.lang.String" itemvalue="Python.10_Scatter_Fol-Ret_not_KDE" />
+        <item index="3" class="java.lang.String" itemvalue="Python.08_Kernel_Density_Estimation" />
         <item index="4" class="java.lang.String" itemvalue="Python.09_Plot_Histogram" />
       </list>
     </recent_temporary>
@@ -462,14 +462,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22108346" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329653" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3280757" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30592105" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45230263" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24963397" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -788,26 +788,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/09_Plot_Histogram.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/11_Scatter_Delta_Follower-Time_not_KDE.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.8465518">
           <caret line="110" column="0" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/12_Box_Plot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="281" column="24" selection-start-line="281" selection-start-column="24" selection-end-line="281" selection-end-column="58" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -825,30 +809,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/10_Scatter_Fol-Ret_not_KDE.py">
+    <entry file="file://$PROJECT_DIR$/09_Plot_Histogram.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="430" column="53" selection-start-line="430" selection-start-column="53" selection-end-line="430" selection-end-column="53" />
-          <folding>
-            <element signature="e#569#585#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/08_Kernel_Density_Estimation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="401" column="0" selection-start-line="401" selection-start-column="0" selection-end-line="401" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/13_Scatter_Ret-Fol_KDE.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="85" selection-start-line="28" selection-start-column="85" selection-end-line="28" selection-end-column="85" />
+          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -861,15 +825,49 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/13_Scatter_Ret-Fol_KDE.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="28" column="85" selection-start-line="28" selection-start-column="85" selection-end-line="28" selection-end-column="85" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/10_Scatter_Fol-Ret_not_KDE.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="245" column="9" selection-start-line="245" selection-start-column="9" selection-end-line="245" selection-end-column="9" />
+          <folding>
+            <element signature="e#569#585#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/14_Intersect_Trend.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3260274">
-          <caret line="163" column="24" selection-start-line="163" selection-start-column="24" selection-end-line="163" selection-end-column="24" />
+        <state vertical-scroll-proportion="-10.034483">
+          <caret line="170" column="0" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
-            <element signature="e#3899#5410#0" expanded="false" />
-            <element signature="e#5553#6651#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/08_Kernel_Density_Estimation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="49" column="12" selection-start-line="49" selection-start-column="12" selection-end-line="49" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/12_Box_Plot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.115942">
+          <caret line="262" column="56" selection-start-line="262" selection-start-column="56" selection-end-line="262" selection-end-column="56" />
+          <folding />
         </state>
       </provider>
     </entry>
