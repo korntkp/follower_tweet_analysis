@@ -67,6 +67,21 @@ def extract_diff_ret_or_fol(source_path_param, choose_str, is_log_delta_retweet_
 
 def plot_diff_ret_and_diff_fol(list_ret, list_fol, choose_str, topic_name, fold_num, is_log_delta_retweet_param, is_log_delta_follower_param, is_limit_axis_param, max_fol, max_ret, min_fol, min_ret):
     plt.plot(list_ret, list_fol, 'ro')
+
+    """
+    Set Topic Name
+    topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+    """
+    new_topic_name = ''
+    if topic_name == 'apple':
+        new_topic_name = 'Apple'
+    elif topic_name == 'aroii':
+        new_topic_name = 'Aroii'
+    elif topic_name == 'hormonestheseries':
+        new_topic_name = 'Hormones'
+    elif topic_name == 'thefacethailand':
+        new_topic_name = 'The Face Thailand'
+
     if is_limit_axis_param:
         plt.axis([min_ret, max_ret, min_fol, max_fol])
     else:  # Default
@@ -82,7 +97,8 @@ def plot_diff_ret_and_diff_fol(list_ret, list_fol, choose_str, topic_name, fold_
             # plt.ylabel('Log(Delta Follower without Message Count)')
             plt.ylabel('Log Delta Follower')
             # plt.title('Graph of Log(Delta Retweet) and Log(Delta Follower(without Message Count)) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
-            plt.title('Scatter plot: Log Delta Retweet and Log Delta Follower [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+            # plt.title('[Topic: ' + topic_name + ', Fold: ' + fold_num + ']\nScatter plot: Log Delta Retweet and Log Delta Follower')
+            plt.title(new_topic_name + ' Fold ' + fold_num + '\nScatter plot: Log Delta Retweet and Log Delta Follower')
 
     elif is_log_delta_retweet_param:
         plt.xlabel('Log Delta Retweet')
@@ -241,9 +257,9 @@ def explore_diff_ret(list_diff_ret_param, list_diff_fol_param, not_more_than_ret
 # follower_choices = ['follower w/t mc', 'follower w/o mc']
 follower_choices = ['follower w/o mc']
 # topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
-topics = ["hormonestheseries", "thefacethailand"]
+topics = ["hormonestheseries"]
 # folds = ["1", "2", "3", "4", "5"]
-folds = ["2", "3"]
+folds = ["4"]
 
 # is_log_delta_retweet = False
 # is_log_delta_follower = True

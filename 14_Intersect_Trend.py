@@ -45,6 +45,20 @@ def one_plot_before(before_scale_retweet, before_scale_follower, topic_name, fol
 
 
 def two_plot_before(before_scale_retweet, before_scale_follower, topic_name, fold_num):
+    """
+    Set Topic Name
+    topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+    """
+    new_topic_name = ''
+    if topic_name == 'apple':
+        new_topic_name = 'Apple'
+    elif topic_name == 'aroii':
+        new_topic_name = 'Aroii'
+    elif topic_name == 'hormonestheseries':
+        new_topic_name = 'Hormones'
+    elif topic_name == 'thefacethailand':
+        new_topic_name = 'The Face Thailand'
+
     fig, ax = plt.subplots()
 
     ax.plot(range(0, len(before_scale_retweet)), before_scale_retweet, '-', label='Trend Delta Retweet')
@@ -52,7 +66,8 @@ def two_plot_before(before_scale_retweet, before_scale_follower, topic_name, fol
 
     ax.set_xlabel("Time (Hour)")
     ax.set_ylabel('Trend Value Before Scaling')
-    ax.set_title('Trend Graph (Before Scaling) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    # ax.set_title('Trend Graph (Before Scaling) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    ax.set_title(new_topic_name + ' Fold ' + fold_num + '\nTrend Graph (Before Scaling)')
 
     axes = plt.gca()
     axes.set_xlim([0, len(before_scale_retweet)])
@@ -63,13 +78,26 @@ def two_plot_before(before_scale_retweet, before_scale_follower, topic_name, fol
 
 
 def two_plot_after(after_scale_retweet, after_scale_follower, topic_name, fold_num, shade_option):
+    """
+    Set Topic Name
+    topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+    """
+    new_topic_name = ''
+    if topic_name == 'apple':
+        new_topic_name = 'Apple'
+    elif topic_name == 'aroii':
+        new_topic_name = 'Aroii'
+    elif topic_name == 'hormonestheseries':
+        new_topic_name = 'Hormones'
+    elif topic_name == 'thefacethailand':
+        new_topic_name = 'The Face Thailand'
     fig, ax = plt.subplots()
 
     """
     Color
     """
-    ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', linewidth=1, color='green', label='Trend Delta Retweet')
-    ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', linewidth=1, color='blue', label='Trend Delta Follower')
+    ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', linewidth=1, color='blue', label='Trend Delta Retweet')
+    ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', linewidth=1, color='green', label='Trend Delta Follower')
 
     """
     Black White Tolerance
@@ -94,7 +122,7 @@ def two_plot_after(after_scale_retweet, after_scale_follower, topic_name, fold_n
 
     ax.set_xlabel("Time (Hour)")
     ax.set_ylabel('Trend Value After Scaling')
-    ax.set_title('Trend Graph (After Scaling) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    ax.set_title(new_topic_name + ' Fold ' + fold_num + '\nTrend Graph (After Scaling)')
 
     axes = plt.gca()
     axes.set_xlim([0, len(after_scale_retweet)])
@@ -137,21 +165,34 @@ def four_plot(before_scale_retweet, after_scale_retweet, before_scale_follower, 
 REWRITE THIS
 """
 def plot_union(union_list, after_scale_retweet, after_scale_follower, topic_name, fold_num, plus_list, minus_list):
+    """
+    Set Topic Name
+    topics = ["apple", "aroii", "hormonestheseries", "thefacethailand"]
+    """
+    new_topic_name = ''
+    if topic_name == 'apple':
+        new_topic_name = 'Apple'
+    elif topic_name == 'aroii':
+        new_topic_name = 'Aroii'
+    elif topic_name == 'hormonestheseries':
+        new_topic_name = 'Hormones'
+    elif topic_name == 'thefacethailand':
+        new_topic_name = 'The Face Thailand'
+
     # print(after_scale_retweet[970], after_scale_follower[970])
     # print(union_list[970])
     fig, ax = plt.subplots()
 
-    ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', label='Trend Delta Retweet')
-    ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', label='Trend Delta Follower')
+    ax.plot(range(0, len(after_scale_retweet)), after_scale_retweet, '-', color='blue', label='Trend Delta Retweet')
+    ax.plot(range(0, len(after_scale_follower)), after_scale_follower, '-', color='green', label='Trend Delta Follower')
     # ax.fill_between(range(0, len(union_list)), 0, union_list, facecolor='black', alpha=0.5, label='Union Area')
     ax.fill_between(range(0, 1), 0, facecolor='black', alpha=0.5, label='Intersection Area')                # Manual Fill Color
     # ax.fill_between(range(0, len(plus_list)), 0, plus_list, facecolor='black', alpha=0.5)
     # ax.fill_between(range(0, len(minus_list)), 0, minus_list, facecolor='black', alpha=0.5)
 
-
     ax.set_xlabel("Time")
     ax.set_ylabel('Trend Value After Scaling')
-    ax.set_title('Trend Graph (After Scaling) [Topic: ' + topic_name + ', Fold: ' + fold_num + ']')
+    ax.set_title(new_topic_name + ' Fold ' + fold_num + '\nTrend Graph (After Scaling)')
 
     axes = plt.gca()
     axes.set_xlim([0, len(after_scale_retweet)])
@@ -286,7 +327,6 @@ for each_choice in y_axis_choices:
             un_similar = (sum_non_intersect_area / sum_union_area) * 100
             similarity_result = 100 - un_similar
 
-
             # print("Not Intersect Area:", sum_non_intersect_area)
             # print("Union Area:", sum_union_area)
             # print("Not Intersect Area / Union Area:", un_similar)
@@ -302,7 +342,7 @@ for each_choice in y_axis_choices:
             # one_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold, each_choice)
             two_plot_before(only_value_retweet, only_value_follower, each_topic, each_fold)
             two_plot_after(new_scale_retweet, new_scale_follower, each_topic, each_fold, shade_area[shade_area_num_param])        # THIS
-            # plot_union(for_plot_union_area, new_scale_retweet, new_scale_follower, each_topic, each_fold, for_plot_union_area_plus, for_plot_union_area_minus)
+            plot_union(for_plot_union_area, new_scale_retweet, new_scale_follower, each_topic, each_fold, for_plot_union_area_plus, for_plot_union_area_minus)
             # four_plot(only_value_retweet, new_scale_retweet, only_value_follower, new_scale_follower, 'follower_wo_mc', each_topic, each_fold)
 
             """
